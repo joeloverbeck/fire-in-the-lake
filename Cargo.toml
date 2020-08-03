@@ -1,0 +1,6 @@
+[package]
+name = "fire-in-the-lake"
+version = "0.1.0"
+authors = ["joeloverbeck"]
+
+[dependencies]
