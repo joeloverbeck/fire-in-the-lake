@@ -1,4 +1,4 @@
-use super::Factions;
+use super::factions::Factions;
 
 pub struct SequenceOfPlay {
     eligible: [Factions; 4],
@@ -9,7 +9,7 @@ impl SequenceOfPlay {
     pub fn new() -> SequenceOfPlay {
         SequenceOfPlay {
             eligible: [Factions::VC, Factions::NVA, Factions::ARVN, Factions::US],
-            first_faction_event: Factions::NONE
+            first_faction_event: Factions::None
         }
     }
 
@@ -45,7 +45,7 @@ impl SequenceOfPlay {
 
         for item in self.eligible.iter_mut() {
             match *item {
-                _ if item == &faction_to_move => *item = Factions::NONE,
+                _ if item == &faction_to_move => *item = Factions::None,
                 _ => ()
             }
         }
