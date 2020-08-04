@@ -37,18 +37,22 @@ impl SequenceOfPlay {
         vc_present && nva_present && arvn_present && us_present
     }
 
-    fn move_faction_to_first_faction_event(&mut self, faction_to_move: Factions) -> Result <(), String> {
-        // Sanity check: the passed faction should be in the list of eligible factions.
-        if !self.is_faction_eligible(faction_to_move) {
-            return Err(format!("The faction to move {:?} wasn't eligible to begin with.", faction_to_move).to_owned());
-        }
-
+    fn remove_faction_to_move_from_eligibles(&mut self, faction_to_move: Factions){
         for item in self.eligible.iter_mut() {
             match *item {
                 _ if item == &faction_to_move => *item = Factions::None,
                 _ => ()
             }
         }
+    }
+
+    fn move_faction_to_first_faction_event(&mut self, faction_to_move: Factions) -> Result <(), String> {
+        // Sanity check: the passed faction should be in the list of eligible factions.
+        if !self.is_faction_eligible(faction_to_move) {
+            return Err(format!("The faction to move {:?} wasn't eligible to begin with.", faction_to_move).to_owned());
+        }
+
+        self.remove_faction_to_move_from_eligibles(faction_to_move);
 
         // With the faction to move eliminated from the Eligible, now we should put it in the box asked for.
         self.first_faction_event = faction_to_move;

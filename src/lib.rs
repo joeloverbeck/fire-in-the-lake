@@ -4,6 +4,7 @@ mod region;
 mod support;
 mod sequence_of_play;
 mod factions;
+mod track;
 
 struct NvaStats {
     victory_level: u8
@@ -21,22 +22,6 @@ impl NvaStats{
     }
 }
 
-struct Tracker {
-    aid: u8
-}
-
-impl Tracker {
-    fn new () -> Tracker {
-        Tracker {
-            aid: 0
-        }
-    }
-
-    fn get_aid(&self) -> u8 {
-        self.aid
-    }
-}
-
 
 #[cfg(test)]
 mod tests {
@@ -50,13 +35,5 @@ mod tests {
 
         assert_eq!(nva_stats.get_victory_level(), 0);
     }
-
-    #[test]
-    fn test_on_creation_aid_should_be_zero(){
-        let tracker = Tracker::new();
-
-        assert_eq!(tracker.get_aid(), 0);
-    }
-
 
 }
