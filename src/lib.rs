@@ -1,3 +1,4 @@
+extern crate enum_dispatch;
 
 mod commands;
 mod sequence_of_play;

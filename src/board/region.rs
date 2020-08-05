@@ -1,19 +1,19 @@
 
-use board::regions::Regions;
+use board::space_identifiers::SpaceIdentifiers;
 use board::support::Support;
 
 #[derive(Debug)]
 pub struct Region {
-    region_identifier: Regions,
+    region_identifier: SpaceIdentifiers,
     support: Support
 }
 
 impl Region {
-    pub fn region_identifier(&self) -> Regions {
+    pub fn region_identifier(&self) -> SpaceIdentifiers {
         self.region_identifier
     }
 
-    pub fn new(region_identifier: Regions) -> Region {
+    pub fn new(region_identifier: SpaceIdentifiers) -> Region {
         Region {
             region_identifier: region_identifier,
             support: Support::Neutral

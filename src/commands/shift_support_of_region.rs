@@ -2,7 +2,7 @@
 use super::command::Command;
 use board::region::Region;
 use board::support::Support;
-use board::regions::Regions;
+use board::space_identifiers::SpaceIdentifiers;
 
 struct ShiftSupportOfRegion<'a> {
     region: &'a mut Region,
@@ -39,14 +39,14 @@ mod tests {
 
     #[test]
     fn should_be_able_to_create_shift_support_of_region_command() {
-        let mut region = Region::new(Regions::Saigon);
+        let mut region = Region::new(SpaceIdentifiers::Saigon);
 
         let _ = ShiftSupportOfRegion::new(&mut region, -1);
     }
 
     #[test]
     fn on_executing_the_shift_of_support_of_a_region_by_level_specified_the_level_should_have_dropped_in_the_region(){
-        let mut region = Region::new(Regions::Saigon);
+        let mut region = Region::new(SpaceIdentifiers::Saigon);
 
         region.set_support(Support::PassiveSupport);
 

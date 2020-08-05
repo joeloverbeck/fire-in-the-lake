@@ -1,9 +1,7 @@
 
 #[derive(Hash, Debug, Clone, Copy, PartialEq)]
-pub enum Regions {
+pub enum SpaceIdentifiers {
     Saigon
 }
 
-
-
-impl Eq for Regions {}
+impl Eq for SpaceIdentifiers {}

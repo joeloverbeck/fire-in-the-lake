@@ -4,3 +4,4 @@ version = "0.1.0"
 authors = ["joeloverbeck"]
 
 [dependencies]
+enum_dispatch = "0.3.2"

@@ -1,10 +1,10 @@
 use std::collections::HashMap;
 
-use board::regions::Regions;
+use board::space_identifiers::SpaceIdentifiers;
 use board::region::Region;
 
 pub struct Map {
-    regions: HashMap<Regions, Region>
+    regions: HashMap<SpaceIdentifiers, Region>
 }
 
 impl Map {
@@ -18,7 +18,7 @@ impl Map {
         map
     }
 
-    pub fn retrieve_region(&self, region_to_retrieve: Regions) -> Result<&Region, String> {
+    pub fn retrieve_region(&self, region_to_retrieve: SpaceIdentifiers) -> Result<&Region, String> {
         print!("I just entered the retrieve_region function.");
         let retrieved_region = self.regions.get(&region_to_retrieve);
 
@@ -32,9 +32,9 @@ impl Map {
 
     fn populate_regions(&mut self) {
         // Add Saigon
-        let saigon = Region::new(Regions::Saigon);
+        let saigon = Region::new(SpaceIdentifiers::Saigon);
 
-        self.regions.insert(Regions::Saigon, saigon);
+        self.regions.insert(SpaceIdentifiers::Saigon, saigon);
     }
 }
 
@@ -62,7 +62,7 @@ mod tests {
         // be able to retrieve that would not exist, given the immutability of the map, in which only things
         // like markers, pieces, etc. change.
 
-        let retrieval_of_region_result = map.retrieve_region(Regions::Saigon);
+        let retrieval_of_region_result = map.retrieve_region(SpaceIdentifiers::Saigon);
 
         if let Err(error) = retrieval_of_region_result {
             panic!(error);
@@ -70,7 +70,7 @@ mod tests {
 
         if let Ok(region) = retrieval_of_region_result {
 
-            assert_eq!(region.region_identifier(), Regions::Saigon);
+            assert_eq!(region.region_identifier(), SpaceIdentifiers::Saigon);
 
         }    
 
