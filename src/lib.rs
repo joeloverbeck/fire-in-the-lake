@@ -4,6 +4,7 @@ mod sequence_of_play;
 mod factions;
 mod track;
 mod board;
+mod cards;
 
 struct NvaStats {
     victory_level: u8
