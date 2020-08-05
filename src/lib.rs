@@ -1,10 +1,9 @@
 
 mod commands;
-mod region;
-mod support;
 mod sequence_of_play;
 mod factions;
 mod track;
+mod board;
 
 struct NvaStats {
     victory_level: u8
