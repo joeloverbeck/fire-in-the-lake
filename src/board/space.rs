@@ -19,6 +19,8 @@ pub trait Space {
     fn shift_support_level_down(&mut self);
     fn get_terrain_type(&self) -> TerrainTypes;
     fn set_terrain_type(&mut self, new_terrain_type: TerrainTypes);
+    fn get_population_value(&self) -> u8;
+    fn set_population_value(&mut self, new_population_value: u8) -> Result<(), String>;
 }
 
 #[enum_dispatch(Space)]

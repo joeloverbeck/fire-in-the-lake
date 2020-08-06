@@ -40,4 +40,12 @@ impl Space for City {
     fn set_terrain_type(&mut self, new_terrain_type: TerrainTypes) {
         todo!()
     }
+
+    fn get_population_value(&self) -> u8{
+        todo!()
+    }
+
+    fn set_population_value(&mut self, new_population_value: u8) -> Result<(), String> {
+        todo!()
+    }
 }

@@ -6,6 +6,7 @@ use board::terrain_types::TerrainTypes;
 
 #[derive(Debug)]
 pub struct Province {
+    population_value: u8,
     support: Support,
     terrain_type: TerrainTypes
 }
@@ -13,6 +14,7 @@ pub struct Province {
 impl Province {
     pub fn new(space_identifier: SpaceIdentifiers) -> Province {
         Province {
+            population_value: 0,
             support: Support::new(),
             terrain_type: TerrainTypes::Highland
         }
@@ -43,6 +45,16 @@ impl Space for Province {
     fn set_terrain_type(&mut self, new_terrain_type: TerrainTypes) {
         self.terrain_type = new_terrain_type;
     }
+
+    fn get_population_value(&self) -> u8 {
+        self.population_value
+    }
+
+    fn set_population_value(&mut self, new_population_value: u8) -> Result<(), String> {
+        self.population_value = new_population_value;
+
+        Ok(())
+    }
 }
 
 
@@ -66,4 +78,15 @@ mod tests {
         Ok(())
     }
 
+    #[test]
+    fn test_should_be_able_to_get_the_population_value_of_the_province() -> Result<(), String> {
+
+        let mut space: Spaces = Province::new(SpaceIdentifiers::KienGiangAnXuyen).into();
+
+        space.set_population_value(1);
+
+        assert_eq!(space.get_population_value(), 1);
+
+        Ok(())
+    }
 }
