@@ -51,6 +51,17 @@ impl MapBuilder {
         can_tho.set_population_value(1);
         can_tho.set_terrain_type(TerrainTypes::City);
 
+
+        // Create Mekong
+        let mut mekong: Spaces = LineOfCommunication::new(SpaceIdentifiers::Mekong).into();
+        mekong.set_population_value(1);
+        mekong.set_terrain_type(TerrainTypes::LoC);
+
+        // Create Kien Phong
+        let mut kien_phong: Spaces = Province::new(SpaceIdentifiers::KienPhong).into();
+        kien_phong.set_population_value(2);
+        kien_phong.set_terrain_type(TerrainTypes::Lowland);
+
         let mut new_map = Map::new();
 
         new_map.add_space(saigon);
@@ -59,6 +70,8 @@ impl MapBuilder {
         new_map.add_space(quang_nam);
         new_map.add_space(route4);
         new_map.add_space(can_tho);
+        new_map.add_space(mekong);
+        new_map.add_space(kien_phong);
 
         new_map
     }
@@ -188,6 +201,40 @@ mod tests {
         assert_eq!(can_tho.get_population_value(), 1, "The population value of {:?} should have been {:?}, but was {:?}", can_tho.get_space_identifier(), expected_population_value, can_tho.get_population_value());
         assert_eq!(can_tho.get_control(), Controls::Uncontrolled);
         assert_eq!(can_tho.get_terrain_type(), TerrainTypes::City);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_upon_building_default_map_mekong_should_have_expected_initial_values() -> Result<(), String> {
+        let map_builder = MapBuilder::new();
+
+        let built_map = map_builder.build_initial_map();
+
+        let mekong: &Spaces = retrieve_space(&built_map, SpaceIdentifiers::Mekong);
+
+        let expected_population_value = 1;
+
+        assert_eq!(mekong.get_population_value(), 1, "The population value of {:?} should have been {:?}, but was {:?}", mekong.get_space_identifier(), expected_population_value, mekong.get_population_value());
+        assert_eq!(mekong.get_control(), Controls::Uncontrolled);
+        assert_eq!(mekong.get_terrain_type(), TerrainTypes::LoC);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_upon_building_default_map_kien_phong_should_have_expected_initial_values() -> Result<(), String> {
+        let map_builder = MapBuilder::new();
+
+        let built_map = map_builder.build_initial_map();
+
+        let kien_phong: &Spaces = retrieve_space(&built_map, SpaceIdentifiers::KienPhong);
+
+        let expected_population_value = 2;
+
+        assert_eq!(kien_phong.get_population_value(), 2, "The population value of {:?} should have been {:?}, but was {:?}", kien_phong.get_space_identifier(), expected_population_value, kien_phong.get_population_value());
+        assert_eq!(kien_phong.get_control(), Controls::Uncontrolled);
+        assert_eq!(kien_phong.get_terrain_type(), TerrainTypes::Lowland);
 
         Ok(())
     }
