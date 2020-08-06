@@ -25,11 +25,7 @@ impl CardRegistry {
         // Card 107: "Burning Bonze"
         let burning_bonze = Card::new(107, [Factions::VC, Factions::NVA, Factions::ARVN, Factions::US]);
 
-        self.insert_game_card(107, burning_bonze);
-    }
-
-    fn insert_game_card(&mut self, number: u8, card_to_insert: Card) {
-        self.cards.insert(number, card_to_insert);
+        self.cards.insert(107, burning_bonze);
     }
 
     pub fn retrieve_card(&self, card_number: u8) -> Result<&Card, String> {

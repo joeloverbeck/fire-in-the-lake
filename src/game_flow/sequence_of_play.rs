@@ -1,4 +1,4 @@
-use super::factions::Factions;
+use factions::Factions;
 
 pub struct SequenceOfPlay {
     eligible: [Factions; 4],

@@ -1,11 +1,11 @@
 extern crate enum_dispatch;
 
 mod commands;
-mod sequence_of_play;
 mod factions;
 mod track;
 mod board;
 mod cards;
+mod game_flow;
 
 struct NvaStats {
     victory_level: u8

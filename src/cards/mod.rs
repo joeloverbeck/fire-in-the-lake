@@ -1,2 +1,2 @@
 pub mod card;
-mod card_registry;
+pub mod card_registry;
