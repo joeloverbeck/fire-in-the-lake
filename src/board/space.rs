@@ -4,6 +4,7 @@ use std::collections::HashMap;
 use board::city::City;
 use board::province::Province;
 use board::line_of_communication::LineOfCommunication;
+use board::support::SupportLevels;
 
 extern crate enum_dispatch;
 use self::enum_dispatch::enum_dispatch;
@@ -12,10 +13,14 @@ use self::enum_dispatch::enum_dispatch;
 #[enum_dispatch]
 pub trait Space {
     fn get_space_identifier(&self) -> SpaceIdentifiers;
+    fn get_current_support_level(&self) -> SupportLevels;
+    fn set_support_level(&mut self, new_support_level: SupportLevels);
+    fn shift_support_level_down(&mut self);
 }
 
 #[enum_dispatch(Space)]
-enum Spaces {
+#[derive(Debug)]
+pub enum Spaces {
     City,
     Province,
     LineOfCommunication
@@ -31,7 +36,7 @@ mod tests {
     fn test_should_be_able_to_create_a_hashmap_of_all_possible_spaces() -> Result<(), String> {
          
         let city = City::new().into();
-        let province = Province::new().into();
+        let province = Province::new(SpaceIdentifiers::Saigon).into();
         let line_of_communication = LineOfCommunication::new().into();
 
         let mut registered_spaces: HashMap<SpaceIdentifiers, Spaces> = HashMap::new();

@@ -1,8 +1,7 @@
-pub mod region;
 pub mod map;
 pub mod space_identifiers;
 pub mod support;
-mod space;
+pub mod space;
 mod city;
-mod province;
+pub mod province;
 mod line_of_communication;

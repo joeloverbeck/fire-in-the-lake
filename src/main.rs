@@ -8,7 +8,7 @@ pub fn main() {
     let map = Map::new();
 
 
-    let retrieved_region = map.retrieve_region(SpaceIdentifiers::Saigon);
+    let retrieved_space = map.retrieve_space(SpaceIdentifiers::Saigon);
 
-    println!("I retrieved a region and all I got was this lousy region: {:?}", retrieved_region);
+    println!("I retrieved a space and all I got was this lousy space: {:?}", retrieved_space);
 }
