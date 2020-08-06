@@ -7,3 +7,4 @@ pub mod province;
 mod line_of_communication;
 mod terrain_types;
 mod controls;
+mod map_builder;

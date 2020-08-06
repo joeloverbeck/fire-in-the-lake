@@ -15,12 +15,10 @@ impl Map {
             spaces: HashMap::new()
         };
 
-        map.populate_spaces();
-
         map
     }
 
-    pub fn retrieve_space(&self, space_to_retrieve: SpaceIdentifiers) -> Result<&Spaces, String> {
+    pub fn get_space(&self, space_to_retrieve: SpaceIdentifiers) -> Result<&Spaces, String> {
         print!("I just entered the retrieve_space function.");
         let retrieved_space = self.spaces.get(&space_to_retrieve);
 
@@ -32,11 +30,8 @@ impl Map {
         }
     }
 
-    fn populate_spaces(&mut self) {
-        // Add Saigon
-        let saigon = Province::new(SpaceIdentifiers::Saigon).into();
-
-        self.spaces.insert(SpaceIdentifiers::Saigon, saigon);
+    pub fn add_space(&mut self, space_to_add: Spaces) {
+        self.spaces.insert(space_to_add.get_space_identifier(), space_to_add);
     }
 }
 
@@ -58,13 +53,16 @@ mod tests {
     #[test]
     fn test_should_be_able_to_retrieve_saigon_from_map() -> Result<(), String> {
 
-        let map = Map::new();
+        let mut map = Map::new();
 
         // Saigon, as well as many other spaces, should always exist. There's no space that you should
         // be able to retrieve that would not exist, given the immutability of the map, in which only things
         // like markers, pieces, etc. change.
+        let mut saigon: Spaces = Province::new(SpaceIdentifiers::Saigon).into();
 
-        let retrieval_of_space_result = map.retrieve_space(SpaceIdentifiers::Saigon);
+        map.add_space(saigon);
+
+        let retrieval_of_space_result = map.get_space(SpaceIdentifiers::Saigon);
 
         if let Err(error) = retrieval_of_space_result {
             panic!(error);
