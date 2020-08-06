@@ -3,7 +3,8 @@
 pub enum SpaceIdentifiers {
     Saigon,
     KienGiangAnXuyen,
-    BaXuyen
+    BaXuyen,
+    QuangNam
 }
 
 impl Eq for SpaceIdentifiers {}

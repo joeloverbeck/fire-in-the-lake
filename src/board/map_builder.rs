@@ -34,11 +34,17 @@ impl MapBuilder {
         let mut ba_xuyen: Spaces = Province::new(SpaceIdentifiers::BaXuyen).into();
         ba_xuyen.set_population_value(1);
 
+        // Create Quan Nam
+        let mut quang_nam: Spaces = Province::new(SpaceIdentifiers::QuangNam).into();
+        quang_nam.set_population_value(1);
+        quang_nam.set_terrain_type(TerrainTypes::Highland);
+
         let mut new_map = Map::new();
 
         new_map.add_space(saigon);
         new_map.add_space(kien_giang_an_xuyen);
         new_map.add_space(ba_xuyen);
+        new_map.add_space(quang_nam);
 
         new_map
     }
@@ -107,9 +113,25 @@ mod tests {
         // Test Ba Xuyen
         let ba_xuyen: &Spaces = retrieve_space(&built_map, SpaceIdentifiers::BaXuyen);
 
-        assert_eq!(ba_xuyen.get_population_value(), 1, "The population value of {:?} should have been two, but was {:?}", SpaceIdentifiers::KienGiangAnXuyen, ba_xuyen.get_population_value());
+        assert_eq!(ba_xuyen.get_population_value(), 1, "The population value of {:?} should have been two, but was {:?}", ba_xuyen.get_space_identifier(), ba_xuyen.get_population_value());
         assert_eq!(ba_xuyen.get_control(), Controls::Uncontrolled);
         assert_eq!(ba_xuyen.get_terrain_type(), TerrainTypes::Lowland);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_upon_building_default_map_quang_nam_should_have_expected_initial_values() -> Result<(), String> {
+        let map_builder = MapBuilder::new();
+
+        let built_map = map_builder.build_initial_map();
+
+        // Test Quang nam
+        let quang_nam: &Spaces = retrieve_space(&built_map, SpaceIdentifiers::QuangNam);
+
+        assert_eq!(quang_nam.get_population_value(), 1, "The population value of {:?} should have been two, but was {:?}", quang_nam.get_space_identifier(), quang_nam.get_population_value());
+        assert_eq!(quang_nam.get_control(), Controls::Uncontrolled);
+        assert_eq!(quang_nam.get_terrain_type(), TerrainTypes::Highland);
 
         Ok(())
     }
