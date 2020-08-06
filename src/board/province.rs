@@ -3,20 +3,23 @@ use board::space::Space;
 use board::support::SupportLevels;
 use board::support::Support;
 use board::terrain_types::TerrainTypes;
+use board::controls::Controls;
 
 #[derive(Debug)]
 pub struct Province {
     population_value: u8,
+    terrain_type: TerrainTypes,
     support: Support,
-    terrain_type: TerrainTypes
+    control: Controls    
 }
 
 impl Province {
     pub fn new(space_identifier: SpaceIdentifiers) -> Province {
         Province {
             population_value: 0,
+            terrain_type: TerrainTypes::Highland,            
             support: Support::new(),
-            terrain_type: TerrainTypes::Highland
+            control: Controls::Neutral
         }
     }
 }
@@ -55,6 +58,14 @@ impl Space for Province {
 
         Ok(())
     }
+
+    fn get_control(&self) -> Controls {
+        self.control
+    }
+
+    fn set_control(&mut self, new_control: Controls) {
+        self.control = new_control;
+    }
 }
 
 
@@ -86,6 +97,18 @@ mod tests {
         space.set_population_value(1);
 
         assert_eq!(space.get_population_value(), 1);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_should_be_able_to_get_who_is_in_control_of_the_province() -> Result<(), String> {
+
+        let mut space: Spaces = Province::new(SpaceIdentifiers::KienGiangAnXuyen).into();
+
+        space.set_control(Controls::NVA);
+
+        assert_eq!(space.get_control(), Controls::NVA);
 
         Ok(())
     }

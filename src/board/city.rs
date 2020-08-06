@@ -2,6 +2,7 @@ use board::support::SupportLevels;
 use board::space_identifiers::SpaceIdentifiers;
 use board::space::Space;
 use board::terrain_types::TerrainTypes;
+use board::controls::Controls;
 
 #[derive(Debug)]
 pub struct City {
@@ -46,6 +47,14 @@ impl Space for City {
     }
 
     fn set_population_value(&mut self, new_population_value: u8) -> Result<(), String> {
+        todo!()
+    }
+
+    fn get_control(&self) -> Controls {
+        todo!()
+    }
+
+    fn set_control(&mut self, new_control: Controls) {
         todo!()
     }
 }

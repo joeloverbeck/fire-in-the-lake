@@ -6,6 +6,8 @@ use board::province::Province;
 use board::line_of_communication::LineOfCommunication;
 use board::support::SupportLevels;
 use board::terrain_types::TerrainTypes;
+use board::controls::Controls;
+
 
 extern crate enum_dispatch;
 use self::enum_dispatch::enum_dispatch;
@@ -21,6 +23,8 @@ pub trait Space {
     fn set_terrain_type(&mut self, new_terrain_type: TerrainTypes);
     fn get_population_value(&self) -> u8;
     fn set_population_value(&mut self, new_population_value: u8) -> Result<(), String>;
+    fn get_control(&self) -> Controls;
+    fn set_control(&mut self, new_control: Controls);
 }
 
 #[enum_dispatch(Space)]

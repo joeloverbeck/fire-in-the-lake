@@ -3,6 +3,7 @@ use board::space::Space;
 use board::support::SupportLevels;
 use board::space::Spaces;
 use board::terrain_types::TerrainTypes;
+use board::controls::Controls;
 
 
 #[derive(Debug)]
@@ -51,6 +52,14 @@ impl Space for LineOfCommunication {
     }
 
     fn set_population_value(&mut self, new_population_value: u8) -> Result<(), String> {
+        todo!()
+    }
+
+    fn get_control(&self) -> Controls {
+        todo!()
+    }
+
+    fn set_control(&mut self, new_control: Controls) {
         todo!()
     }
 }
