@@ -1,7 +1,8 @@
 
 #[derive(Hash, Debug, Clone, Copy, PartialEq)]
 pub enum SpaceIdentifiers {
-    Saigon
+    Saigon,
+    KienGiangAnXuyen
 }
 
 impl Eq for SpaceIdentifiers {}

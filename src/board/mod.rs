@@ -5,3 +5,4 @@ pub mod space;
 mod city;
 pub mod province;
 mod line_of_communication;
+mod terrain_types;

@@ -1,5 +1,5 @@
 use factions::Factions;
-use cards::card_registry::CardRegistry;
+
 
 
 pub struct Card {
@@ -26,6 +26,8 @@ mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
 
+    use cards::card_registry::CardRegistry;
+    
     #[test]
     fn test_should_be_able_to_create_a_card() -> Result<(), String> {
          

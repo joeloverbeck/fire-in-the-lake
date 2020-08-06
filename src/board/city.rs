@@ -1,6 +1,7 @@
 use board::support::SupportLevels;
 use board::space_identifiers::SpaceIdentifiers;
 use board::space::Space;
+use board::terrain_types::TerrainTypes;
 
 #[derive(Debug)]
 pub struct City {
@@ -29,6 +30,14 @@ impl Space for City {
     }
 
     fn shift_support_level_down(&mut self) {
+        todo!()
+    }
+
+    fn get_terrain_type(&self) -> TerrainTypes {
+        todo!()
+    }
+
+    fn set_terrain_type(&mut self, new_terrain_type: TerrainTypes) {
         todo!()
     }
 }

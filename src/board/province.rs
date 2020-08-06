@@ -2,16 +2,19 @@ use board::space_identifiers::SpaceIdentifiers;
 use board::space::Space;
 use board::support::SupportLevels;
 use board::support::Support;
+use board::terrain_types::TerrainTypes;
 
 #[derive(Debug)]
 pub struct Province {
-    support: Support
+    support: Support,
+    terrain_type: TerrainTypes
 }
 
 impl Province {
     pub fn new(space_identifier: SpaceIdentifiers) -> Province {
         Province {
-            support: Support::new()
+            support: Support::new(),
+            terrain_type: TerrainTypes::Highland
         }
     }
 }
@@ -32,4 +35,35 @@ impl Space for Province {
     fn shift_support_level_down(&mut self) {
         self.support.shift_support_level_down();
     }
+
+    fn get_terrain_type(&self) -> TerrainTypes {
+        self.terrain_type
+    }
+
+    fn set_terrain_type(&mut self, new_terrain_type: TerrainTypes) {
+        self.terrain_type = new_terrain_type;
+    }
+}
+
+
+
+#[cfg(test)]
+mod tests {
+    // Note this useful idiom: importing names from outer (for mod tests) scope.
+    use super::*;
+
+    use board::space::Spaces;
+
+    #[test]
+    fn test_should_be_able_to_retrieve_expected_terrain_type_of_province() -> Result<(), String> {
+
+        let mut space: Spaces = Province::new(SpaceIdentifiers::KienGiangAnXuyen).into();
+
+        space.set_terrain_type(TerrainTypes::Highland);
+
+        assert_eq!(space.get_terrain_type(), TerrainTypes::Highland);
+
+        Ok(())
+    }
+
 }

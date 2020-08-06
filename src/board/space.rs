@@ -5,6 +5,7 @@ use board::city::City;
 use board::province::Province;
 use board::line_of_communication::LineOfCommunication;
 use board::support::SupportLevels;
+use board::terrain_types::TerrainTypes;
 
 extern crate enum_dispatch;
 use self::enum_dispatch::enum_dispatch;
@@ -16,6 +17,8 @@ pub trait Space {
     fn get_current_support_level(&self) -> SupportLevels;
     fn set_support_level(&mut self, new_support_level: SupportLevels);
     fn shift_support_level_down(&mut self);
+    fn get_terrain_type(&self) -> TerrainTypes;
+    fn set_terrain_type(&mut self, new_terrain_type: TerrainTypes);
 }
 
 #[enum_dispatch(Space)]

@@ -1,9 +1,6 @@
 
 use super::command::Command;
 use board::space::Spaces;
-use board::support::SupportLevels;
-use board::province::Province;
-use board::space_identifiers::SpaceIdentifiers;
 use board::space::Space;
 
 struct ShiftSupportOfSpace<'a> {
@@ -41,6 +38,10 @@ impl Command for ShiftSupportOfSpace<'_> {
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
+
+    use board::support::SupportLevels;
+    use board::province::Province;
+    use board::space_identifiers::SpaceIdentifiers;
 
     #[test]
     fn should_be_able_to_create_shift_support_of_space_command() {
