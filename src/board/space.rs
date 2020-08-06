@@ -46,7 +46,7 @@ mod tests {
          
         let city = City::new(SpaceIdentifiers::Saigon).into();
         let province = Province::new(SpaceIdentifiers::Saigon).into();
-        let line_of_communication = LineOfCommunication::new().into();
+        let line_of_communication = LineOfCommunication::new(SpaceIdentifiers::Saigon).into();
 
         let mut registered_spaces: HashMap<SpaceIdentifiers, Spaces> = HashMap::new();
 

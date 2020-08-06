@@ -8,20 +8,22 @@ use board::controls::Controls;
 
 #[derive(Debug)]
 pub struct LineOfCommunication {
-
+    space_identifier: SpaceIdentifiers,
+    population_value: u8
 }
 
 impl LineOfCommunication {
-    pub fn new() -> LineOfCommunication {
+    pub fn new(space_identifier: SpaceIdentifiers) -> LineOfCommunication {
         LineOfCommunication {
-
+            space_identifier: space_identifier,
+            population_value: 0
         }
     }
 }
 
 impl Space for LineOfCommunication {
     fn get_space_identifier(&self) -> SpaceIdentifiers{
-        SpaceIdentifiers::Saigon
+        self.space_identifier
     }
 
     fn get_current_support_level(&self) -> SupportLevels {
@@ -40,23 +42,27 @@ impl Space for LineOfCommunication {
     }
 
     fn get_terrain_type(&self) -> TerrainTypes {
-        todo!()
+        // The terrain type for a Line of Communication is always an LoC
+        TerrainTypes::LoC
     }
 
     fn set_terrain_type(&mut self, new_terrain_type: TerrainTypes) {
-        todo!()
+        // The terrain type is always LoC
     }
 
     fn get_population_value(&self) -> u8 {
-        todo!()
+        self.population_value
     }
 
     fn set_population_value(&mut self, new_population_value: u8) -> Result<(), String> {
-        todo!()
+        self.population_value = new_population_value;
+
+        Ok(())
     }
 
     fn get_control(&self) -> Controls {
-        todo!()
+        // LoCs are always uncontrolled
+        Controls::Uncontrolled
     }
 
     fn set_control(&mut self, new_control: Controls) {
@@ -74,7 +80,7 @@ mod tests {
 
     #[test]
     fn test_the_support_level_of_a_loc_is_always_neutral() -> Result<(), String> {
-        let loc: Spaces = LineOfCommunication::new().into();
+        let loc: Spaces = LineOfCommunication::new(SpaceIdentifiers::CanTho).into();
 
         assert_eq!(loc.get_current_support_level(), SupportLevels::Neutral);
         

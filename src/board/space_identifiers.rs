@@ -4,7 +4,9 @@ pub enum SpaceIdentifiers {
     Saigon,
     KienGiangAnXuyen,
     BaXuyen,
-    QuangNam
+    QuangNam,
+    Route4,
+    CanTho
 }
 
 impl Eq for SpaceIdentifiers {}

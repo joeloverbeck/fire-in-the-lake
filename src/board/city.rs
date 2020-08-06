@@ -51,7 +51,7 @@ impl Space for City {
     }
 
     fn set_terrain_type(&mut self, new_terrain_type: TerrainTypes) {
-        todo!()
+        // A city is always a City
     }
 
     fn get_population_value(&self) -> u8{
