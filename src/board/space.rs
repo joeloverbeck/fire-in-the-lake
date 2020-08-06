@@ -44,7 +44,7 @@ mod tests {
     #[test]
     fn test_should_be_able_to_create_a_hashmap_of_all_possible_spaces() -> Result<(), String> {
          
-        let city = City::new().into();
+        let city = City::new(SpaceIdentifiers::Saigon).into();
         let province = Province::new(SpaceIdentifiers::Saigon).into();
         let line_of_communication = LineOfCommunication::new().into();
 

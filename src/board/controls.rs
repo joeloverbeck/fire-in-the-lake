@@ -2,7 +2,7 @@
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum Controls {
-    Neutral,
+    Uncontrolled,
     Counterinsurgent,
     NVA
 }

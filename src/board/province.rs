@@ -7,6 +7,7 @@ use board::controls::Controls;
 
 #[derive(Debug)]
 pub struct Province {
+    space_identifier: SpaceIdentifiers,
     population_value: u8,
     terrain_type: TerrainTypes,
     support: Support,
@@ -16,17 +17,18 @@ pub struct Province {
 impl Province {
     pub fn new(space_identifier: SpaceIdentifiers) -> Province {
         Province {
+            space_identifier: space_identifier,
             population_value: 0,
-            terrain_type: TerrainTypes::Highland,            
+            terrain_type: TerrainTypes::Lowland,            
             support: Support::new(),
-            control: Controls::Neutral
+            control: Controls::Uncontrolled
         }
     }
 }
 
 impl Space for Province {
     fn get_space_identifier(&self) -> SpaceIdentifiers{
-        SpaceIdentifiers::Saigon
+        self.space_identifier
     }
 
     fn get_current_support_level(&self) -> SupportLevels {
@@ -85,6 +87,15 @@ mod tests {
         space.set_terrain_type(TerrainTypes::Highland);
 
         assert_eq!(space.get_terrain_type(), TerrainTypes::Highland);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_when_creating_a_province_with_a_set_space_identifier_when_asking_for_the_identifier_it_should_be_the_expected_one() -> Result<(), String> {
+        let mut space: Spaces = Province::new(SpaceIdentifiers::KienGiangAnXuyen).into();
+
+        assert_eq!(space.get_space_identifier(), SpaceIdentifiers::KienGiangAnXuyen);
 
         Ok(())
     }
