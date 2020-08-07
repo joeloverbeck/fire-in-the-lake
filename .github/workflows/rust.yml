@@ -58,7 +58,7 @@ jobs:
           command: clippy
           args: -- -D warnings
 
-  Coverage:
+  coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -83,3 +83,10 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: "./coverage/lcov.info"
+  finish:
+    needs: coverage
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls finished
+      run: |
+        curl https://coveralls.io/webhook?repo_token=RyZSJZJfvHFz1V5xkqGjoiDCp9i8xcoMb -d "payload[build_num]=${{ github.sha }}&payload[status]=done"
