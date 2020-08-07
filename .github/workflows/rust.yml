@@ -82,11 +82,4 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: "./coverage/lcov.info"
-  finish:
-    needs: coverage
-    runs-on: ubuntu-latest
-    steps:
-    - name: Coveralls finished
-      run: |
-        curl https://coveralls.io/webhook?repo_token=RyZSJZJfvHFz1V5xkqGjoiDCp9i8xcoMb -d "payload[build_num]=${{ github.sha }}&payload[status]=done"
+          path-to-lcov: ${{ github.workspace }}/coverage/lcov.info
