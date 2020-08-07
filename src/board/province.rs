@@ -1,9 +1,9 @@
-use board::space_identifiers::SpaceIdentifiers;
-use board::space::Space;
-use board::support::SupportLevels;
-use board::support::Support;
-use board::terrain_types::TerrainTypes;
 use board::controls::Controls;
+use board::space::Space;
+use board::space_identifiers::SpaceIdentifiers;
+use board::support::Support;
+use board::support::SupportLevels;
+use board::terrain_types::TerrainTypes;
 
 #[derive(Debug)]
 pub struct Province {
@@ -11,23 +11,23 @@ pub struct Province {
     population_value: u8,
     terrain_type: TerrainTypes,
     support: Support,
-    control: Controls    
+    control: Controls,
 }
 
 impl Province {
     pub fn new(space_identifier: SpaceIdentifiers) -> Province {
         Province {
-            space_identifier: space_identifier,
+            space_identifier,
             population_value: 0,
-            terrain_type: TerrainTypes::Lowland,            
+            terrain_type: TerrainTypes::Lowland,
             support: Support::new(),
-            control: Controls::Uncontrolled
+            control: Controls::Uncontrolled,
         }
     }
 }
 
 impl Space for Province {
-    fn get_space_identifier(&self) -> SpaceIdentifiers{
+    fn get_space_identifier(&self) -> SpaceIdentifiers {
         self.space_identifier
     }
 
@@ -70,8 +70,6 @@ impl Space for Province {
     }
 }
 
-
-
 #[cfg(test)]
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
@@ -81,7 +79,6 @@ mod tests {
 
     #[test]
     fn test_should_be_able_to_retrieve_expected_terrain_type_of_province() -> Result<(), String> {
-
         let mut space: Spaces = Province::new(SpaceIdentifiers::KienGiangAnXuyen).into();
 
         space.set_terrain_type(TerrainTypes::Highland);
@@ -92,17 +89,20 @@ mod tests {
     }
 
     #[test]
-    fn test_when_creating_a_province_with_a_set_space_identifier_when_asking_for_the_identifier_it_should_be_the_expected_one() -> Result<(), String> {
+    fn test_when_creating_a_province_with_a_set_space_identifier_when_asking_for_the_identifier_it_should_be_the_expected_one(
+    ) -> Result<(), String> {
         let mut space: Spaces = Province::new(SpaceIdentifiers::KienGiangAnXuyen).into();
 
-        assert_eq!(space.get_space_identifier(), SpaceIdentifiers::KienGiangAnXuyen);
+        assert_eq!(
+            space.get_space_identifier(),
+            SpaceIdentifiers::KienGiangAnXuyen
+        );
 
         Ok(())
     }
 
     #[test]
     fn test_should_be_able_to_get_the_population_value_of_the_province() -> Result<(), String> {
-
         let mut space: Spaces = Province::new(SpaceIdentifiers::KienGiangAnXuyen).into();
 
         space.set_population_value(1);
@@ -114,7 +114,6 @@ mod tests {
 
     #[test]
     fn test_should_be_able_to_get_who_is_in_control_of_the_province() -> Result<(), String> {
-
         let mut space: Spaces = Province::new(SpaceIdentifiers::KienGiangAnXuyen).into();
 
         space.set_control(Controls::NVA);

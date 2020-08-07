@@ -1,4 +1,3 @@
-
 pub trait Command {
-    fn execute(&mut self) -> Result <(), String> ;
+    fn execute(&mut self) -> Result<(), String>;
 }

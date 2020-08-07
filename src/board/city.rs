@@ -1,9 +1,9 @@
-use board::support::SupportLevels;
-use board::support::Support;
-use board::space_identifiers::SpaceIdentifiers;
-use board::space::Space;
-use board::terrain_types::TerrainTypes;
 use board::controls::Controls;
+use board::space::Space;
+use board::space_identifiers::SpaceIdentifiers;
+use board::support::Support;
+use board::support::SupportLevels;
+use board::terrain_types::TerrainTypes;
 
 #[derive(Debug)]
 pub struct City {
@@ -11,23 +11,23 @@ pub struct City {
     population_value: u8,
     terrain_type: TerrainTypes,
     support: Support,
-    control: Controls      
+    control: Controls,
 }
 
 impl City {
-    pub fn new(space_identifier: SpaceIdentifiers) -> City{
+    pub fn new(space_identifier: SpaceIdentifiers) -> City {
         City {
-            space_identifier: space_identifier,
+            space_identifier,
             population_value: 0,
-            terrain_type: TerrainTypes::City,            
+            terrain_type: TerrainTypes::City,
             support: Support::new(),
-            control: Controls::Uncontrolled  
+            control: Controls::Uncontrolled,
         }
     }
 }
 
 impl Space for City {
-    fn get_space_identifier(&self) -> SpaceIdentifiers{
+    fn get_space_identifier(&self) -> SpaceIdentifiers {
         self.space_identifier
     }
 
@@ -35,7 +35,7 @@ impl Space for City {
         todo!()
     }
 
-    fn set_support_level(&mut self, new_support_level: SupportLevels) {
+    fn set_support_level(&mut self, _new_support_level: SupportLevels) {
         todo!()
     }
 
@@ -50,11 +50,11 @@ impl Space for City {
         TerrainTypes::City
     }
 
-    fn set_terrain_type(&mut self, new_terrain_type: TerrainTypes) {
+    fn set_terrain_type(&mut self, _new_terrain_type: TerrainTypes) {
         // A city is always a City
     }
 
-    fn get_population_value(&self) -> u8{
+    fn get_population_value(&self) -> u8 {
         self.population_value
     }
 
@@ -68,7 +68,7 @@ impl Space for City {
         self.control
     }
 
-    fn set_control(&mut self, new_control: Controls) {
+    fn set_control(&mut self, _new_control: Controls) {
         todo!()
     }
 }

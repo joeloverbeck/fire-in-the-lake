@@ -1,29 +1,26 @@
 extern crate enum_dispatch;
 
-mod commands;
-pub mod factions;
-mod track;
 mod board;
 pub mod cards;
-pub mod game_flow;
+mod commands;
 pub mod decision_making;
+pub mod factions;
+pub mod game_flow;
+mod track;
 
 struct NvaStats {
-    victory_level: u8
+    victory_level: u8,
 }
 
-impl NvaStats{
-    fn new () -> NvaStats {
-        NvaStats {
-            victory_level: 0
-        }
+impl NvaStats {
+    fn new() -> NvaStats {
+        NvaStats { victory_level: 0 }
     }
 
     fn get_victory_level(&self) -> u8 {
         self.victory_level
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -32,10 +29,8 @@ mod tests {
 
     #[test]
     fn test_on_creation_nva_victory_level_should_be_zero() {
-
         let nva_stats = NvaStats::new();
 
         assert_eq!(nva_stats.get_victory_level(), 0);
     }
-
 }

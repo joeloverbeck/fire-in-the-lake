@@ -1,17 +1,15 @@
 use factions::Factions;
 
-
-
 pub struct Card {
     number: u8,
-    faction_order: [Factions; 4]
+    faction_order: [Factions; 4],
 }
 
 impl Card {
-    pub fn new(number: u8, faction_order: [Factions; 4]) -> Card{
+    pub fn new(number: u8, faction_order: [Factions; 4]) -> Card {
         Card {
-            number: number,
-            faction_order: faction_order
+            number,
+            faction_order,
         }
     }
 
@@ -20,17 +18,15 @@ impl Card {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
 
     use cards::card_registry::CardRegistry;
-    
+
     #[test]
     fn test_should_be_able_to_create_a_card() -> Result<(), String> {
-         
         let _ = Card::new(107, [Factions::None; 4]);
 
         Ok(())
@@ -38,7 +34,6 @@ mod tests {
 
     #[test]
     fn test_the_card_107_should_have_the_expected_faction_order() -> Result<(), String> {
-
         let card_registry = CardRegistry::new();
 
         let burning_bonze_card = card_registry.get_card(107);
@@ -57,5 +52,4 @@ mod tests {
 
         Ok(())
     }
-
 }

@@ -2,14 +2,20 @@ use factions::Factions;
 
 pub struct SequenceOfPlay {
     eligible: [Factions; 4],
-    first_eligible_event: Factions
+    first_eligible_event: Factions,
+}
+
+impl Default for SequenceOfPlay {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl SequenceOfPlay {
     pub fn new() -> SequenceOfPlay {
         SequenceOfPlay {
             eligible: [Factions::VC, Factions::NVA, Factions::ARVN, Factions::US],
-            first_eligible_event: Factions::None
+            first_eligible_event: Factions::None,
         }
     }
 
@@ -19,37 +25,43 @@ impl SequenceOfPlay {
 
     pub fn are_all_factions_elegible(&self) -> bool {
         // All factions would be elegible when every one of the four factions (not NONE) are elegible.
-        let mut vc_present:bool = false;
-        let mut nva_present:bool = false;
+        let mut vc_present: bool = false;
+        let mut nva_present: bool = false;
         let mut arvn_present: bool = false;
-        let mut us_present:bool = false;
+        let mut us_present: bool = false;
 
-        for faction in self.eligible.iter(){
+        for faction in self.eligible.iter() {
             match faction {
                 Factions::ARVN => arvn_present = true,
                 Factions::NVA => nva_present = true,
                 Factions::VC => vc_present = true,
                 Factions::US => us_present = true,
-                _ => ()
+                _ => (),
             }
         }
 
         vc_present && nva_present && arvn_present && us_present
     }
 
-    fn remove_faction_to_move_from_eligibles(&mut self, faction_to_move: Factions){
+    fn remove_faction_to_move_from_eligibles(&mut self, faction_to_move: Factions) {
         for item in self.eligible.iter_mut() {
             match *item {
                 _ if item == &faction_to_move => *item = Factions::None,
-                _ => ()
+                _ => (),
             }
         }
     }
 
-    pub fn move_faction_to_first_eligible_event(&mut self, faction_to_move: Factions) -> Result <(), String> {
+    pub fn move_faction_to_first_eligible_event(
+        &mut self,
+        faction_to_move: Factions,
+    ) -> Result<(), String> {
         // Sanity check: the passed faction should be in the list of eligible factions.
         if !self.is_faction_eligible(faction_to_move) {
-            return Err(format!("The faction to move {:?} wasn't eligible to begin with.", faction_to_move).to_owned());
+            return Err(format!(
+                "The faction to move {:?} wasn't eligible to begin with.",
+                faction_to_move
+            ));
         }
 
         self.remove_faction_to_move_from_eligibles(faction_to_move);
@@ -61,14 +73,15 @@ impl SequenceOfPlay {
     }
 
     pub fn is_faction_eligible(&self, faction: Factions) -> bool {
-        self.eligible.iter().any(|eligible_faction| eligible_faction == &faction)
+        self.eligible
+            .iter()
+            .any(|eligible_faction| eligible_faction == &faction)
     }
 
     pub fn faction_present_in_first_eligible_event(&self) -> Factions {
         self.first_eligible_event
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -83,34 +96,44 @@ mod tests {
     }
 
     #[test]
-    fn test_on_init_all_elegible_factions_should_be_none(){
+    fn test_on_init_all_elegible_factions_should_be_none() {
         let sequence_of_play = SequenceOfPlay::new();
 
         assert_eq!(sequence_of_play.are_all_factions_elegible(), true);
     }
 
     #[test]
-    fn test_after_moving_an_eligible_faction_to_first_faction_event_it_should_be_in_that_box_and_missing_from_eligible() -> Result<(), String> {
-        let mut sequence_of_play = SequenceOfPlay::new(); 
+    fn test_after_moving_an_eligible_faction_to_first_faction_event_it_should_be_in_that_box_and_missing_from_eligible(
+    ) -> Result<(), String> {
+        let mut sequence_of_play = SequenceOfPlay::new();
 
         if let Err(error) = sequence_of_play.move_faction_to_first_eligible_event(Factions::VC) {
             panic!(error);
         }
 
-        assert_eq!(sequence_of_play.faction_present_in_first_eligible_event(), Factions::VC, "The VC faction wasn't in the first faction event box");
+        assert_eq!(
+            sequence_of_play.faction_present_in_first_eligible_event(),
+            Factions::VC,
+            "The VC faction wasn't in the first faction event box"
+        );
         assert_eq!(sequence_of_play.is_faction_eligible(Factions::VC), false);
         Ok(())
     }
 
     #[test]
-    fn test_after_moving_a_different_eligible_faction_to_first_faction_event_it_should_be_in_that_box_and_missing_from_eligible() -> Result<(), String> {
-        let mut sequence_of_play = SequenceOfPlay::new(); 
+    fn test_after_moving_a_different_eligible_faction_to_first_faction_event_it_should_be_in_that_box_and_missing_from_eligible(
+    ) -> Result<(), String> {
+        let mut sequence_of_play = SequenceOfPlay::new();
 
         if let Err(error) = sequence_of_play.move_faction_to_first_eligible_event(Factions::US) {
             panic!(error);
         }
 
-        assert_eq!(sequence_of_play.faction_present_in_first_eligible_event(), Factions::US, "The US faction wasn't in the first faction event box");
+        assert_eq!(
+            sequence_of_play.faction_present_in_first_eligible_event(),
+            Factions::US,
+            "The US faction wasn't in the first faction event box"
+        );
         assert_eq!(sequence_of_play.is_faction_eligible(Factions::US), false);
         Ok(())
     }

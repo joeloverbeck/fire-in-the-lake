@@ -1,13 +1,10 @@
 pub struct Track {
-    aid: u8
-
+    aid: u8,
 }
 
 impl Track {
-    pub fn new () -> Track {
-        Track {
-            aid: 0
-        }
+    pub fn new() -> Track {
+        Track { aid: 0 }
     }
 
     pub fn aid(&self) -> u8 {

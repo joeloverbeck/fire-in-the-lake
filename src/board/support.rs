@@ -1,23 +1,21 @@
-
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum SupportLevels {
     ActiveSupport,
     PassiveSupport,
     Neutral,
     PassiveOpposition,
-    ActiveOpposition
+    ActiveOpposition,
 }
-
 
 #[derive(Debug)]
 pub struct Support {
-    current_support_level: SupportLevels
+    current_support_level: SupportLevels,
 }
 
 impl Support {
     pub fn new() -> Support {
         Support {
-            current_support_level: SupportLevels::Neutral
+            current_support_level: SupportLevels::Neutral,
         }
     }
 
@@ -25,21 +23,23 @@ impl Support {
         self.current_support_level
     }
 
-    pub fn set_support_level(&mut self, new_support_level: SupportLevels){
+    pub fn set_support_level(&mut self, new_support_level: SupportLevels) {
         self.current_support_level = new_support_level;
     }
 
     pub fn shift_support_level_down(&mut self) {
         // It will try to shift the support level to the next level down. If it's already at the lowest level, it will stay there.
-        println!("Asked to shift support level down. Current support level: {:?}", self.current_support_level);
+        println!(
+            "Asked to shift support level down. Current support level: {:?}",
+            self.current_support_level
+        );
         match self.current_support_level {
             SupportLevels::PassiveSupport => self.current_support_level = SupportLevels::Neutral,
             SupportLevels::Neutral => self.current_support_level = SupportLevels::PassiveOpposition,
-            _ => todo!()
+            _ => todo!(),
         }
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -52,5 +52,4 @@ mod tests {
 
         Ok(())
     }
-
 }
