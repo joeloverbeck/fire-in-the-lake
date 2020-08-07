@@ -58,7 +58,7 @@ jobs:
           command: clippy
           args: -- -D warnings
 
-  coverage:
+  Coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -78,3 +78,7 @@ jobs:
           RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
           RUSTDOCFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
       - uses: actions-rs/grcov@v0.1
+      - name: Coveralls upload
+        uses: coverallsapp/github-action@master
+        with:
+          path-to-lcov: ${{ steps.Coverage.outputs.report }}
