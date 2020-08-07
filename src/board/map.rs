@@ -94,8 +94,8 @@ mod tests {
         let mut saigon: Spaces = City::new(SpaceIdentifiers::Saigon).into();
         let mut kien_giang_an_xuyen: Spaces = Province::new(SpaceIdentifiers::KienGiangAnXuyen).into();
 
-        map.add_space(saigon);
-        map.add_space(kien_giang_an_xuyen);
+        map.add_space(saigon)?;
+        map.add_space(kien_giang_an_xuyen)?;
 
         assert_eq!(map.spaces_stored(), 2);
 

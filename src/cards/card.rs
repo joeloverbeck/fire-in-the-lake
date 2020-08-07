@@ -15,7 +15,7 @@ impl Card {
         }
     }
 
-    fn retrieve_faction_order(&self) -> [Factions; 4] {
+    pub fn get_faction_order(&self) -> [Factions; 4] {
         self.faction_order
     }
 }
@@ -41,12 +41,12 @@ mod tests {
 
         let card_registry = CardRegistry::new();
 
-        let burning_bonze_card = card_registry.retrieve_card(107);
+        let burning_bonze_card = card_registry.get_card(107);
 
         match burning_bonze_card {
             Err(error) => panic!(error),
             Ok(card) => {
-                let faction_order = card.retrieve_faction_order();
+                let faction_order = card.get_faction_order();
 
                 assert_eq!(faction_order[0], Factions::VC);
                 assert_eq!(faction_order[1], Factions::NVA);

@@ -28,7 +28,7 @@ impl CardRegistry {
         self.cards.insert(107, burning_bonze);
     }
 
-    pub fn retrieve_card(&self, card_number: u8) -> Result<&Card, String> {
+    pub fn get_card(&self, card_number: u8) -> Result<&Card, String> {
         let retrieved_card_option = self.cards.get(&card_number);
 
         match retrieved_card_option {
