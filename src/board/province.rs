@@ -31,7 +31,7 @@ impl Space for Province {
         self.space_identifier
     }
 
-    fn get_current_support_level(&self) -> SupportLevels {
+    fn get_support_level(&self) -> SupportLevels {
         self.support.get_current_support_level()
     }
 

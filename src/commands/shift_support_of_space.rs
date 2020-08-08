@@ -2,13 +2,14 @@ use super::command::Command;
 use board::space::Space;
 use board::space::Spaces;
 
-struct ShiftSupportOfSpace<'a> {
+#[derive(Debug)]
+pub struct ShiftSupportOfSpace<'a> {
     space: &'a mut Spaces,
     levels_to_shift: i8,
 }
 
 impl ShiftSupportOfSpace<'_> {
-    fn new(space: &mut Spaces, levels_to_shift: i8) -> ShiftSupportOfSpace {
+    pub fn new(space: &mut Spaces, levels_to_shift: i8) -> ShiftSupportOfSpace {
         ShiftSupportOfSpace {
             space,
             levels_to_shift,
@@ -61,7 +62,7 @@ mod tests {
         }
 
         assert_eq!(
-            space.get_current_support_level(),
+            space.get_support_level(),
             SupportLevels::Neutral,
             "The space's support after shifing down a level should have been neutral."
         );

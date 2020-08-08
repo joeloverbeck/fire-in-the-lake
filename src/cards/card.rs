@@ -1,14 +1,12 @@
 use factions::Factions;
 
 pub struct Card {
-    number: u8,
     faction_order: [Factions; 4],
 }
 
 impl Card {
-    pub fn new(number: u8, faction_order: [Factions; 4]) -> Card {
+    pub fn new(faction_order: [Factions; 4]) -> Card {
         Card {
-            number,
             faction_order,
         }
     }
@@ -27,7 +25,7 @@ mod tests {
 
     #[test]
     fn test_should_be_able_to_create_a_card() -> Result<(), String> {
-        let _ = Card::new(107, [Factions::None; 4]);
+        let _ = Card::new([Factions::None; 4]);
 
         Ok(())
     }

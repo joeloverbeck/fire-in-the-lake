@@ -12,6 +12,12 @@ pub struct Support {
     current_support_level: SupportLevels,
 }
 
+impl Default for Support {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Support {
     pub fn new() -> Support {
         Support {
@@ -33,6 +39,7 @@ impl Support {
             "Asked to shift support level down. Current support level: {:?}",
             self.current_support_level
         );
+
         match self.current_support_level {
             SupportLevels::PassiveSupport => self.current_support_level = SupportLevels::Neutral,
             SupportLevels::Neutral => self.current_support_level = SupportLevels::PassiveOpposition,

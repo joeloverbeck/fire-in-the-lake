@@ -13,7 +13,7 @@ use self::enum_dispatch::enum_dispatch;
 #[enum_dispatch]
 pub trait Space {
     fn get_space_identifier(&self) -> SpaceIdentifiers;
-    fn get_current_support_level(&self) -> SupportLevels;
+    fn get_support_level(&self) -> SupportLevels;
     fn set_support_level(&mut self, new_support_level: SupportLevels);
     fn shift_support_level_down(&mut self);
     fn get_terrain_type(&self) -> TerrainTypes;

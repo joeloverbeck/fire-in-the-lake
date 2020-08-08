@@ -24,7 +24,7 @@ impl Space for LineOfCommunication {
         self.space_identifier
     }
 
-    fn get_current_support_level(&self) -> SupportLevels {
+    fn get_support_level(&self) -> SupportLevels {
         // The support level of a LoC is always Neutral.
         SupportLevels::Neutral
     }
@@ -79,7 +79,7 @@ mod tests {
     fn test_the_support_level_of_a_loc_is_always_neutral() -> Result<(), String> {
         let loc: Spaces = LineOfCommunication::new(SpaceIdentifiers::CanTho).into();
 
-        assert_eq!(loc.get_current_support_level(), SupportLevels::Neutral);
+        assert_eq!(loc.get_support_level(), SupportLevels::Neutral);
 
         Ok(())
     }

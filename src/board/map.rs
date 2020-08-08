@@ -8,10 +8,31 @@ pub struct Map {
     spaces: HashMap<SpaceIdentifiers, Spaces>,
 }
 
+impl Default for Map {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Map {
     pub fn new() -> Map {
         Map {
             spaces: HashMap::new(),
+        }
+    }
+
+    pub fn get_space_mut(
+        &mut self,
+        space_to_retrieve: SpaceIdentifiers,
+    ) -> Result<&mut Spaces, String> {
+        let retrieved_space = self.spaces.get_mut(&space_to_retrieve);
+
+        match retrieved_space {
+            Some(retrieved_space) => Ok(retrieved_space),
+            None => Err(format!(
+                "Couldn't find the corresponding space for {:?}. That should be impossible.",
+                space_to_retrieve
+            )),
         }
     }
 
@@ -42,7 +63,11 @@ impl Map {
         Ok(())
     }
 
-    fn spaces_stored(&self) -> usize {
+    pub fn get_spaces(&self) -> &HashMap<SpaceIdentifiers, Spaces> {
+        &self.spaces
+    }
+
+    pub fn spaces_stored(&self) -> usize {
         self.spaces.len()
     }
 }

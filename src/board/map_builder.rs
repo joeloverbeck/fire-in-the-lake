@@ -8,14 +8,20 @@ use board::space_identifiers::SpaceIdentifiers;
 use board::terrain_types::TerrainTypes;
 
 #[derive(Debug)]
-struct MapBuilder {}
+pub struct MapBuilder {}
+
+impl Default for MapBuilder {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 
 impl MapBuilder {
-    fn new() -> MapBuilder {
+    pub fn new() -> MapBuilder {
         MapBuilder {}
     }
 
-    fn build_initial_map(&self) -> Result<Map, String> {
+    pub fn build_initial_map(&self) -> Result<Map, String> {
         // Create Saigon
         let mut saigon: Spaces = City::new(SpaceIdentifiers::Saigon).into();
         saigon.set_population_value(6)?;
@@ -64,6 +70,12 @@ impl MapBuilder {
         new_map.add_space(can_tho)?;
         new_map.add_space(mekong)?;
         new_map.add_space(kien_phong)?;
+
+        // Sanity check: make sure the expected number of entries are on the hash.
+        let number_of_spaces = 8;
+        if new_map.spaces_stored() != number_of_spaces {
+            panic!("After creating the hashmap with all the board spaces, there should have been {:?} spaces, but there were {:?}.", number_of_spaces, new_map.spaces_stored());
+        }
 
         Ok(new_map)
     }

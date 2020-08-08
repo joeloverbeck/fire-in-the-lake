@@ -1,3 +1,3 @@
-mod command;
-mod manipulate_aid;
-mod shift_support_of_space;
+pub mod command;
+pub mod manipulate_aid;
+pub mod shift_support_of_space;

@@ -1,15 +1,12 @@
-mod board;
+use std::io::{self, Write};
 
-use board::map::Map;
-use board::space_identifiers::SpaceIdentifiers;
-
-pub fn main() {
-    let map = Map::new();
-
-    let retrieved_space = map.get_space(SpaceIdentifiers::Saigon);
-
+fn main() {
+    print!("==> What is the active card?: ");
+    let _ = io::stdout().flush();
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).unwrap();
     println!(
-        "I retrieved a space and all I got was this lousy space: {:?}",
-        retrieved_space
+        "**Current active card ({}), Burning Bonze!**",
+        input.trim_end()
     );
 }
