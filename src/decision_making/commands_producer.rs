@@ -3,12 +3,12 @@ use board::track::Track;
 use decision_making::decision::Decision;
 use factions::Factions;
 
-pub trait CommandsProducer<'a> {
+pub trait CommandsProducer {
     fn decide(
         &self,
         active_card: u8,
         current_eligible: Factions,
-        map: &'a mut Map,
-        track: &'a mut Track,
-    ) -> Decision<'a>;
+        map: &Map,
+        track: &Track,
+    ) -> Decision;
 }

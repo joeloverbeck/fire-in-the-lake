@@ -7,63 +7,19 @@ use fire_in_the_lake::board::space_identifiers::SpaceIdentifiers;
 use fire_in_the_lake::board::support::SupportLevels;
 use fire_in_the_lake::board::track::Track;
 use fire_in_the_lake::cards::card_registry::CardRegistry;
-use fire_in_the_lake::commands::command::Commands;
+use fire_in_the_lake::commands::execute_commands::execute_commands;
 use fire_in_the_lake::commands::manipulate_aid::ManipulateAid;
 use fire_in_the_lake::commands::shift_support_of_space::ShiftSupportOfSpace;
 use fire_in_the_lake::decision_making::choices::Choices;
 use fire_in_the_lake::decision_making::commands_producer::CommandsProducer;
 use fire_in_the_lake::decision_making::decision::Decision;
+use fire_in_the_lake::decision_making::decision_making_center::DecisionMakingCenter;
+use fire_in_the_lake::decision_making::player::PlaybookFirstTurnVc;
 use fire_in_the_lake::display::announcer::Announcer;
 use fire_in_the_lake::factions::Factions;
 use fire_in_the_lake::game_flow::game_flow_handler::GameFlowHandler;
 use fire_in_the_lake::game_flow::sequence_of_play::SequenceOfPlay;
 use std::collections::VecDeque;
-
-struct FakeCommandsProducer {}
-
-impl<'a> CommandsProducer<'a> for FakeCommandsProducer {
-    fn decide(
-        &self,
-        active_card: u8,
-        current_eligible: Factions,
-        map: &'a mut Map,
-        track: &'a mut Track,
-    ) -> Decision<'a> {
-        // Normally, in a real struct for this trait, there should be a decision making process, whether an AI one
-        // or asking the human player for input, but in this case we know what we have to return depending of the current eligible faction.
-        if current_eligible == Factions::VC {
-            // We need to execute the shaded event.
-            // It should be like this: I create a Decision and pass to it the choice (ShadedEvent) as well as the
-            // Commands that are ALL THE WAYS in which this current faction affects the board due to his choice. They should be in a deque
-            // or something.
-
-            // Create command to shift down support level in Saigon
-            let shift_support_of_space: Commands =
-                ShiftSupportOfSpace::new(map.get_space_mut(SpaceIdentifiers::Saigon).unwrap(), -1)
-                    .into();
-
-            // Create command to lower aid
-            let manipulate_aid: Commands = ManipulateAid::new(track, -12).into();
-
-            let mut buf: VecDeque<Commands> = VecDeque::new();
-
-            buf.push_back(shift_support_of_space);
-            buf.push_back(manipulate_aid);
-
-            let decision = Decision::new(Choices::ShadedEvent, buf);
-
-            return decision;
-        }
-
-        todo!()
-    }
-}
-
-impl FakeCommandsProducer {
-    fn new() -> FakeCommandsProducer {
-        FakeCommandsProducer {}
-    }
-}
 
 #[test]
 fn test_first_game_turn_vc() -> Result<(), String> {
@@ -92,7 +48,12 @@ fn test_first_game_turn_vc() -> Result<(), String> {
 
     // Now for the hard part. There should be a construct that handles decision making, and it should be able to be "mocked" as in we just return
     // exactly what is decided but programmatically for tests.
-    let commands_producer = FakeCommandsProducer::new();
+    let decision_making_center = DecisionMakingCenter::new(
+        PlaybookFirstTurnVc::new().into(),
+        PlaybookFirstTurnVc::new().into(),
+        PlaybookFirstTurnVc::new().into(),
+        PlaybookFirstTurnVc::new().into(),
+    );
 
     let map_builder = MapBuilder::new();
 
@@ -107,11 +68,11 @@ fn test_first_game_turn_vc() -> Result<(), String> {
         .set_support_level(SupportLevels::PassiveSupport);
     track.set_aid(15);
 
-    let mut vc_decision = commands_producer.decide(
+    let mut vc_decision = decision_making_center.decide(
         game_flow_handler.get_active_card(),
         game_flow_handler.get_current_eligible(),
-        &mut built_map,
-        &mut track,
+        &built_map,
+        &track,
     );
 
     assert_eq!(
@@ -150,11 +111,16 @@ fn test_first_game_turn_vc() -> Result<(), String> {
     announcer
         .instruct_to_move_faction_cylinder_from_eligible_to_first_eligible_event_box(Factions::VC);
 
-    // Now for the real complicated stuff. The commands should have been received in the Decision structure,
-    // and in a deque containing somehow different kinds of Commands. If I solve this, a significant part of
-    // the entire project will be solved.
-    vc_decision.execute_commands();
-    track.adjust_us_victory_marker(&built_map);
+    // The received decision just has the Choice that the sequence of play knows how to deal with,
+    // and for the remainder we "just" have the equivalent to, or maybe literal, typed commands on the console.
+    // We need some intermediary to interpret them.
+    execute_commands(
+        game_flow_handler.get_active_card(),
+        vc_decision.get_faction(),
+        vc_decision.get_commands(),
+        &mut built_map,
+        &mut track,
+    );
 
     // The commands should have shifted Saigon's Passive Support to Neutral.
     assert_eq!(

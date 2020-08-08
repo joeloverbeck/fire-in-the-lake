@@ -1,32 +1,30 @@
-use commands::command::Command;
-use commands::command::Commands;
 use decision_making::choices::Choices;
-use std::collections::VecDeque;
+use factions::Factions;
 
-pub struct Decision<'a> {
+pub struct Decision {
+    faction: Factions,
     choice: Choices,
-    commands: VecDeque<Commands<'a>>,
+    commands: Vec<String>,
 }
 
-impl<'a> Decision<'a> {
-    pub fn new(
-        new_choice: Choices,
-        commands: std::collections::VecDeque<Commands<'a>>,
-    ) -> Decision<'a> {
+impl Decision {
+    pub fn new(faction: Factions, new_choice: Choices, commands: Vec<String>) -> Decision {
         Decision {
+            faction,
             choice: new_choice,
             commands,
         }
+    }
+
+    pub fn get_faction(&self) -> Factions {
+        self.faction
     }
 
     pub fn get_choice(&self) -> Choices {
         self.choice
     }
 
-    pub fn execute_commands(&mut self) {
-        // Should go through the queue from the first to the last one and execute each.
-        self.commands
-            .iter_mut()
-            .for_each(|command| command.execute().unwrap());
+    pub fn get_commands(&self) -> Vec<String> {
+        self.commands.to_owned()
     }
 }
