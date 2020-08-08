@@ -5,6 +5,7 @@ use board::support::SupportLevels;
 #[derive(Debug)]
 pub struct Track {
     aid: u8,
+    nva_resources: u8,
     us_victory_marker: u8,
 }
 
@@ -12,16 +13,25 @@ impl Track {
     pub fn new() -> Track {
         Track {
             aid: 0,
+            nva_resources: 0,
             us_victory_marker: 0,
         }
     }
 
-    pub fn aid(&self) -> u8 {
+    pub fn get_aid(&self) -> u8 {
         self.aid
     }
 
     pub fn set_aid(&mut self, new_aid: u8) {
         self.aid = new_aid
+    }
+
+    pub fn get_nva_resources(&self) -> u8 {
+        self.nva_resources
+    }
+
+    pub fn set_nva_resources(&mut self, new_nva_resources: u8) {
+        self.nva_resources = new_nva_resources;
     }
 
     pub fn adjust_us_victory_marker(&mut self, map: &Map) {

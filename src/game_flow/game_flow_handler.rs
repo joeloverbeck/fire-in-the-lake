@@ -76,8 +76,12 @@ impl<'a> GameFlowHandler<'a> {
                     faction, error
                 ));
             }
-        } else {
-            todo!();
+        } else if choice == Choices::Pass {
+            // Must move the appropriate faction to the passed array, in a position in which it won't step
+            // on any other that might have passed.
+            if let Err(error) = self.sequence_of_play.move_faction_to_pass(faction) {
+                panic!("Attempted to move the faction {:?} to the passed box, but couldn't! Error: {:?}", faction, error);
+            }
         }
     }
 
@@ -119,6 +123,10 @@ impl<'a> GameFlowHandler<'a> {
         }
 
         Ok(())
+    }
+
+    pub fn has_faction_passed(&self, faction: Factions) -> bool {
+        self.sequence_of_play.has_faction_passed(faction)
     }
 
     pub fn report_choice(&mut self, faction: Factions, choice: Choices) -> Result<(), String> {

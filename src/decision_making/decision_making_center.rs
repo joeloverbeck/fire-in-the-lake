@@ -9,7 +9,7 @@ use factions::Factions;
 
 pub struct DecisionMakingCenter {
     vc_player: Players,
-    _nva_player: Players,
+    nva_player: Players,
     _us_player: Players,
     _arvn_player: Players,
 }
@@ -17,13 +17,13 @@ pub struct DecisionMakingCenter {
 impl DecisionMakingCenter {
     pub fn new(
         vc_player: Players,
-        _nva_player: Players,
+        nva_player: Players,
         _us_player: Players,
         _arvn_player: Players,
     ) -> DecisionMakingCenter {
         DecisionMakingCenter {
             vc_player,
-            _nva_player,
+            nva_player,
             _us_player,
             _arvn_player,
         }
@@ -56,6 +56,15 @@ impl CommandsProducer for DecisionMakingCenter {
                     // VC player intended to execute the event. We will return the appropriate decision, along with
                     // with the written commands.
                     return Decision::new(current_eligible, Choices::ShadedEvent, player_commands);
+                }
+
+                todo!()
+            }
+            Factions::NVA => {
+                let player_commands = self.nva_player.provide_command(active_card, map, track);
+
+                if player_commands.len() == 1 && player_commands[0] == "pass" {
+                    return Decision::new(current_eligible, Choices::Pass, player_commands);
                 }
 
                 todo!()

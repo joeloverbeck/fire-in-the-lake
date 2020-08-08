@@ -2,17 +2,17 @@ use board::track::Track;
 use math::sum_i8_to_u8::sum_i8_to_u8;
 
 #[derive(Debug)]
-pub struct ManipulateAid {}
+pub struct ManipulateNvaResources {}
 
-impl Default for ManipulateAid {
+impl Default for ManipulateNvaResources {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl ManipulateAid {
-    pub fn new() -> ManipulateAid {
-        ManipulateAid {}
+impl ManipulateNvaResources {
+    pub fn new() -> ManipulateNvaResources {
+        ManipulateNvaResources {}
     }
 
     pub fn execute(
@@ -20,7 +20,7 @@ impl ManipulateAid {
         track: &mut Track,
         amount: i8,
     ) -> std::result::Result<(), std::string::String> {
-        track.set_aid(sum_i8_to_u8(amount, track.get_aid()));
+        track.set_nva_resources(sum_i8_to_u8(amount, track.get_nva_resources()));
 
         Ok(())
     }

@@ -14,12 +14,12 @@ use fire_in_the_lake::decision_making::choices::Choices;
 use fire_in_the_lake::decision_making::commands_producer::CommandsProducer;
 use fire_in_the_lake::decision_making::decision::Decision;
 use fire_in_the_lake::decision_making::decision_making_center::DecisionMakingCenter;
+use fire_in_the_lake::decision_making::player::PlaybookFirstTurnNva;
 use fire_in_the_lake::decision_making::player::PlaybookFirstTurnVc;
 use fire_in_the_lake::display::announcer::Announcer;
 use fire_in_the_lake::factions::Factions;
 use fire_in_the_lake::game_flow::game_flow_handler::GameFlowHandler;
 use fire_in_the_lake::game_flow::sequence_of_play::SequenceOfPlay;
-use std::collections::VecDeque;
 
 #[test]
 fn test_first_game_turn_vc() -> Result<(), String> {
@@ -50,7 +50,7 @@ fn test_first_game_turn_vc() -> Result<(), String> {
     // exactly what is decided but programmatically for tests.
     let decision_making_center = DecisionMakingCenter::new(
         PlaybookFirstTurnVc::new().into(),
-        PlaybookFirstTurnVc::new().into(),
+        PlaybookFirstTurnNva::new().into(),
         PlaybookFirstTurnVc::new().into(),
         PlaybookFirstTurnVc::new().into(),
     );
@@ -131,11 +131,68 @@ fn test_first_game_turn_vc() -> Result<(), String> {
         SupportLevels::Neutral
     );
     assert_eq!(
-        track.aid(),
+        track.get_aid(),
         3,
         "After executing VC's commands, Aid should have been 3, but was {:?}",
-        track.aid()
+        track.get_aid()
     );
+
+    // Start. Game turn 1 (2/4)
+    track.set_nva_resources(10);
+
+    // NVA should be next in consideration
+    assert_eq!(game_flow_handler.get_current_eligible(), Factions::NVA);
+
+    // In this occasion, it chooses to pass. We gotta send the decision making center
+    // the needed information, and we should get back "pass".
+    let mut nva_decision = decision_making_center.decide(
+        game_flow_handler.get_active_card(),
+        game_flow_handler.get_current_eligible(),
+        &built_map,
+        &track,
+    );
+
+    assert_eq!(
+        nva_decision.get_choice(),
+        Choices::Pass,
+        "NVA's choice should have been to pass."
+    );
+
+    // Should inform the game_flow_handler
+    game_flow_handler.report_choice(
+        game_flow_handler.get_current_eligible(),
+        nva_decision.get_choice(),
+    )?;
+
+    // Given that NVA has passed, the next eligible should be the third in the card order.
+    assert_eq!(
+        game_flow_handler.get_current_eligible(),
+        Factions::ARVN,
+        "After NVA makes its choice, the next eligible should be the current eligible."
+    );
+    assert_eq!(
+        game_flow_handler.has_faction_passed(Factions::NVA),
+        true,
+        "NVA should have been registered as having passed.",
+    );
+    assert_eq!(
+        game_flow_handler.is_faction_eligible(Factions::NVA),
+        false,
+        "After making a choice, NVA should no longer be considered eligible."
+    );
+
+    announcer.instruct_to_move_faction_cylinder_from_eligible_to_passed_box(Factions::NVA);
+
+    // Must execute the pass command, because it gives resources.
+    execute_commands(
+        game_flow_handler.get_active_card(),
+        nva_decision.get_faction(),
+        nva_decision.get_commands(),
+        &mut built_map,
+        &mut track,
+    );
+
+    assert_eq!(track.get_nva_resources(), 11);
 
     Ok(())
 }
