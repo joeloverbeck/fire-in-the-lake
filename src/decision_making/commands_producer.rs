@@ -1,3 +1,4 @@
+use board::available_forces::AvailableForces;
 use board::map::Map;
 use board::track::Track;
 use decision_making::decision::Decision;
@@ -10,5 +11,6 @@ pub trait CommandsProducer {
         current_eligible: Factions,
         map: &Map,
         track: &Track,
+        available_forces: &AvailableForces,
     ) -> Decision;
 }

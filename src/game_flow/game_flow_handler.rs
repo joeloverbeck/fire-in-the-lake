@@ -43,6 +43,11 @@ impl<'a> GameFlowHandler<'a> {
                 ))
             }
             Ok(active_card_object) => {
+                // First, pass the information to the sequence of play in order to populate
+                // its mantained list of eligible factions.
+                self.sequence_of_play
+                    .populate_eligible_factions(active_card_object.get_faction_order());
+
                 // We have the correct active card object in there.
                 self.current_eligible = active_card_object.get_faction_order()[0];
             }
@@ -53,6 +58,11 @@ impl<'a> GameFlowHandler<'a> {
 
     pub fn get_current_eligible(&self) -> Factions {
         // The current eligible should be the faction that currently could decide what to do.
+        // Note: it could be that there is no current elegible, and thus the turn has ended.
+        if !self.sequence_of_play.is_any_faction_elegible() {
+            return Factions::None;
+        }
+
         self.current_eligible
     }
 
@@ -65,22 +75,46 @@ impl<'a> GameFlowHandler<'a> {
             .faction_present_in_first_eligible_event()
     }
 
+    pub fn faction_present_in_op_and_special_activity(&self) -> Factions {
+        self.sequence_of_play
+            .faction_present_in_op_and_special_activity()
+    }
+
+    pub fn is_execute_op_and_special_activity_available(&self) -> bool {
+        // As a norm, execute Op and Special Activity should be available if there is a faction in "first_eligible_event"
+        // TODO: consider whether this is asked by the first eligible.
+        self.faction_present_in_first_eligible_event() != Factions::None
+            && self.faction_present_in_op_and_special_activity() == Factions::None
+    }
+
     fn delegate_handling_changes_to_game_flow(&mut self, faction: Factions, choice: Choices) {
-        if choice == Choices::ShadedEvent {
-            if let Err(error) = self
-                .sequence_of_play
-                .move_faction_to_first_eligible_event(faction)
-            {
-                panic!(format!(
-                    "Couldn't move faction {:?} to first eligible event! Error: {:?}",
-                    faction, error
-                ));
+        match choice {
+            Choices::ShadedEvent => {
+                if let Err(error) = self
+                    .sequence_of_play
+                    .move_faction_to_first_eligible_event(faction)
+                {
+                    panic!(format!(
+                        "Couldn't move faction {:?} to first eligible event! Error: {:?}",
+                        faction, error
+                    ));
+                }
             }
-        } else if choice == Choices::Pass {
-            // Must move the appropriate faction to the passed array, in a position in which it won't step
-            // on any other that might have passed.
-            if let Err(error) = self.sequence_of_play.move_faction_to_pass(faction) {
-                panic!("Attempted to move the faction {:?} to the passed box, but couldn't! Error: {:?}", faction, error);
+            Choices::Pass => {
+                // Must move the appropriate faction to the passed array, in a position in which it won't step
+                // on any other that might have passed.
+                if let Err(error) = self.sequence_of_play.move_faction_to_pass(faction) {
+                    panic!("Attempted to move the faction {:?} to the passed box, but couldn't! Error: {:?}", faction, error);
+                }
+            }
+            Choices::Operation => {
+                // Must move the appropriate faction to the slot that identifies having chosen an Operation with Special Activity
+                if let Err(error) = self
+                    .sequence_of_play
+                    .move_faction_to_operation_and_special_activity(faction)
+                {
+                    panic!("Attempted to move the faction {:?} to the operation and special activity box, but couldn't! Error: {:?}", faction, error);
+                }
             }
         }
     }

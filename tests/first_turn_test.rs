@@ -1,5 +1,6 @@
 extern crate fire_in_the_lake;
 
+use fire_in_the_lake::board::available_forces::AvailableForces;
 use fire_in_the_lake::board::map::Map;
 use fire_in_the_lake::board::map_builder::MapBuilder;
 use fire_in_the_lake::board::space::Space;
@@ -14,8 +15,9 @@ use fire_in_the_lake::decision_making::choices::Choices;
 use fire_in_the_lake::decision_making::commands_producer::CommandsProducer;
 use fire_in_the_lake::decision_making::decision::Decision;
 use fire_in_the_lake::decision_making::decision_making_center::DecisionMakingCenter;
-use fire_in_the_lake::decision_making::player::PlaybookFirstTurnNva;
-use fire_in_the_lake::decision_making::player::PlaybookFirstTurnVc;
+use fire_in_the_lake::decision_making::testing::playbook_first_turn_arvn::PlaybookFirstTurnArvn;
+use fire_in_the_lake::decision_making::testing::playbook_first_turn_nva::PlaybookFirstTurnNva;
+use fire_in_the_lake::decision_making::testing::playbook_first_turn_vc::PlaybookFirstTurnVc;
 use fire_in_the_lake::display::announcer::Announcer;
 use fire_in_the_lake::factions::Factions;
 use fire_in_the_lake::game_flow::game_flow_handler::GameFlowHandler;
@@ -51,8 +53,8 @@ fn test_first_game_turn_vc() -> Result<(), String> {
     let decision_making_center = DecisionMakingCenter::new(
         PlaybookFirstTurnVc::new().into(),
         PlaybookFirstTurnNva::new().into(),
-        PlaybookFirstTurnVc::new().into(),
-        PlaybookFirstTurnVc::new().into(),
+        PlaybookFirstTurnNva::new().into(),
+        PlaybookFirstTurnArvn::new().into(),
     );
 
     let map_builder = MapBuilder::new();
@@ -60,6 +62,8 @@ fn test_first_game_turn_vc() -> Result<(), String> {
     let mut built_map = map_builder.build_initial_map().unwrap();
 
     let mut track = Track::new();
+
+    let mut available_forces = AvailableForces::new();
 
     // Set up map to initial state.
     built_map
@@ -73,6 +77,7 @@ fn test_first_game_turn_vc() -> Result<(), String> {
         game_flow_handler.get_current_eligible(),
         &built_map,
         &track,
+        &available_forces,
     );
 
     assert_eq!(
@@ -120,6 +125,7 @@ fn test_first_game_turn_vc() -> Result<(), String> {
         vc_decision.get_commands(),
         &mut built_map,
         &mut track,
+        &mut available_forces,
     );
 
     // The commands should have shifted Saigon's Passive Support to Neutral.
@@ -150,6 +156,7 @@ fn test_first_game_turn_vc() -> Result<(), String> {
         game_flow_handler.get_current_eligible(),
         &built_map,
         &track,
+        &available_forces,
     );
 
     assert_eq!(
@@ -190,9 +197,76 @@ fn test_first_game_turn_vc() -> Result<(), String> {
         nva_decision.get_commands(),
         &mut built_map,
         &mut track,
+        &mut available_forces,
     );
 
     assert_eq!(track.get_nva_resources(), 11);
+
+    // Start. Game turn 1 (3/4)
+
+    // Now ARVN should be eligible.
+    assert_eq!(game_flow_handler.get_current_eligible(), Factions::ARVN);
+
+    assert_eq!(game_flow_handler.is_execute_op_and_special_activity_available(), true, "Should be able to execute op and special activity, because the first eligible chose event.");
+
+    // This player interaction is much more complicated than the previous one. The player in the playbook chooses Train in Saigon,
+    // and then Pacify in Saigon (which is specially available for the op)
+    // Then adjust US victory marker
+    // Not content with that, it also chooses Special Activity, which is Govern, and in two locations, An Loc and Can Tho
+    // That increases Aid +6 (+3 per each city, 3x1 Pop)
+    // Also, for Aid it also matters the CURRENT RNV LEADER, who is Minh. If ARVN Trains, Aid receives +5 bonus.
+    // After implementing all these systems, we are a long way there.
+    let mut arvn_decision = decision_making_center.decide(
+        game_flow_handler.get_active_card(),
+        game_flow_handler.get_current_eligible(),
+        &built_map,
+        &track,
+        &available_forces,
+    );
+
+    assert_eq!(
+        arvn_decision.get_choice(),
+        Choices::Operation,
+        "ARVN's choice should have been to perform an operation."
+    );
+
+    // Should inform the game_flow_handler
+    game_flow_handler.report_choice(
+        game_flow_handler.get_current_eligible(),
+        arvn_decision.get_choice(),
+    )?;
+
+    // Given that ARVN has chosen an operation, there should be no next eligible (two have already chosen)
+    assert_eq!(
+        game_flow_handler.get_current_eligible(),
+        Factions::None,
+        "After ARVN makes its choice, there should be no next eligible."
+    );
+    assert_eq!(
+        game_flow_handler.is_execute_op_and_special_activity_available(),
+        false,
+        "The execute op and special activity should no longer be available.",
+    );
+    assert_eq!(
+        game_flow_handler.is_faction_eligible(Factions::ARVN),
+        false,
+        "After making a choice, NVA should no longer be considered eligible."
+    );
+
+    announcer
+        .instruct_to_move_faction_cylinder_from_eligible_to_operation_and_special_activity_box(
+            Factions::ARVN,
+        );
+
+    // Must execute the operation command. That delegate function is going to do so much work.
+    execute_commands(
+        game_flow_handler.get_active_card(),
+        arvn_decision.get_faction(),
+        arvn_decision.get_commands(),
+        &mut built_map,
+        &mut track,
+        &mut available_forces,
+    );
 
     Ok(())
 }

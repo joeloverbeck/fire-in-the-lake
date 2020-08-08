@@ -1,3 +1,4 @@
+use board::available_forces::AvailableForces;
 use board::map::Map;
 use board::space_identifiers::SpaceIdentifiers;
 use board::track::Track;
@@ -40,9 +41,10 @@ pub fn execute_commands(
     commands: Vec<String>,
     map: &mut Map,
     track: &mut Track,
+    _available_forces: &mut AvailableForces,
 ) -> Result<(), String> {
     // Depending on the card, faction, commands, etc. this function coordinates and delegates all the
-    // possible deviations and instantation of executor commands so the map and track changes appropriately.
+    // possible deviations and instantiations of executor commands so the map and track changes appropriately.
     match faction {
         Factions::VC => {
             if commands[0] == "event" {
@@ -59,6 +61,7 @@ pub fn execute_commands(
 
             Ok(())
         }
-        _ => Ok(()),
+        Factions::ARVN => Ok(()),
+        _ => todo!(),
     }
 }

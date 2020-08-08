@@ -1,3 +1,4 @@
+use board::available_forces::AvailableForces;
 use board::map::Map;
 use board::track::Track;
 use decision_making::choices::Choices;
@@ -11,7 +12,7 @@ pub struct DecisionMakingCenter {
     vc_player: Players,
     nva_player: Players,
     _us_player: Players,
-    _arvn_player: Players,
+    arvn_player: Players,
 }
 
 impl DecisionMakingCenter {
@@ -19,13 +20,13 @@ impl DecisionMakingCenter {
         vc_player: Players,
         nva_player: Players,
         _us_player: Players,
-        _arvn_player: Players,
+        arvn_player: Players,
     ) -> DecisionMakingCenter {
         DecisionMakingCenter {
             vc_player,
             nva_player,
             _us_player,
-            _arvn_player,
+            arvn_player,
         }
     }
 }
@@ -37,6 +38,7 @@ impl CommandsProducer for DecisionMakingCenter {
         current_eligible: Factions,
         map: &Map,
         track: &Track,
+        _available_forces: &AvailableForces,
     ) -> Decision {
         // From the current elegible we know to which held player we need to derive the decision to.
         // The players will get all this stuff, and they will send back whether they want to play it for the
@@ -65,6 +67,16 @@ impl CommandsProducer for DecisionMakingCenter {
 
                 if player_commands.len() == 1 && player_commands[0] == "pass" {
                     return Decision::new(current_eligible, Choices::Pass, player_commands);
+                }
+
+                todo!()
+            }
+            Factions::ARVN => {
+                let player_commands = self.arvn_player.provide_command(active_card, map, track);
+
+                if player_commands[0] == "operation" {
+                    // Could play first the operation and then the special activity.
+                    return Decision::new(current_eligible, Choices::Operation, player_commands);
                 }
 
                 todo!()
