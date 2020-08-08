@@ -27,8 +27,7 @@ impl CardRegistry {
     fn register_all_game_cards(&mut self) {
         // Handles registring every single card and its appropriate codified detail.
         // Card 107: "Burning Bonze"
-        let burning_bonze = Card::new([Factions::VC, Factions::NVA, Factions::ARVN, Factions::US],
-        );
+        let burning_bonze = Card::new([Factions::VC, Factions::NVA, Factions::ARVN, Factions::US]);
 
         self.cards.insert(107, burning_bonze);
     }

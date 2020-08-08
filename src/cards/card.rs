@@ -6,9 +6,7 @@ pub struct Card {
 
 impl Card {
     pub fn new(faction_order: [Factions; 4]) -> Card {
-        Card {
-            faction_order,
-        }
+        Card { faction_order }
     }
 
     pub fn get_faction_order(&self) -> [Factions; 4] {
