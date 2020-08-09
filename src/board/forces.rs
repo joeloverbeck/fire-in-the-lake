@@ -2,6 +2,8 @@
 pub struct Forces {
     arvn_troops: u8,
     nva_bases: u8,
+    vc_bases: u8,
+    us_bases: u8,
     underground_nva_guerrillas: u8,
     underground_vc_guerrillas: u8,
     active_vc_guerrillas: u8,
@@ -20,6 +22,8 @@ impl Forces {
         Forces {
             arvn_troops: 0,
             nva_bases: 0,
+            vc_bases: 0,
+            us_bases: 0,
             underground_nva_guerrillas: 0,
             underground_vc_guerrillas: 0,
             active_vc_guerrillas: 0,
@@ -94,5 +98,17 @@ impl Forces {
 
     pub fn set_number_of_us_troops(&mut self, new_number_of_us_troops: u8) {
         self.us_troops = new_number_of_us_troops
+    }
+
+    pub fn get_total_number_of_us_pieces(&self) -> u8 {
+        self.us_troops + self.underground_special_forces_irregulars + self.us_bases
+    }
+
+    pub fn get_total_number_of_vc_pieces(&self) -> u8 {
+        self.underground_vc_guerrillas + self.active_vc_guerrillas + self.vc_bases
+    }
+
+    pub fn set_number_of_vc_bases(&mut self, new_number_of_vc_bases: u8) {
+        self.vc_bases = new_number_of_vc_bases;
     }
 }

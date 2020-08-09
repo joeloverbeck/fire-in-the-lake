@@ -132,7 +132,28 @@ impl<'a> GameFlowHandler<'a> {
             && self.faction_present_in_second_op_and_special_activity() == Factions::None
     }
 
-    fn delegate_handling_changes_to_game_flow(&mut self, faction: Factions, choice: Choices) {
+    fn delegate_moving_faction_to_first_eligible_event(
+        &mut self,
+        faction: Factions,
+    ) -> Result<(), String> {
+        if let Err(error) = self
+            .sequence_of_play
+            .move_faction_to_first_eligible_event(faction)
+        {
+            panic!(format!(
+                "Couldn't move faction {:?} to first eligible event! Error: {:?}",
+                faction, error
+            ));
+        }
+
+        Ok(())
+    }
+
+    fn delegate_handling_changes_to_game_flow(
+        &mut self,
+        faction: Factions,
+        choice: Choices,
+    ) -> Result<(), String> {
         match choice {
             Choices::SecondLimitedOperation => {
                 if let Err(error) = self
@@ -156,16 +177,11 @@ impl<'a> GameFlowHandler<'a> {
                     ));
                 }
             }
+            Choices::UnshadedEvent => {
+                self.delegate_moving_faction_to_first_eligible_event(faction)?;
+            }
             Choices::ShadedEvent => {
-                if let Err(error) = self
-                    .sequence_of_play
-                    .move_faction_to_first_eligible_event(faction)
-                {
-                    panic!(format!(
-                        "Couldn't move faction {:?} to first eligible event! Error: {:?}",
-                        faction, error
-                    ));
-                }
+                self.delegate_moving_faction_to_first_eligible_event(faction)?;
             }
             Choices::Pass => {
                 // Must move the appropriate faction to the passed array, in a position in which it won't step
@@ -184,6 +200,8 @@ impl<'a> GameFlowHandler<'a> {
                 }
             }
         }
+
+        Ok(())
     }
 
     fn determine_next_actual_eligible_faction_from_position_of_last_eligible_faction(
@@ -259,7 +277,7 @@ impl<'a> GameFlowHandler<'a> {
         }
 
         // The sequence of play object should be responsible for handling the proper changes to the flow, at least in that regard.
-        self.delegate_handling_changes_to_game_flow(faction, choice);
+        self.delegate_handling_changes_to_game_flow(faction, choice)?;
 
         // Regardless of the choice, a choice has been made, so we need to move to the next eligible.
         // Let's get the faction order for the active card

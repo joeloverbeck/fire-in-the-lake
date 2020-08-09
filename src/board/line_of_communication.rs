@@ -134,6 +134,22 @@ impl Space for LineOfCommunication {
     ) {
         todo!()
     }
+
+    fn get_total_number_of_us_pieces(&self) -> u8 {
+        todo!()
+    }
+
+    fn get_total_number_of_vc_pieces(&self) -> u8 {
+        todo!()
+    }
+
+    fn set_number_of_vc_bases(&mut self, _new_number_of_vc_bases: u8) {
+        todo!()
+    }
+
+    fn adjust_control(&mut self) {
+        todo!()
+    }
 }
 
 #[cfg(test)]

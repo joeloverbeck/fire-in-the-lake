@@ -7,11 +7,13 @@ use board::space_identifiers::SpaceIdentifiers;
 use board::track::Track;
 use commands::deploy_arvn_troops_from_available::DeployArvnTroopsFromAvailable;
 use commands::deploy_nva_guerrillas_from_available::DeployNvaGuerrillasFromAvailable;
+use commands::deploy_us_irregulars_from_available::deploy_us_irregulars_from_available;
 use commands::extract_multiword_command::extract_multiword_command;
 use commands::improve_trail_nva::ImproveTrailNva;
 use commands::manipulate_aid::ManipulateAid;
 use commands::manipulate_arvn_resources::ManipulateArvnResources;
 use commands::manipulate_nva_resources::ManipulateNvaResources;
+use commands::set_space_to_active_support::set_space_to_active_support;
 use commands::shift_support_of_space::ShiftSupportOfSpace;
 use commands::sweep::Sweep;
 use factions::Factions;
@@ -35,6 +37,27 @@ fn execute_shaded_event_for_vc(
         }
         _ => Ok(()),
     }
+}
+
+fn execute_unshaded_event_for_arvn(
+    card_number: u8,
+    commands: Vec<String>,
+    map: &mut Map,
+    track: &mut Track,
+    available_forces: &mut AvailableForces,
+) -> Result<(), String> {
+    match card_number {
+        68 => {
+            // Place 3 irregulars or 3 rangers in a Province without NVA Control.
+            // Set it to Active Support.
+            deploy_us_irregulars_from_available(&commands[1], 3, map, track, available_forces)?;
+
+            set_space_to_active_support(&commands[1], map, track)?;
+        }
+        _ => todo!(),
+    }
+
+    Ok(())
 }
 
 fn execute_train_for_arvn(
@@ -266,6 +289,15 @@ pub fn execute_commands(
                 }
 
                 execute_special_activity_for_arvn(special_activity_commands, map, track)?;
+            } else if commands[0] == "event" {
+                // Intends to execute the unshaded event for a card and for the ARVN faction
+                execute_unshaded_event_for_arvn(
+                    card_number,
+                    commands,
+                    map,
+                    track,
+                    available_forces,
+                )?;
             } else {
                 todo!()
             }

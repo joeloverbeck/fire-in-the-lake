@@ -1,9 +1,8 @@
-use board::space_identifiers::SpaceIdentifiers;
-
 use board::city::City;
 use board::controls::Controls;
 use board::line_of_communication::LineOfCommunication;
 use board::province::Province;
+use board::space_identifiers::SpaceIdentifiers;
 use board::support::SupportLevels;
 use board::terrain_types::TerrainTypes;
 
@@ -27,6 +26,7 @@ pub trait Space {
     fn set_number_of_arvn_troops(&mut self, new_number_of_arvn_troops: u8) -> Result<(), String>;
     fn are_there_nva_bases(&self) -> bool;
     fn set_number_of_nva_bases(&mut self, new_number_of_nva_bases: u8);
+    fn set_number_of_vc_bases(&mut self, new_number_of_vc_bases: u8);
     fn get_number_of_underground_nva_guerrillas(&self) -> u8;
     fn set_number_of_underground_nva_guerrillas(
         &mut self,
@@ -46,6 +46,9 @@ pub trait Space {
     );
     fn get_number_of_active_vc_guerrillas(&self) -> u8;
     fn set_number_of_active_vc_guerrillas(&mut self, new_number_of_active_vc_guerrillas: u8);
+    fn get_total_number_of_us_pieces(&self) -> u8;
+    fn get_total_number_of_vc_pieces(&self) -> u8;
+    fn adjust_control(&mut self);
 }
 
 #[enum_dispatch(Space)]

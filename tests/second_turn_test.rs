@@ -28,7 +28,6 @@ fn test_second_game_turn_playbook() -> Result<(), String> {
 
     // Start. Game turn 2 (1/4)
 
-    // Draw Burning Bonze
     game_flow_handler.set_active_card(55);
     game_flow_handler.set_preview_card(68);
 

@@ -95,6 +95,12 @@ impl CommandsProducer for DecisionMakingCenter {
                         Choices::SecondOperationAndSpecialActivity,
                         player_commands,
                     );
+                } else if player_commands[0] == "event" {
+                    return Decision::new(
+                        current_eligible,
+                        Choices::UnshadedEvent,
+                        player_commands,
+                    );
                 }
 
                 todo!()

@@ -5,6 +5,7 @@ pub enum SpaceIdentifiers {
     KienGiangAnXuyen,
     BaXuyen,
     QuangNam,
+    BinhDinh,
     Route4,
     CanTho,
     Mekong,
@@ -33,6 +34,8 @@ pub fn translate_space_name_to_identifier(space_name: &str) -> SpaceIdentifiers 
         SpaceIdentifiers::KienGiangAnXuyen
     } else if space_name == "quang tri" {
         SpaceIdentifiers::QuangTriThuaThien
+    } else if space_name == "binh dinh" {
+        SpaceIdentifiers::BinhDinh
     } else {
         todo!()
     }

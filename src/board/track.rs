@@ -1,3 +1,4 @@
+use board::controls::Controls;
 use board::map::Map;
 use board::space::Space;
 use board::support::SupportLevels;
@@ -9,6 +10,8 @@ pub struct Track {
     arvn_resources: u8,
     trail: u8,
     us_victory_marker: u8,
+    control_plus_patronage: u8,
+    patronage: u8,
 }
 
 impl Track {
@@ -19,6 +22,8 @@ impl Track {
             arvn_resources: 0,
             trail: 0,
             us_victory_marker: 0,
+            control_plus_patronage: 0,
+            patronage: 0,
         }
     }
 
@@ -52,6 +57,45 @@ impl Track {
 
     pub fn set_trail(&mut self, new_trail: u8) {
         self.trail = new_trail;
+    }
+
+    pub fn get_patronage(&self) -> u8 {
+        self.patronage
+    }
+
+    pub fn set_patronage(&mut self, new_patronage: u8) {
+        self.patronage = new_patronage;
+    }
+
+    pub fn adjust_control_plus_patronage(&mut self, map: &Map) {
+        // Calculated programatically.
+        // A sum of all the population values of all the spaces that have COIN control.
+        // To that you just add the patronage.
+        let sum: u8 = map
+            .get_spaces()
+            .iter()
+            .map(|space_entry| {
+                // Look at the support of this space, and consider the population.
+                // It won't matter the type of space, because those that wouldn't count
+                // won't add to the sum because of their initial states in those fields.
+                let (_, space) = space_entry;
+
+                match space.get_control() {
+                    Controls::Counterinsurgent => space.get_population_value(),
+                    _ => 0,
+                }
+            })
+            .sum();
+
+        self.control_plus_patronage = sum + self.patronage
+    }
+
+    pub fn get_control_plus_patronage(&mut self) -> u8 {
+        self.control_plus_patronage
+    }
+
+    pub fn get_us_victory_marker(&self) -> u8 {
+        self.us_victory_marker
     }
 
     pub fn adjust_us_victory_marker(&mut self, map: &Map) {

@@ -90,6 +90,7 @@ impl Space for Province {
 
     fn set_number_of_nva_bases(&mut self, new_number_of_nva_bases: u8) {
         self.forces.set_number_of_nva_bases(new_number_of_nva_bases);
+        self.adjust_control();
     }
 
     fn get_number_of_underground_nva_guerrillas(&self) -> u8 {
@@ -102,6 +103,7 @@ impl Space for Province {
     ) {
         self.forces
             .set_number_of_underground_nva_guerrillas(new_number_of_underground_nva_guerrillas);
+        self.adjust_control();
     }
 
     fn get_number_of_underground_special_forces_irregulars(&self) -> u8 {
@@ -116,7 +118,8 @@ impl Space for Province {
         self.forces
             .set_number_of_underground_special_forces_irregulars(
                 new_number_of_undergound_special_forces_irregulars,
-            )
+            );
+        self.adjust_control();
     }
 
     fn get_number_of_us_troops(&self) -> u8 {
@@ -124,7 +127,8 @@ impl Space for Province {
     }
 
     fn set_number_of_us_troops(&mut self, new_number_of_us_troops: u8) {
-        self.forces.set_number_of_us_troops(new_number_of_us_troops)
+        self.forces.set_number_of_us_troops(new_number_of_us_troops);
+        self.adjust_control();
     }
 
     fn get_number_of_active_vc_guerrillas(&self) -> u8 {
@@ -132,7 +136,8 @@ impl Space for Province {
     }
     fn set_number_of_active_vc_guerrillas(&mut self, new_number_of_active_vc_guerrillas: u8) {
         self.forces
-            .set_active_vc_guerrillas(new_number_of_active_vc_guerrillas)
+            .set_active_vc_guerrillas(new_number_of_active_vc_guerrillas);
+        self.adjust_control();
     }
 
     fn get_number_of_underground_vc_guerrillas(&self) -> u8 {
@@ -144,7 +149,29 @@ impl Space for Province {
         new_number_of_underground_vc_guerrillas: u8,
     ) {
         self.forces
-            .set_underground_vc_guerrillas(new_number_of_underground_vc_guerrillas)
+            .set_underground_vc_guerrillas(new_number_of_underground_vc_guerrillas);
+        self.adjust_control();
+    }
+
+    fn get_total_number_of_us_pieces(&self) -> u8 {
+        self.forces.get_total_number_of_us_pieces()
+    }
+
+    fn get_total_number_of_vc_pieces(&self) -> u8 {
+        self.forces.get_total_number_of_vc_pieces()
+    }
+
+    fn set_number_of_vc_bases(&mut self, new_number_of_vc_bases: u8) {
+        self.forces.set_number_of_vc_bases(new_number_of_vc_bases);
+        self.adjust_control();
+    }
+
+    fn adjust_control(&mut self) {
+        // COIN control: US forces outnumber VC ones
+        if self.forces.get_total_number_of_us_pieces() > self.forces.get_total_number_of_vc_pieces()
+        {
+            self.control = Controls::Counterinsurgent;
+        }
     }
 }
 
