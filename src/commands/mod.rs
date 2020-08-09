@@ -1,5 +1,8 @@
 pub mod deploy_arvn_troops_from_available;
+pub mod deploy_nva_guerrillas_from_available;
 pub mod execute_commands;
+pub mod extract_multiword_command;
+pub mod improve_trail_nva;
 pub mod manipulate_aid;
 pub mod manipulate_arvn_resources;
 pub mod manipulate_nva_resources;

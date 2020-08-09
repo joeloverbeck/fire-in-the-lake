@@ -1,6 +1,7 @@
 use board::available_forces::AvailableForces;
 use board::map::Map;
 use board::track::Track;
+use commands::extract_multiword_command::extract_multiword_command;
 use decision_making::choices::Choices;
 use decision_making::commands_producer::CommandsProducer;
 use decision_making::decision::Decision;
@@ -65,8 +66,21 @@ impl CommandsProducer for DecisionMakingCenter {
             Factions::NVA => {
                 let player_commands = self.nva_player.provide_command(active_card, map, track);
 
+                // Could be that it has chosen to pass
                 if player_commands.len() == 1 && player_commands[0] == "pass" {
                     return Decision::new(current_eligible, Choices::Pass, player_commands);
+                }
+
+                // Could have chosen to do an op only.
+                let possible_op_only_command = extract_multiword_command(&player_commands[0]);
+
+                if possible_op_only_command[0] == "op" && possible_op_only_command[1] == "only" {
+                    // NVA wants to do an op only.
+                    return Decision::new(
+                        current_eligible,
+                        Choices::OperationOnly,
+                        player_commands,
+                    );
                 }
 
                 todo!()
@@ -76,7 +90,11 @@ impl CommandsProducer for DecisionMakingCenter {
 
                 if player_commands[0] == "operation" {
                     // Could play first the operation and then the special activity.
-                    return Decision::new(current_eligible, Choices::Operation, player_commands);
+                    return Decision::new(
+                        current_eligible,
+                        Choices::SecondOperationAndSpecialActivity,
+                        player_commands,
+                    );
                 }
 
                 todo!()

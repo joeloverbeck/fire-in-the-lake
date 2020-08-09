@@ -28,8 +28,10 @@ impl CardRegistry {
         // Handles registring every single card and its appropriate codified detail.
         // Card 107: "Burning Bonze"
         let burning_bonze = Card::new([Factions::VC, Factions::NVA, Factions::ARVN, Factions::US]);
-
         self.cards.insert(107, burning_bonze);
+
+        let trucks = Card::new([Factions::NVA, Factions::VC, Factions::US, Factions::ARVN]);
+        self.cards.insert(55, trucks);
     }
 
     pub fn get_card(&self, card_number: u8) -> Result<&Card, String> {

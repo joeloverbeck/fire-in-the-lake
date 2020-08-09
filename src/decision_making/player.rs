@@ -3,6 +3,7 @@ use board::track::Track;
 use decision_making::testing::playbook_first_turn_arvn::PlaybookFirstTurnArvn;
 use decision_making::testing::playbook_first_turn_nva::PlaybookFirstTurnNva;
 use decision_making::testing::playbook_first_turn_vc::PlaybookFirstTurnVc;
+use decision_making::testing::playbook_second_turn_nva::PlaybookSecondTurnNva;
 
 extern crate enum_dispatch;
 use self::enum_dispatch::enum_dispatch;
@@ -18,4 +19,5 @@ pub enum Players {
     PlaybookFirstTurnVc,
     PlaybookFirstTurnNva,
     PlaybookFirstTurnArvn,
+    PlaybookSecondTurnNva,
 }

@@ -1,5 +1,7 @@
+use cards::card::Card;
 use cards::card_registry::CardRegistry;
 use decision_making::choices::Choices;
+use factions::get_position_in_faction_order_of_faction::get_position_in_faction_order_of_faction;
 use factions::Factions;
 use game_flow::sequence_of_play::SequenceOfPlay;
 
@@ -75,6 +77,12 @@ impl<'a> GameFlowHandler<'a> {
         self.get_current_eligible() == Factions::None
     }
 
+    pub fn set_faction_as_ineligible(&mut self, faction: Factions) -> Result<(), String> {
+        self.sequence_of_play.move_faction_to_ineligible(faction)?;
+
+        Ok(())
+    }
+
     pub fn get_current_eligible(&self) -> Factions {
         // The current eligible should be the faction that currently could decide what to do.
         // Note: it could be that there is no current elegible, and thus the turn has ended.
@@ -103,20 +111,35 @@ impl<'a> GameFlowHandler<'a> {
             .faction_present_in_first_eligible_event()
     }
 
-    pub fn faction_present_in_op_and_special_activity(&self) -> Factions {
+    pub fn faction_present_in_operation_only(&self) -> Factions {
+        self.sequence_of_play.faction_present_in_operation_only()
+    }
+
+    pub fn faction_present_in_second_op_and_special_activity(&self) -> Factions {
         self.sequence_of_play
-            .faction_present_in_op_and_special_activity()
+            .faction_present_in_second_op_and_special_activity()
     }
 
     pub fn is_execute_op_and_special_activity_available(&self) -> bool {
         // As a norm, execute Op and Special Activity should be available if there is a faction in "first_eligible_event"
         // TODO: consider whether this is asked by the first eligible.
         self.faction_present_in_first_eligible_event() != Factions::None
-            && self.faction_present_in_op_and_special_activity() == Factions::None
+            && self.faction_present_in_second_op_and_special_activity() == Factions::None
     }
 
     fn delegate_handling_changes_to_game_flow(&mut self, faction: Factions, choice: Choices) {
         match choice {
+            Choices::OperationOnly => {
+                if let Err(error) = self
+                    .sequence_of_play
+                    .move_faction_to_operation_only(faction)
+                {
+                    panic!(format!(
+                        "Couldn't move faction {:?} to operation only! Error: {:?}",
+                        faction, error
+                    ));
+                }
+            }
             Choices::ShadedEvent => {
                 if let Err(error) = self
                     .sequence_of_play
@@ -135,16 +158,36 @@ impl<'a> GameFlowHandler<'a> {
                     panic!("Attempted to move the faction {:?} to the passed box, but couldn't! Error: {:?}", faction, error);
                 }
             }
-            Choices::Operation => {
+            Choices::SecondOperationAndSpecialActivity => {
                 // Must move the appropriate faction to the slot that identifies having chosen an Operation with Special Activity
                 if let Err(error) = self
                     .sequence_of_play
-                    .move_faction_to_operation_and_special_activity(faction)
+                    .move_faction_to_second_operation_and_special_activity(faction)
                 {
                     panic!("Attempted to move the faction {:?} to the operation and special activity box, but couldn't! Error: {:?}", faction, error);
                 }
             }
         }
+    }
+
+    fn determine_next_actual_eligible_faction_from_position_of_last_eligible_faction(
+        &mut self,
+        card: &Card,
+        position_of_last_eligible_faction: usize,
+    ) -> Result<(), String> {
+        let mut index = position_of_last_eligible_faction;
+
+        // Note: the next one in line might very well be inelegible.
+        while self
+            .sequence_of_play
+            .is_faction_ineligible(card.get_faction_order()[index + 1])
+        {
+            index += 1;
+        }
+
+        self.current_eligible = card.get_faction_order()[index + 1];
+
+        Ok(())
     }
 
     fn move_to_next_eligible(&mut self, faction_that_decided: Factions) -> Result<(), String> {
@@ -159,25 +202,18 @@ impl<'a> GameFlowHandler<'a> {
             }
             Ok(active_card_object) => {
                 // We have the correct active card object in there.
-                // Obviously the next current elegible should be the faction to the right in the faction order.
-                let possible_position_of_last_eligible_faction = active_card_object
-                    .get_faction_order()
-                    .iter()
-                    .enumerate()
-                    .filter_map(|faction_in_order| {
-                        if faction_in_order.1 == &faction_that_decided {
-                            Some(faction_in_order.0)
-                        } else {
-                            None
-                        }
-                    })
-                    .next();
+                // Obviously the next current elegible should be the faction to the right in the faction order,
+                // UNLESS that faction is uneligible.
+                let possible_position_of_last_eligible_faction =
+                    get_position_in_faction_order_of_faction(
+                        active_card_object,
+                        faction_that_decided,
+                    );
 
                 if let Some(position_of_last_eligible_faction) =
                     possible_position_of_last_eligible_faction
                 {
-                    self.current_eligible = active_card_object.get_faction_order()
-                        [position_of_last_eligible_faction + 1];
+                    self.determine_next_actual_eligible_faction_from_position_of_last_eligible_faction(active_card_object, position_of_last_eligible_faction.to_owned())?;
                 } else {
                     return Err(format!("Had attempted to locate the position of the faction {:?} in the faction order of the current card: {:?}, but couldn't do it!", faction_that_decided, active_card_object.get_faction_order()));
                 }
@@ -189,6 +225,10 @@ impl<'a> GameFlowHandler<'a> {
 
     pub fn has_faction_passed(&self, faction: Factions) -> bool {
         self.sequence_of_play.has_faction_passed(faction)
+    }
+
+    pub fn number_of_eligible_factions(&self) -> usize {
+        self.sequence_of_play.number_of_eligible_factions()
     }
 
     pub fn report_choice(&mut self, faction: Factions, choice: Choices) -> Result<(), String> {

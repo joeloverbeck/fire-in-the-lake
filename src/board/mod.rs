@@ -1,6 +1,6 @@
 pub mod available_forces;
 mod city;
-mod controls;
+pub mod controls;
 pub mod current_rvn_leader;
 pub mod forces;
 mod line_of_communication;

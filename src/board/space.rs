@@ -25,6 +25,13 @@ pub trait Space {
     fn set_control(&mut self, new_control: Controls);
     fn get_number_of_arvn_troops(&self) -> u8;
     fn set_number_of_arvn_troops(&mut self, new_number_of_arvn_troops: u8) -> Result<(), String>;
+    fn are_there_nva_bases(&self) -> bool;
+    fn set_number_of_nva_bases(&mut self, new_number_of_nva_bases: u8);
+    fn get_number_of_underground_nva_guerrillas(&self) -> u8;
+    fn set_number_of_underground_nva_guerrillas(
+        &mut self,
+        new_number_of_underground_nva_guerrillas: u8,
+    );
 }
 
 #[enum_dispatch(Space)]

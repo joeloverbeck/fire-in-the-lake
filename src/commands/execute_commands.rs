@@ -6,6 +6,9 @@ use board::space_identifiers::translate_space_name_to_identifier;
 use board::space_identifiers::SpaceIdentifiers;
 use board::track::Track;
 use commands::deploy_arvn_troops_from_available::DeployArvnTroopsFromAvailable;
+use commands::deploy_nva_guerrillas_from_available::DeployNvaGuerrillasFromAvailable;
+use commands::extract_multiword_command::extract_multiword_command;
+use commands::improve_trail_nva::ImproveTrailNva;
 use commands::manipulate_aid::ManipulateAid;
 use commands::manipulate_arvn_resources::ManipulateArvnResources;
 use commands::manipulate_nva_resources::ManipulateNvaResources;
@@ -70,6 +73,24 @@ fn execute_pacify_for_arvn(location: &str, map: &mut Map, track: &mut Track) -> 
     Ok(())
 }
 
+fn execute_rally_for_nva(
+    locations: Vec<String>,
+    map: &mut Map,
+    track: &mut Track,
+    available_forces: &mut AvailableForces,
+) -> Result<(), String> {
+    // Pays a resource cost of 1 per space.
+    let resources_to_pay: i8 = locations.len() as i8;
+
+    ManipulateNvaResources::new().execute(track, -resources_to_pay)?;
+
+    for location in locations.iter() {
+        DeployNvaGuerrillasFromAvailable::new().execute(location, map, track, available_forces)?;
+    }
+
+    Ok(())
+}
+
 fn execute_special_activity_for_arvn(
     commands: Vec<String>,
     map: &mut Map,
@@ -105,6 +126,47 @@ fn execute_special_activity_for_arvn(
     Ok(())
 }
 
+fn execute_operation_for_nva(
+    commands: &[String],
+    map: &mut Map,
+    track: &mut Track,
+    available_forces: &mut AvailableForces,
+    _special_activity: bool,
+) -> Result<(), String> {
+    // In commands[1] we should have the name of the operation.
+    // From then onwards, until a 'stop', should be the locations where it is performed
+    if commands[1] == "rally" {
+        // Let's extract all the locations where it intends to rally.
+        let mut command_locations: Vec<String> = Vec::new();
+
+        for item in commands.iter().skip(2) {
+            if item == "stop" {
+                break;
+            }
+
+            command_locations.push(item.to_string());
+        }
+
+        execute_rally_for_nva(command_locations, map, track, available_forces)?;
+
+        // As part of choosing rally, they get the opportunity to improve the trail
+        // one level.
+        let index_of_last_command = commands
+            .iter()
+            .position(|command| command == "stop")
+            .unwrap();
+
+        if commands[index_of_last_command + 1] == "yes" {
+            // wants to improve the trail.
+            ImproveTrailNva::new().execute(track)?;
+        }
+    } else {
+        todo!()
+    }
+
+    Ok(())
+}
+
 fn execute_operation_for_arvn(
     commands: &[String],
     map: &mut Map,
@@ -112,13 +174,7 @@ fn execute_operation_for_arvn(
     available_forces: &mut AvailableForces,
 ) -> Result<(), String> {
     // In commands[1] we should have the name of the operation as well as where it is performed.
-    let operation_command_iter = commands[1].split_whitespace();
-
-    let mut operation_command: Vec<String> = Vec::new();
-
-    for item in operation_command_iter {
-        operation_command.push(item.to_string());
-    }
+    let operation_command = extract_multiword_command(&commands[1]);
 
     if operation_command[0] == "train" {
         // This player chose to train.
@@ -173,6 +229,8 @@ pub fn execute_commands(
             if commands[0] == "event" {
                 // Intends to execute the shaded event for a card and for the VC faction
                 execute_shaded_event_for_vc(card_number, commands, map, track)?;
+            } else {
+                todo!()
             }
             Ok(())
         }
@@ -180,6 +238,10 @@ pub fn execute_commands(
             if commands[0] == "pass" {
                 // Has passed. Must receive some resources.
                 execute_passed_for_nva(track)?;
+            } else if commands[0] == "operation only" || commands[0] == "op only" {
+                execute_operation_for_nva(&commands, map, track, available_forces, false)?;
+            } else {
+                todo!()
             }
 
             Ok(())
@@ -203,6 +265,8 @@ pub fn execute_commands(
                 }
 
                 execute_special_activity_for_arvn(special_activity_commands, map, track)?;
+            } else {
+                todo!()
             }
 
             Ok(())

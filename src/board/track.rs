@@ -7,6 +7,7 @@ pub struct Track {
     aid: u8,
     nva_resources: u8,
     arvn_resources: u8,
+    trail: u8,
     us_victory_marker: u8,
 }
 
@@ -16,6 +17,7 @@ impl Track {
             aid: 0,
             nva_resources: 0,
             arvn_resources: 0,
+            trail: 0,
             us_victory_marker: 0,
         }
     }
@@ -42,6 +44,14 @@ impl Track {
 
     pub fn set_arvn_resources(&mut self, new_arvn_resources: u8) {
         self.arvn_resources = new_arvn_resources;
+    }
+
+    pub fn get_trail(&self) -> u8 {
+        self.trail
+    }
+
+    pub fn set_trail(&mut self, new_trail: u8) {
+        self.trail = new_trail;
     }
 
     pub fn adjust_us_victory_marker(&mut self, map: &Map) {

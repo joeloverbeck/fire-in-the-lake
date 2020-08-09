@@ -64,6 +64,16 @@ impl MapBuilder {
         kien_phong.set_population_value(2)?;
         kien_phong.set_terrain_type(TerrainTypes::Lowland);
 
+        // Create North Vietnam
+        let mut north_vietnam: Spaces = Province::new(SpaceIdentifiers::NorthVietnam).into();
+        north_vietnam.set_population_value(0)?;
+        north_vietnam.set_terrain_type(TerrainTypes::Highland);
+
+        // Create The Parrot's Beak
+        let mut parrots_beak: Spaces = Province::new(SpaceIdentifiers::TheParrotsBeak).into();
+        parrots_beak.set_population_value(0)?;
+        parrots_beak.set_terrain_type(TerrainTypes::Jungle);
+
         let mut new_map = Map::new();
 
         new_map.add_space(saigon)?;
@@ -75,9 +85,11 @@ impl MapBuilder {
         new_map.add_space(can_tho)?;
         new_map.add_space(mekong)?;
         new_map.add_space(kien_phong)?;
+        new_map.add_space(north_vietnam)?;
+        new_map.add_space(parrots_beak)?;
 
         // Sanity check: make sure the expected number of entries are on the hash.
-        let number_of_spaces = 9;
+        let number_of_spaces = 11;
         if new_map.spaces_stored() != number_of_spaces {
             panic!("After creating the hashmap with all the board spaces, there should have been {:?} spaces, but there were {:?}.", number_of_spaces, new_map.spaces_stored());
         }

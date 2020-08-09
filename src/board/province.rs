@@ -1,4 +1,5 @@
 use board::controls::Controls;
+use board::forces::Forces;
 use board::space::Space;
 use board::space_identifiers::SpaceIdentifiers;
 use board::support::Support;
@@ -12,6 +13,7 @@ pub struct Province {
     terrain_type: TerrainTypes,
     support: Support,
     control: Controls,
+    forces: Forces,
 }
 
 impl Province {
@@ -22,6 +24,7 @@ impl Province {
             terrain_type: TerrainTypes::Lowland,
             support: Support::new(),
             control: Controls::Uncontrolled,
+            forces: Forces::new(),
         }
     }
 }
@@ -79,6 +82,26 @@ impl Space for Province {
 
     fn set_number_of_arvn_troops(&mut self, _new_number_of_arvn_troops: u8) -> Result<(), String> {
         todo!()
+    }
+
+    fn are_there_nva_bases(&self) -> bool {
+        self.forces.get_number_of_nva_bases() > 0
+    }
+
+    fn set_number_of_nva_bases(&mut self, new_number_of_nva_bases: u8) {
+        self.forces.set_number_of_nva_bases(new_number_of_nva_bases);
+    }
+
+    fn get_number_of_underground_nva_guerrillas(&self) -> u8 {
+        self.forces.get_number_of_underground_nva_guerrillas()
+    }
+
+    fn set_number_of_underground_nva_guerrillas(
+        &mut self,
+        new_number_of_underground_nva_guerrillas: u8,
+    ) {
+        self.forces
+            .set_number_of_underground_nva_guerrillas(new_number_of_underground_nva_guerrillas);
     }
 }
 

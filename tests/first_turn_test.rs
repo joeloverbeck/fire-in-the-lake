@@ -25,7 +25,7 @@ use fire_in_the_lake::game_flow::game_flow_handler::GameFlowHandler;
 use fire_in_the_lake::game_flow::sequence_of_play::SequenceOfPlay;
 
 #[test]
-fn test_first_game_turn_vc() -> Result<(), String> {
+fn test_first_game_turn_playbook() -> Result<(), String> {
     let card_registry = CardRegistry::new();
     let mut sequence_of_play = SequenceOfPlay::new();
 
@@ -55,7 +55,7 @@ fn test_first_game_turn_vc() -> Result<(), String> {
     let decision_making_center = DecisionMakingCenter::new(
         PlaybookFirstTurnVc::new().into(),
         PlaybookFirstTurnNva::new().into(),
-        PlaybookFirstTurnNva::new().into(),
+        PlaybookFirstTurnArvn::new().into(),
         PlaybookFirstTurnArvn::new().into(),
     );
 
@@ -228,7 +228,7 @@ fn test_first_game_turn_vc() -> Result<(), String> {
 
     assert_eq!(
         arvn_decision.get_choice(),
-        Choices::Operation,
+        Choices::SecondOperationAndSpecialActivity,
         "ARVN's choice should have been to perform an operation."
     );
 

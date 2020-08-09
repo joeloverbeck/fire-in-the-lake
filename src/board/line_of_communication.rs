@@ -78,6 +78,25 @@ impl Space for LineOfCommunication {
     fn set_number_of_arvn_troops(&mut self, _new_number_of_arvn_troops: u8) -> Result<(), String> {
         todo!()
     }
+
+    fn are_there_nva_bases(&self) -> bool {
+        todo!()
+    }
+
+    fn set_number_of_nva_bases(&mut self, _new_number_of_nva_bases: u8) {
+        todo!()
+    }
+
+    fn get_number_of_underground_nva_guerrillas(&self) -> u8 {
+        todo!()
+    }
+
+    fn set_number_of_underground_nva_guerrillas(
+        &mut self,
+        _new_number_of_underground_nva_guerrillas: u8,
+    ) {
+        todo!()
+    }
 }
 
 #[cfg(test)]

@@ -2,6 +2,7 @@ use board::available_forces::AvailableForces;
 use board::map::Map;
 use board::space::Space;
 use board::space_identifiers::translate_space_name_to_identifier;
+use math::amount_that_was_removed_from_number::amount_that_was_removed_from_number;
 
 pub struct DeployArvnTroopsFromAvailable {}
 
@@ -25,12 +26,9 @@ impl DeployArvnTroopsFromAvailable {
     ) -> Result<(), String> {
         let space_identifier = translate_space_name_to_identifier(&String::from(location));
 
-        let mut amount_of_arvn_available_removed: u8 = 0;
-
-        if let Ok(amount_removed) = available_forces.remove_amount_of_arvn_troops(number_of_troops)
-        {
-            amount_of_arvn_available_removed = amount_removed;
-        }
+        let amount_of_arvn_available_removed: u8 = amount_that_was_removed_from_number(
+            available_forces.remove_amount_of_arvn_troops(number_of_troops),
+        );
 
         let retrieved_space = map.get_space_mut(space_identifier);
 

@@ -5,7 +5,8 @@ pub struct SequenceOfPlay {
     ineligible: [Factions; 4],
     passed: [Factions; 4],
     first_eligible_event: Factions,
-    op_and_special_activity: Factions,
+    operation_only: Factions,
+    second_op_and_special_activity: Factions,
 }
 
 impl Default for SequenceOfPlay {
@@ -31,7 +32,8 @@ impl SequenceOfPlay {
                 Factions::None,
             ],
             first_eligible_event: Factions::None,
-            op_and_special_activity: Factions::None,
+            operation_only: Factions::None,
+            second_op_and_special_activity: Factions::None,
         }
     }
 
@@ -118,10 +120,56 @@ impl SequenceOfPlay {
         }
     }
 
-    pub fn move_faction_to_pass(&mut self, faction_to_move: Factions) -> Result<(), String> {
+    fn check_eligibility_and_remove_faction_without_move(
+        &mut self,
+        faction_to_move: Factions,
+    ) -> Result<(), String> {
+        // Sanity check: the passed faction should be in the list of eligible factions.
         self.faction_should_be_movable_sanity_check(faction_to_move)?;
-
         self.remove_faction_to_move_from_eligibles(faction_to_move)?;
+
+        Ok(())
+    }
+
+    pub fn move_faction_to_ineligible(&mut self, faction_to_move: Factions) -> Result<(), String> {
+        self.check_eligibility_and_remove_faction_without_move(faction_to_move)?;
+
+        self.slot_faction_in_ineligible(faction_to_move);
+
+        Ok(())
+    }
+
+    pub fn move_faction_to_first_eligible_event(
+        &mut self,
+        faction_to_move: Factions,
+    ) -> Result<(), String> {
+        self.check_eligibility_and_remove_faction_without_move(faction_to_move)?;
+
+        // With the faction to move eliminated from the Eligible, now we should put it in the box asked for.
+        self.first_eligible_event = faction_to_move;
+
+        Ok(())
+    }
+
+    pub fn move_faction_to_second_operation_and_special_activity(
+        &mut self,
+        faction_to_move: Factions,
+    ) -> Result<(), String> {
+        self.check_eligibility_and_remove_faction_without_move(faction_to_move)?;
+
+        // If there is a faction already set where I'm going to put this one, it's a mistake in the code somewhere.
+        if self.second_op_and_special_activity != Factions::None {
+            return Err(format!("I was going to move the faction {:?} to the 'second operation and special activity', but the faction {:?} was already there!", faction_to_move, self.second_op_and_special_activity));
+        }
+
+        // Coast is clear
+        self.second_op_and_special_activity = faction_to_move;
+
+        Ok(())
+    }
+
+    pub fn move_faction_to_pass(&mut self, faction_to_move: Factions) -> Result<(), String> {
+        self.check_eligibility_and_remove_faction_without_move(faction_to_move)?;
 
         for item in self.passed.iter_mut() {
             match *item {
@@ -133,6 +181,23 @@ impl SequenceOfPlay {
                 _ => (),
             }
         }
+
+        Ok(())
+    }
+
+    pub fn move_faction_to_operation_only(
+        &mut self,
+        faction_to_move: Factions,
+    ) -> Result<(), String> {
+        self.check_eligibility_and_remove_faction_without_move(faction_to_move)?;
+
+        // If there is a faction already set where I'm going to put this one, it's a mistake in the code somewhere.
+        if self.operation_only != Factions::None {
+            return Err(format!("I was going to move the faction {:?} to the 'operation only' box, but the faction {:?} was already there!", faction_to_move, self.operation_only));
+        }
+
+        // Coast is clear
+        self.operation_only = faction_to_move;
 
         Ok(())
     }
@@ -172,10 +237,10 @@ impl SequenceOfPlay {
             self.first_eligible_event = Factions::None;
         }
 
-        if self.op_and_special_activity != Factions::None {
+        if self.second_op_and_special_activity != Factions::None {
             // Move that faction to ineligible.
-            self.slot_faction_in_ineligible(self.op_and_special_activity);
-            self.op_and_special_activity = Factions::None;
+            self.slot_faction_in_ineligible(self.second_op_and_special_activity);
+            self.second_op_and_special_activity = Factions::None;
         }
 
         // Should move those in passed to eligible.
@@ -185,41 +250,6 @@ impl SequenceOfPlay {
                 self.passed[index] = Factions::None;
             }
         }
-    }
-
-    pub fn move_faction_to_first_eligible_event(
-        &mut self,
-        faction_to_move: Factions,
-    ) -> Result<(), String> {
-        // Sanity check: the passed faction should be in the list of eligible factions.
-        self.faction_should_be_movable_sanity_check(faction_to_move)?;
-
-        self.remove_faction_to_move_from_eligibles(faction_to_move)?;
-
-        // With the faction to move eliminated from the Eligible, now we should put it in the box asked for.
-        self.first_eligible_event = faction_to_move;
-
-        Ok(())
-    }
-
-    pub fn move_faction_to_operation_and_special_activity(
-        &mut self,
-        faction_to_move: Factions,
-    ) -> Result<(), String> {
-        // Sanity check: the passed faction should be in the list of eligible factions.
-        self.faction_should_be_movable_sanity_check(faction_to_move)?;
-
-        self.remove_faction_to_move_from_eligibles(faction_to_move)?;
-
-        // If there is a faction already set where I'm going to put this one, it's a mistake in the code somewhere.
-        if self.op_and_special_activity != Factions::None {
-            return Err(format!("I was going to move the faction {:?} to the 'operation and special activity', but the faction {:?} was already there!", faction_to_move, self.op_and_special_activity));
-        }
-
-        // Coast is clear
-        self.op_and_special_activity = faction_to_move;
-
-        Ok(())
     }
 
     pub fn is_any_faction_elegible(&self) -> bool {
@@ -236,7 +266,7 @@ impl SequenceOfPlay {
         // Box per box: if there is one in the box corresponding to the first player,
         // and then there is another in the following box, then there's no faction elegible
         if self.first_eligible_event != Factions::None
-            && self.op_and_special_activity != Factions::None
+            && self.second_op_and_special_activity != Factions::None
         {
             return false;
         }
@@ -250,12 +280,22 @@ impl SequenceOfPlay {
             .any(|eligible_faction| eligible_faction == &faction)
     }
 
+    pub fn is_faction_ineligible(&self, faction: Factions) -> bool {
+        self.ineligible
+            .iter()
+            .any(|ineligible_faction| ineligible_faction == &faction)
+    }
+
     pub fn faction_present_in_first_eligible_event(&self) -> Factions {
         self.first_eligible_event
     }
 
-    pub fn faction_present_in_op_and_special_activity(&self) -> Factions {
-        self.op_and_special_activity
+    pub fn faction_present_in_operation_only(&self) -> Factions {
+        self.operation_only
+    }
+
+    pub fn faction_present_in_second_op_and_special_activity(&self) -> Factions {
+        self.second_op_and_special_activity
     }
 }
 

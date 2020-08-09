@@ -1,1 +1,4 @@
+pub mod amount_that_was_removed_from_number;
+pub mod produce_absolute_difference_between_numbers;
+pub mod produce_negative_number_from_u8;
 pub mod sum_i8_to_u8;
