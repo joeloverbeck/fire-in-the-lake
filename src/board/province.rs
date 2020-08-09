@@ -103,6 +103,49 @@ impl Space for Province {
         self.forces
             .set_number_of_underground_nva_guerrillas(new_number_of_underground_nva_guerrillas);
     }
+
+    fn get_number_of_underground_special_forces_irregulars(&self) -> u8 {
+        self.forces
+            .get_number_of_underground_special_forces_irregulars()
+    }
+
+    fn set_number_of_underground_special_forces_irregulars(
+        &mut self,
+        new_number_of_undergound_special_forces_irregulars: u8,
+    ) {
+        self.forces
+            .set_number_of_underground_special_forces_irregulars(
+                new_number_of_undergound_special_forces_irregulars,
+            )
+    }
+
+    fn get_number_of_us_troops(&self) -> u8 {
+        self.forces.get_number_of_us_troops()
+    }
+
+    fn set_number_of_us_troops(&mut self, new_number_of_us_troops: u8) {
+        self.forces.set_number_of_us_troops(new_number_of_us_troops)
+    }
+
+    fn get_number_of_active_vc_guerrillas(&self) -> u8 {
+        self.forces.get_active_vc_guerrillas()
+    }
+    fn set_number_of_active_vc_guerrillas(&mut self, new_number_of_active_vc_guerrillas: u8) {
+        self.forces
+            .set_active_vc_guerrillas(new_number_of_active_vc_guerrillas)
+    }
+
+    fn get_number_of_underground_vc_guerrillas(&self) -> u8 {
+        self.forces.get_underground_vc_guerrillas()
+    }
+
+    fn set_number_of_underground_vc_guerrillas(
+        &mut self,
+        new_number_of_underground_vc_guerrillas: u8,
+    ) {
+        self.forces
+            .set_underground_vc_guerrillas(new_number_of_underground_vc_guerrillas)
+    }
 }
 
 #[cfg(test)]

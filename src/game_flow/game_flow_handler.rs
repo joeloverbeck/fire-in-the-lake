@@ -120,6 +120,11 @@ impl<'a> GameFlowHandler<'a> {
             .faction_present_in_second_op_and_special_activity()
     }
 
+    pub fn faction_present_in_second_limited_operation(&self) -> Factions {
+        self.sequence_of_play
+            .faction_present_in_second_limited_operation()
+    }
+
     pub fn is_execute_op_and_special_activity_available(&self) -> bool {
         // As a norm, execute Op and Special Activity should be available if there is a faction in "first_eligible_event"
         // TODO: consider whether this is asked by the first eligible.
@@ -129,6 +134,17 @@ impl<'a> GameFlowHandler<'a> {
 
     fn delegate_handling_changes_to_game_flow(&mut self, faction: Factions, choice: Choices) {
         match choice {
+            Choices::SecondLimitedOperation => {
+                if let Err(error) = self
+                    .sequence_of_play
+                    .move_faction_to_second_limited_operation(faction)
+                {
+                    panic!(format!(
+                        "Couldn't move faction {:?} to second limited operation! Error: {:?}",
+                        faction, error
+                    ));
+                }
+            }
             Choices::OperationOnly => {
                 if let Err(error) = self
                     .sequence_of_play
@@ -177,15 +193,20 @@ impl<'a> GameFlowHandler<'a> {
     ) -> Result<(), String> {
         let mut index = position_of_last_eligible_faction;
 
-        // Note: the next one in line might very well be inelegible.
-        while self
-            .sequence_of_play
-            .is_faction_ineligible(card.get_faction_order()[index + 1])
+        // Note: the next one in line might very well be ineligible.
+        // Careful not to go out of bounds.
+        while index < 3
+            && self
+                .sequence_of_play
+                .is_faction_ineligible(card.get_faction_order()[index + 1])
         {
             index += 1;
         }
 
-        self.current_eligible = card.get_faction_order()[index + 1];
+        // Again, careful with the bounds.
+        if (index + 1) < 4 {
+            self.current_eligible = card.get_faction_order()[index + 1];
+        }
 
         Ok(())
     }

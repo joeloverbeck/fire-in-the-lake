@@ -9,6 +9,7 @@ pub enum SpaceIdentifiers {
     CanTho,
     Mekong,
     KienPhong,
+    QuangTriThuaThien,
     NorthVietnam,
     TheParrotsBeak,
 }
@@ -30,6 +31,8 @@ pub fn translate_space_name_to_identifier(space_name: &str) -> SpaceIdentifiers 
         SpaceIdentifiers::KienPhong
     } else if space_name == "kien giang" {
         SpaceIdentifiers::KienGiangAnXuyen
+    } else if space_name == "quang tri" {
+        SpaceIdentifiers::QuangTriThuaThien
     } else {
         todo!()
     }

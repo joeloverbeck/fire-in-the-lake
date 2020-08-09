@@ -13,6 +13,7 @@ use commands::manipulate_aid::ManipulateAid;
 use commands::manipulate_arvn_resources::ManipulateArvnResources;
 use commands::manipulate_nva_resources::ManipulateNvaResources;
 use commands::shift_support_of_space::ShiftSupportOfSpace;
+use commands::sweep::Sweep;
 use factions::Factions;
 
 fn execute_shaded_event_for_vc(
@@ -267,6 +268,13 @@ pub fn execute_commands(
                 execute_special_activity_for_arvn(special_activity_commands, map, track)?;
             } else {
                 todo!()
+            }
+
+            Ok(())
+        }
+        Factions::US => {
+            if commands[0] == "sweep" {
+                Sweep::new().execute(&commands[1], map)?;
             }
 
             Ok(())

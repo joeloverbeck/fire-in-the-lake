@@ -97,6 +97,43 @@ impl Space for LineOfCommunication {
     ) {
         todo!()
     }
+
+    fn get_number_of_underground_special_forces_irregulars(&self) -> u8 {
+        todo!()
+    }
+
+    fn set_number_of_underground_special_forces_irregulars(
+        &mut self,
+        _new_number_of_undergound_special_forces_irregulars: u8,
+    ) {
+        todo!()
+    }
+
+    fn get_number_of_us_troops(&self) -> u8 {
+        todo!()
+    }
+
+    fn set_number_of_us_troops(&mut self, _new_number_of_us_troops: u8) {
+        todo!()
+    }
+
+    fn get_number_of_active_vc_guerrillas(&self) -> u8 {
+        todo!()
+    }
+    fn set_number_of_active_vc_guerrillas(&mut self, _new_number_of_active_vc_guerrillas: u8) {
+        todo!()
+    }
+
+    fn get_number_of_underground_vc_guerrillas(&self) -> u8 {
+        todo!()
+    }
+
+    fn set_number_of_underground_vc_guerrillas(
+        &mut self,
+        _new_number_of_underground_vc_guerrillas: u8,
+    ) {
+        todo!()
+    }
 }
 
 #[cfg(test)]

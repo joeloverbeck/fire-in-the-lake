@@ -12,7 +12,7 @@ use factions::Factions;
 pub struct DecisionMakingCenter {
     vc_player: Players,
     nva_player: Players,
-    _us_player: Players,
+    us_player: Players,
     arvn_player: Players,
 }
 
@@ -20,13 +20,13 @@ impl DecisionMakingCenter {
     pub fn new(
         vc_player: Players,
         nva_player: Players,
-        _us_player: Players,
+        us_player: Players,
         arvn_player: Players,
     ) -> DecisionMakingCenter {
         DecisionMakingCenter {
             vc_player,
             nva_player,
-            _us_player,
+            us_player,
             arvn_player,
         }
     }
@@ -99,7 +99,21 @@ impl CommandsProducer for DecisionMakingCenter {
 
                 todo!()
             }
-            _ => todo!(),
+            Factions::US => {
+                let player_commands = self.us_player.provide_command(active_card, map, track);
+
+                if player_commands[0] == "sweep" {
+                    // It's a special activity.
+                    Decision::new(
+                        current_eligible,
+                        Choices::SecondLimitedOperation,
+                        player_commands,
+                    )
+                } else {
+                    todo!()
+                }
+            }
+            Factions::None => todo!(),
         }
     }
 }

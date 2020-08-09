@@ -13,6 +13,7 @@ use fire_in_the_lake::decision_making::choices::Choices;
 use fire_in_the_lake::decision_making::commands_producer::CommandsProducer;
 use fire_in_the_lake::decision_making::decision_making_center::DecisionMakingCenter;
 use fire_in_the_lake::decision_making::testing::playbook_second_turn_nva::PlaybookSecondTurnNva;
+use fire_in_the_lake::decision_making::testing::playbook_second_turn_us::PlaybookSecondTurnUs;
 use fire_in_the_lake::display::announcer::Announcer;
 use fire_in_the_lake::factions::Factions;
 use fire_in_the_lake::game_flow::game_flow_handler::GameFlowHandler;
@@ -29,6 +30,7 @@ fn test_second_game_turn_playbook() -> Result<(), String> {
 
     // Draw Burning Bonze
     game_flow_handler.set_active_card(55);
+    game_flow_handler.set_preview_card(68);
 
     assert_eq!(
         game_flow_handler.get_active_card(),
@@ -60,7 +62,7 @@ fn test_second_game_turn_playbook() -> Result<(), String> {
     let decision_making_center = DecisionMakingCenter::new(
         PlaybookSecondTurnNva::new().into(),
         PlaybookSecondTurnNva::new().into(),
-        PlaybookSecondTurnNva::new().into(),
+        PlaybookSecondTurnUs::new().into(),
         PlaybookSecondTurnNva::new().into(),
     );
 
@@ -203,6 +205,122 @@ fn test_second_game_turn_playbook() -> Result<(), String> {
         kien_phong.get_control(),
         Controls::Uncontrolled,
         "Kien Phong should have remained Uncontrolled"
+    );
+
+    // Because the others are ineligible, it's US' turn.
+    let mut us_decision = decision_making_center.decide(
+        game_flow_handler.get_active_card(),
+        game_flow_handler.get_current_eligible(),
+        &built_map,
+        &track,
+        &available_forces,
+    );
+
+    assert_eq!(
+        us_decision.get_choice(),
+        Choices::SecondLimitedOperation,
+        "US's choice should have been Second Limited Operation."
+    );
+
+    // Should inform the game_flow_handler
+    game_flow_handler.report_choice(
+        game_flow_handler.get_current_eligible(),
+        us_decision.get_choice(),
+    )?;
+
+    // Given that US has chosen Op Only, and the remaining are ineligible, there should be no current eligible.
+    assert_eq!(
+        game_flow_handler.get_current_eligible(),
+        Factions::None,
+        "After US makes its choice, there should be no eligible faction."
+    );
+    assert_eq!(
+        game_flow_handler.faction_present_in_second_limited_operation(),
+        Factions::US,
+        "US should have been registered as having chosen Second Limited Operation.",
+    );
+    assert_eq!(
+        game_flow_handler.is_faction_eligible(Factions::US),
+        false,
+        "After making a choice, US should no longer be considered eligible."
+    );
+
+    // Execute the commands
+    announcer.instruct_to_move_faction_cylinder_from_eligible_to_second_limited_operation_box(
+        Factions::US,
+    );
+
+    built_map
+        .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+        .unwrap()
+        .set_number_of_underground_special_forces_irregulars(1);
+    built_map
+        .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+        .unwrap()
+        .set_number_of_us_troops(1);
+    built_map
+        .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+        .unwrap()
+        .set_number_of_underground_vc_guerrillas(2);
+
+    execute_commands(
+        game_flow_handler.get_active_card(),
+        us_decision.get_faction(),
+        us_decision.get_commands(),
+        &mut built_map,
+        &mut track,
+        &mut available_forces,
+    );
+
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+            .unwrap()
+            .get_number_of_underground_special_forces_irregulars(),
+        1,
+        "There should have been a unit of special forces irregulars"
+    );
+
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+            .unwrap()
+            .get_number_of_us_troops(),
+        1,
+        "There should have been a unit of us troops"
+    );
+
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+            .unwrap()
+            .get_number_of_active_vc_guerrillas(),
+        2,
+        "There should be two active units of vc guerrillas."
+    );
+
+    // Two eligible factions have acted, so the turn is over.
+    assert_eq!(game_flow_handler.has_turn_ended(), true);
+
+    game_flow_handler.perform_end_of_turn();
+
+    assert_eq!(game_flow_handler.is_faction_eligible(Factions::NVA), false);
+    assert_eq!(game_flow_handler.is_faction_eligible(Factions::US), false);
+    assert_eq!(
+        game_flow_handler.is_faction_eligible(Factions::VC),
+        true,
+        "VC should have been eligible, as it didn't act this turn."
+    );
+    assert_eq!(
+        game_flow_handler.is_faction_eligible(Factions::ARVN),
+        true,
+        "ARVN should have been eligible, as it didn't act this turn."
+    );
+
+    assert_eq!(
+        game_flow_handler.get_active_card(),
+        68,
+        "The current card should be 'Green Berets'."
     );
 
     Ok(())

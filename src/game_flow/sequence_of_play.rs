@@ -6,6 +6,7 @@ pub struct SequenceOfPlay {
     passed: [Factions; 4],
     first_eligible_event: Factions,
     operation_only: Factions,
+    second_limited_operation: Factions,
     second_op_and_special_activity: Factions,
 }
 
@@ -33,6 +34,7 @@ impl SequenceOfPlay {
             ],
             first_eligible_event: Factions::None,
             operation_only: Factions::None,
+            second_limited_operation: Factions::None,
             second_op_and_special_activity: Factions::None,
         }
     }
@@ -114,13 +116,16 @@ impl SequenceOfPlay {
     fn move_faction_to_eligible(&mut self, faction_to_move: Factions) {
         for item in self.eligible.iter_mut() {
             match *item {
-                _ if item == &Factions::None => *item = faction_to_move,
+                _ if item == &Factions::None => {
+                    *item = faction_to_move;
+                    break;
+                }
                 _ => (),
             }
         }
     }
 
-    fn check_eligibility_and_remove_faction_without_move(
+    fn check_eligibility_and_remove_faction_to_move(
         &mut self,
         faction_to_move: Factions,
     ) -> Result<(), String> {
@@ -132,7 +137,7 @@ impl SequenceOfPlay {
     }
 
     pub fn move_faction_to_ineligible(&mut self, faction_to_move: Factions) -> Result<(), String> {
-        self.check_eligibility_and_remove_faction_without_move(faction_to_move)?;
+        self.check_eligibility_and_remove_faction_to_move(faction_to_move)?;
 
         self.slot_faction_in_ineligible(faction_to_move);
 
@@ -143,7 +148,7 @@ impl SequenceOfPlay {
         &mut self,
         faction_to_move: Factions,
     ) -> Result<(), String> {
-        self.check_eligibility_and_remove_faction_without_move(faction_to_move)?;
+        self.check_eligibility_and_remove_faction_to_move(faction_to_move)?;
 
         // With the faction to move eliminated from the Eligible, now we should put it in the box asked for.
         self.first_eligible_event = faction_to_move;
@@ -155,7 +160,7 @@ impl SequenceOfPlay {
         &mut self,
         faction_to_move: Factions,
     ) -> Result<(), String> {
-        self.check_eligibility_and_remove_faction_without_move(faction_to_move)?;
+        self.check_eligibility_and_remove_faction_to_move(faction_to_move)?;
 
         // If there is a faction already set where I'm going to put this one, it's a mistake in the code somewhere.
         if self.second_op_and_special_activity != Factions::None {
@@ -168,8 +173,25 @@ impl SequenceOfPlay {
         Ok(())
     }
 
+    pub fn move_faction_to_second_limited_operation(
+        &mut self,
+        faction_to_move: Factions,
+    ) -> Result<(), String> {
+        self.check_eligibility_and_remove_faction_to_move(faction_to_move)?;
+
+        // If there is a faction already set where I'm going to put this one, it's a mistake in the code somewhere.
+        if self.second_limited_operation != Factions::None {
+            return Err(format!("I was going to move the faction {:?} to the 'second limited operation', but the faction {:?} was already there!", faction_to_move, self.second_limited_operation));
+        }
+
+        // Coast is clear
+        self.second_limited_operation = faction_to_move;
+
+        Ok(())
+    }
+
     pub fn move_faction_to_pass(&mut self, faction_to_move: Factions) -> Result<(), String> {
-        self.check_eligibility_and_remove_faction_without_move(faction_to_move)?;
+        self.check_eligibility_and_remove_faction_to_move(faction_to_move)?;
 
         for item in self.passed.iter_mut() {
             match *item {
@@ -189,7 +211,7 @@ impl SequenceOfPlay {
         &mut self,
         faction_to_move: Factions,
     ) -> Result<(), String> {
-        self.check_eligibility_and_remove_faction_without_move(faction_to_move)?;
+        self.check_eligibility_and_remove_faction_to_move(faction_to_move)?;
 
         // If there is a faction already set where I'm going to put this one, it's a mistake in the code somewhere.
         if self.operation_only != Factions::None {
@@ -227,9 +249,25 @@ impl SequenceOfPlay {
                 _ => (),
             }
         }
+
+        // Check exit contract: the passed faction should be in ineligible
+        if !self.is_faction_ineligible(faction_to_slot) {
+            panic!(
+                "Called to move {:?} to ineligibles, but after code ran, the faction wasn't there!",
+                faction_to_slot
+            );
+        }
     }
 
     pub fn perform_end_of_turn(&mut self) {
+        // Should move those ineligible to eligible.
+        for index in 0..4 {
+            if self.ineligible[index] != Factions::None {
+                self.move_faction_to_eligible(self.ineligible[index]);
+                self.ineligible[index] = Factions::None;
+            }
+        }
+
         // The factions that were in boxes different than eligible or pass should go to ineligible.
         if self.first_eligible_event != Factions::None {
             // Move that faction to ineligible.
@@ -249,6 +287,18 @@ impl SequenceOfPlay {
                 self.move_faction_to_eligible(self.passed[index]);
                 self.passed[index] = Factions::None;
             }
+        }
+
+        // Should move those in operation only to ineligible
+        if self.operation_only != Factions::None {
+            self.slot_faction_in_ineligible(self.operation_only);
+            self.operation_only = Factions::None;
+        }
+
+        // Should move those in second limited operation to ineligible
+        if self.second_limited_operation != Factions::None {
+            self.slot_faction_in_ineligible(self.second_limited_operation);
+            self.second_limited_operation = Factions::None;
         }
     }
 
@@ -296,6 +346,10 @@ impl SequenceOfPlay {
 
     pub fn faction_present_in_second_op_and_special_activity(&self) -> Factions {
         self.second_op_and_special_activity
+    }
+
+    pub fn faction_present_in_second_limited_operation(&self) -> Factions {
+        self.second_limited_operation
     }
 }
 

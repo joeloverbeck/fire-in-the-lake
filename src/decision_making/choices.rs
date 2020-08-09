@@ -2,6 +2,7 @@
 pub enum Choices {
     OperationOnly,
     ShadedEvent,
+    SecondLimitedOperation,
     SecondOperationAndSpecialActivity,
     Pass,
 }

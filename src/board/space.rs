@@ -32,6 +32,20 @@ pub trait Space {
         &mut self,
         new_number_of_underground_nva_guerrillas: u8,
     );
+    fn get_number_of_underground_special_forces_irregulars(&self) -> u8;
+    fn set_number_of_underground_special_forces_irregulars(
+        &mut self,
+        new_number_of_undergound_special_forces_irregulars: u8,
+    );
+    fn get_number_of_us_troops(&self) -> u8;
+    fn set_number_of_us_troops(&mut self, new_number_of_us_troops: u8);
+    fn get_number_of_underground_vc_guerrillas(&self) -> u8;
+    fn set_number_of_underground_vc_guerrillas(
+        &mut self,
+        new_number_of_underground_vc_guerrillas: u8,
+    );
+    fn get_number_of_active_vc_guerrillas(&self) -> u8;
+    fn set_number_of_active_vc_guerrillas(&mut self, new_number_of_active_vc_guerrillas: u8);
 }
 
 #[enum_dispatch(Space)]
