@@ -7,6 +7,7 @@ pub struct GameFlowHandler<'a> {
     card_registry: &'a CardRegistry,
     sequence_of_play: &'a mut SequenceOfPlay,
     active_card: u8,
+    preview_card: u8,
     current_eligible: Factions,
 }
 
@@ -19,6 +20,7 @@ impl<'a> GameFlowHandler<'a> {
             card_registry,
             sequence_of_play,
             active_card: 0,
+            preview_card: 0,
             current_eligible: Factions::None,
         }
     }
@@ -45,8 +47,13 @@ impl<'a> GameFlowHandler<'a> {
             Ok(active_card_object) => {
                 // First, pass the information to the sequence of play in order to populate
                 // its mantained list of eligible factions.
-                self.sequence_of_play
-                    .populate_eligible_factions(active_card_object.get_faction_order());
+                // However, if at this point there is any faction that was eligible,
+                // that was due to another previous turn having left factions eligible
+                // for the next one, so this shouldn't be done.
+                if !self.sequence_of_play.is_any_faction_elegible() {
+                    self.sequence_of_play
+                        .populate_eligible_factions(active_card_object.get_faction_order());
+                }
 
                 // We have the correct active card object in there.
                 self.current_eligible = active_card_object.get_faction_order()[0];
@@ -54,6 +61,18 @@ impl<'a> GameFlowHandler<'a> {
         }
 
         Ok(())
+    }
+
+    pub fn get_preview_card(&self) -> u8 {
+        self.preview_card
+    }
+
+    pub fn set_preview_card(&mut self, card_number: u8) {
+        self.preview_card = card_number;
+    }
+
+    pub fn has_turn_ended(&self) -> bool {
+        self.get_current_eligible() == Factions::None
     }
 
     pub fn get_current_eligible(&self) -> Factions {
@@ -64,6 +83,15 @@ impl<'a> GameFlowHandler<'a> {
         }
 
         self.current_eligible
+    }
+
+    pub fn perform_end_of_turn(&mut self) {
+        self.sequence_of_play.perform_end_of_turn();
+
+        // Gotta exchange the active card for the preview card.
+        self.active_card = self.preview_card;
+
+        // Remains asking for the new preview card.
     }
 
     pub fn is_faction_eligible(&self, faction: Factions) -> bool {

@@ -1,4 +1,5 @@
 use board::controls::Controls;
+use board::forces::Forces;
 use board::space::Space;
 use board::space_identifiers::SpaceIdentifiers;
 use board::support::Support;
@@ -12,6 +13,7 @@ pub struct City {
     terrain_type: TerrainTypes,
     support: Support,
     control: Controls,
+    forces: Forces,
 }
 
 impl City {
@@ -22,6 +24,7 @@ impl City {
             terrain_type: TerrainTypes::City,
             support: Support::new(),
             control: Controls::Uncontrolled,
+            forces: Forces::new(),
         }
     }
 }
@@ -41,6 +44,10 @@ impl Space for City {
 
     fn shift_support_level_down(&mut self) {
         self.support.shift_support_level_down();
+    }
+
+    fn shift_support_level_up(&mut self) {
+        self.support.shift_support_level_up();
     }
 
     fn get_terrain_type(&self) -> TerrainTypes {
@@ -70,5 +77,16 @@ impl Space for City {
 
     fn set_control(&mut self, _new_control: Controls) {
         todo!()
+    }
+
+    fn get_number_of_arvn_troops(&self) -> u8 {
+        self.forces.get_number_of_arvn_troops()
+    }
+
+    fn set_number_of_arvn_troops(&mut self, new_number_of_arvn_troops: u8) -> Result<(), String> {
+        self.forces
+            .set_number_of_arvn_troops(new_number_of_arvn_troops)?;
+
+        Ok(())
     }
 }

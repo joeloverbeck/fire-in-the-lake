@@ -1,6 +1,7 @@
 extern crate fire_in_the_lake;
 
 use fire_in_the_lake::board::available_forces::AvailableForces;
+use fire_in_the_lake::board::current_rvn_leader::CurrentRvnLeader;
 use fire_in_the_lake::board::map::Map;
 use fire_in_the_lake::board::map_builder::MapBuilder;
 use fire_in_the_lake::board::space::Space;
@@ -34,6 +35,7 @@ fn test_first_game_turn_vc() -> Result<(), String> {
 
     // Draw Burning Bonze
     game_flow_handler.set_active_card(107);
+    game_flow_handler.set_preview_card(55);
 
     assert_eq!(
         game_flow_handler.get_active_card(),
@@ -258,6 +260,16 @@ fn test_first_game_turn_vc() -> Result<(), String> {
             Factions::ARVN,
         );
 
+    // Last chance to add some setup to arvn's turn
+    track.set_arvn_resources(30);
+    available_forces.set_amount_of_arvn_troops(6);
+
+    assert_eq!(
+        built_map.get_current_rvn_leader(),
+        CurrentRvnLeader::Minh,
+        "The current ARVN leader should have been Minh"
+    );
+
     // Must execute the operation command. That delegate function is going to do so much work.
     execute_commands(
         game_flow_handler.get_active_card(),
@@ -266,6 +278,56 @@ fn test_first_game_turn_vc() -> Result<(), String> {
         &mut built_map,
         &mut track,
         &mut available_forces,
+    )?;
+
+    assert_eq!(
+        track.get_arvn_resources(),
+        24,
+        "The amount of arvn resources should be 24"
+    );
+
+    let retrieved_saigon_result = built_map.get_space(SpaceIdentifiers::Saigon);
+
+    if let Ok(retrieved_saigon) = retrieved_saigon_result {
+        assert_eq!(
+            retrieved_saigon.get_number_of_arvn_troops(),
+            6,
+            "There should be 6 arvn troops in Saigon"
+        );
+        assert_eq!(
+            retrieved_saigon.get_support_level(),
+            SupportLevels::PassiveSupport,
+            "The support of Saigon should have been PassiveSupport, but was {:?}",
+            retrieved_saigon.get_support_level()
+        );
+    } else {
+        panic!("Should have been able to retrieve Saigon.");
+    }
+
+    assert_eq!(
+        track.get_aid(),
+        14,
+        "Aid should have been 14, but was {:?}",
+        track.get_aid()
+    );
+
+    // Start. Game turn 1 (4/4)
+
+    // Real close to the end now.
+    // Two eligible factions have acted, so the turn is over.
+    assert_eq!(game_flow_handler.has_turn_ended(), true);
+
+    game_flow_handler.perform_end_of_turn();
+
+    assert_eq!(game_flow_handler.is_faction_eligible(Factions::NVA), true);
+    assert_eq!(game_flow_handler.is_faction_eligible(Factions::US), true);
+    assert_eq!(game_flow_handler.is_faction_eligible(Factions::VC), false);
+    assert_eq!(game_flow_handler.is_faction_eligible(Factions::ARVN), false);
+
+    assert_eq!(
+        game_flow_handler.get_active_card(),
+        55,
+        "The current card should be 'Trucks'."
     );
 
     Ok(())

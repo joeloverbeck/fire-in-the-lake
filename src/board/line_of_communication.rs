@@ -39,6 +39,10 @@ impl Space for LineOfCommunication {
         panic!("Attempted to shift the support level in a LoC. That should never happen.")
     }
 
+    fn shift_support_level_up(&mut self) {
+        todo!()
+    }
+
     fn get_terrain_type(&self) -> TerrainTypes {
         // The terrain type for a Line of Communication is always an LoC
         TerrainTypes::LoC
@@ -64,6 +68,14 @@ impl Space for LineOfCommunication {
     }
 
     fn set_control(&mut self, _new_control: Controls) {
+        todo!()
+    }
+
+    fn get_number_of_arvn_troops(&self) -> u8 {
+        todo!()
+    }
+
+    fn set_number_of_arvn_troops(&mut self, _new_number_of_arvn_troops: u8) -> Result<(), String> {
         todo!()
     }
 }

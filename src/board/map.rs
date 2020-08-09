@@ -1,11 +1,13 @@
 use std::collections::HashMap;
 
+use board::current_rvn_leader::CurrentRvnLeader;
 use board::space::Space;
 use board::space::Spaces;
 use board::space_identifiers::SpaceIdentifiers;
 
 pub struct Map {
     spaces: HashMap<SpaceIdentifiers, Spaces>,
+    current_rvn_leader: CurrentRvnLeader,
 }
 
 impl Default for Map {
@@ -18,6 +20,7 @@ impl Map {
     pub fn new() -> Map {
         Map {
             spaces: HashMap::new(),
+            current_rvn_leader: CurrentRvnLeader::Minh,
         }
     }
 
@@ -69,6 +72,10 @@ impl Map {
 
     pub fn spaces_stored(&self) -> usize {
         self.spaces.len()
+    }
+
+    pub fn get_current_rvn_leader(&self) -> CurrentRvnLeader {
+        self.current_rvn_leader
     }
 }
 

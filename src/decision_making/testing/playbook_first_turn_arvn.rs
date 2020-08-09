@@ -24,7 +24,6 @@ impl Player for PlaybookFirstTurnArvn {
         // train saigon
         // 6 (as in six troops from his available)
         // yes (as in you want pacify, which is allowed because of train or something)
-        // pacify saigon
         // yes (as in you want to perform a special activity)
         // govern
         // an loc
@@ -36,7 +35,6 @@ impl Player for PlaybookFirstTurnArvn {
         vec.push(String::from("train saigon").to_lowercase());
         vec.push(String::from("6").to_lowercase());
         vec.push(String::from("yes").to_lowercase());
-        vec.push(String::from("pacify saigon").to_lowercase());
         vec.push(String::from("yes").to_lowercase());
         vec.push(String::from("govern").to_lowercase());
         vec.push(String::from("an loc").to_lowercase());

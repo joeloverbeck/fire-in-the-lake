@@ -2,6 +2,7 @@ use factions::Factions;
 
 pub struct SequenceOfPlay {
     eligible: [Factions; 4],
+    ineligible: [Factions; 4],
     passed: [Factions; 4],
     first_eligible_event: Factions,
     op_and_special_activity: Factions,
@@ -17,6 +18,12 @@ impl SequenceOfPlay {
     pub fn new() -> SequenceOfPlay {
         SequenceOfPlay {
             eligible: [Factions::VC, Factions::NVA, Factions::ARVN, Factions::US],
+            ineligible: [
+                Factions::None,
+                Factions::None,
+                Factions::None,
+                Factions::None,
+            ],
             passed: [
                 Factions::None,
                 Factions::None,
@@ -102,6 +109,15 @@ impl SequenceOfPlay {
         self.eligible[3] = faction_order[3];
     }
 
+    fn move_faction_to_eligible(&mut self, faction_to_move: Factions) {
+        for item in self.eligible.iter_mut() {
+            match *item {
+                _ if item == &Factions::None => *item = faction_to_move,
+                _ => (),
+            }
+        }
+    }
+
     pub fn move_faction_to_pass(&mut self, faction_to_move: Factions) -> Result<(), String> {
         self.faction_should_be_movable_sanity_check(faction_to_move)?;
 
@@ -133,6 +149,42 @@ impl SequenceOfPlay {
         }
 
         Ok(())
+    }
+
+    fn slot_faction_in_ineligible(&mut self, faction_to_slot: Factions) {
+        for item in self.ineligible.iter_mut() {
+            match *item {
+                _ if item == &Factions::None => {
+                    *item = faction_to_slot;
+                    // Exit the loop lest I fill the ineligible array with this faction.
+                    break;
+                }
+                _ => (),
+            }
+        }
+    }
+
+    pub fn perform_end_of_turn(&mut self) {
+        // The factions that were in boxes different than eligible or pass should go to ineligible.
+        if self.first_eligible_event != Factions::None {
+            // Move that faction to ineligible.
+            self.slot_faction_in_ineligible(self.first_eligible_event);
+            self.first_eligible_event = Factions::None;
+        }
+
+        if self.op_and_special_activity != Factions::None {
+            // Move that faction to ineligible.
+            self.slot_faction_in_ineligible(self.op_and_special_activity);
+            self.op_and_special_activity = Factions::None;
+        }
+
+        // Should move those in passed to eligible.
+        for index in 0..4 {
+            if self.passed[index] != Factions::None {
+                self.move_faction_to_eligible(self.passed[index]);
+                self.passed[index] = Factions::None;
+            }
+        }
     }
 
     pub fn move_faction_to_first_eligible_event(

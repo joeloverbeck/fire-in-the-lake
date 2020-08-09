@@ -26,7 +26,7 @@ impl ShiftSupportOfSpace {
         if levels_to_shift == -1 {
             space.shift_support_level_down();
         } else {
-            todo!();
+            space.shift_support_level_up();
         }
 
         Ok(())

@@ -26,6 +26,10 @@ impl MapBuilder {
         let mut saigon: Spaces = City::new(SpaceIdentifiers::Saigon).into();
         saigon.set_population_value(6)?;
 
+        // Create An Loc
+        let mut an_loc: Spaces = City::new(SpaceIdentifiers::AnLoc).into();
+        an_loc.set_population_value(1)?;
+
         // Create Kien Giang-An Xuyen
         let mut kien_giang_an_xuyen: Spaces =
             Province::new(SpaceIdentifiers::KienGiangAnXuyen).into();
@@ -63,6 +67,7 @@ impl MapBuilder {
         let mut new_map = Map::new();
 
         new_map.add_space(saigon)?;
+        new_map.add_space(an_loc)?;
         new_map.add_space(kien_giang_an_xuyen)?;
         new_map.add_space(ba_xuyen)?;
         new_map.add_space(quang_nam)?;
@@ -72,7 +77,7 @@ impl MapBuilder {
         new_map.add_space(kien_phong)?;
 
         // Sanity check: make sure the expected number of entries are on the hash.
-        let number_of_spaces = 8;
+        let number_of_spaces = 9;
         if new_map.spaces_stored() != number_of_spaces {
             panic!("After creating the hashmap with all the board spaces, there should have been {:?} spaces, but there were {:?}.", number_of_spaces, new_map.spaces_stored());
         }

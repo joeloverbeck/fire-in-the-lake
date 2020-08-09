@@ -16,12 +16,15 @@ pub trait Space {
     fn get_support_level(&self) -> SupportLevels;
     fn set_support_level(&mut self, new_support_level: SupportLevels);
     fn shift_support_level_down(&mut self);
+    fn shift_support_level_up(&mut self);
     fn get_terrain_type(&self) -> TerrainTypes;
     fn set_terrain_type(&mut self, new_terrain_type: TerrainTypes);
     fn get_population_value(&self) -> u8;
     fn set_population_value(&mut self, new_population_value: u8) -> Result<(), String>;
     fn get_control(&self) -> Controls;
     fn set_control(&mut self, new_control: Controls);
+    fn get_number_of_arvn_troops(&self) -> u8;
+    fn set_number_of_arvn_troops(&mut self, new_number_of_arvn_troops: u8) -> Result<(), String>;
 }
 
 #[enum_dispatch(Space)]

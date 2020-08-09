@@ -43,6 +43,10 @@ impl Space for Province {
         self.support.shift_support_level_down();
     }
 
+    fn shift_support_level_up(&mut self) {
+        todo!()
+    }
+
     fn get_terrain_type(&self) -> TerrainTypes {
         self.terrain_type
     }
@@ -67,6 +71,14 @@ impl Space for Province {
 
     fn set_control(&mut self, new_control: Controls) {
         self.control = new_control;
+    }
+
+    fn get_number_of_arvn_troops(&self) -> u8 {
+        todo!()
+    }
+
+    fn set_number_of_arvn_troops(&mut self, _new_number_of_arvn_troops: u8) -> Result<(), String> {
+        todo!()
     }
 }
 
