@@ -71,13 +71,20 @@ fn test_second_game_turn_playbook() -> Result<(), String> {
 
     let mut available_forces = AvailableForces::new();
 
-    let mut nva_decision = decision_making_center.decide(
+    let mut possible_nva_decision = decision_making_center.decide(
         game_flow_handler.get_active_card(),
         game_flow_handler.get_current_eligible(),
         &built_map,
         &track,
         &available_forces,
     );
+
+    let mut nva_decision;
+
+    match possible_nva_decision {
+        Ok(decision) => nva_decision = decision,
+        Err(error) => panic!("Something went wrong when producing the decision for NVA during the second turn. Error: {:?}", error)
+    }
 
     assert_eq!(
         nva_decision.get_choice(),
@@ -207,13 +214,20 @@ fn test_second_game_turn_playbook() -> Result<(), String> {
     );
 
     // Because the others are ineligible, it's US' turn.
-    let mut us_decision = decision_making_center.decide(
+    let mut possible_us_decision = decision_making_center.decide(
         game_flow_handler.get_active_card(),
         game_flow_handler.get_current_eligible(),
         &built_map,
         &track,
         &available_forces,
     );
+
+    let mut us_decision;
+
+    match possible_us_decision {
+        Ok(decision) => us_decision = decision,
+        Err(error) => panic!("Something went wrong when producing the decision for US during the second turn. Error: {:?}", error)
+    }
 
     assert_eq!(
         us_decision.get_choice(),

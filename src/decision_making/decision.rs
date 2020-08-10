@@ -1,14 +1,15 @@
 use decision_making::choices::Choices;
+use decision_making::input_commands::InputCommands;
 use factions::Factions;
 
 pub struct Decision {
     faction: Factions,
     choice: Choices,
-    commands: Vec<String>,
+    commands: Vec<InputCommands>,
 }
 
 impl Decision {
-    pub fn new(faction: Factions, new_choice: Choices, commands: Vec<String>) -> Decision {
+    pub fn new(faction: Factions, new_choice: Choices, commands: Vec<InputCommands>) -> Decision {
         Decision {
             faction,
             choice: new_choice,
@@ -24,7 +25,7 @@ impl Decision {
         self.choice
     }
 
-    pub fn get_commands(&self) -> Vec<String> {
+    pub fn get_commands(&self) -> Vec<InputCommands> {
         self.commands.to_owned()
     }
 }

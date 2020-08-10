@@ -18,7 +18,7 @@ impl Default for PlaybookSecondTurnUs {
 }
 
 impl Player for PlaybookSecondTurnUs {
-    fn provide_command(&self, _active_card: u8, _map: &Map, _track: &Track) -> Vec<String> {
+    fn provide_commands(&self, _active_card: u8, _map: &Map, _track: &Track) -> Vec<String> {
         // Decides to perform Second Limited Operation.
         let mut vec = Vec::new();
         vec.push(String::from("sweep").to_lowercase());

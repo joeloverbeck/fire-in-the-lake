@@ -10,8 +10,8 @@ use fire_in_the_lake::board::support::SupportLevels;
 use fire_in_the_lake::board::track::Track;
 use fire_in_the_lake::cards::card_registry::CardRegistry;
 use fire_in_the_lake::commands::execute_commands::execute_commands;
-use fire_in_the_lake::commands::manipulate_aid::ManipulateAid;
-use fire_in_the_lake::commands::shift_support_of_space::ShiftSupportOfSpace;
+use fire_in_the_lake::commands::manipulate_aid::manipulate_aid;
+use fire_in_the_lake::commands::shift_support_of_space::shift_support_of_space;
 use fire_in_the_lake::decision_making::choices::Choices;
 use fire_in_the_lake::decision_making::commands_producer::CommandsProducer;
 use fire_in_the_lake::decision_making::decision::Decision;
@@ -74,13 +74,22 @@ fn test_first_game_turn_playbook() -> Result<(), String> {
         .set_support_level(SupportLevels::PassiveSupport);
     track.set_aid(15);
 
-    let mut vc_decision = decision_making_center.decide(
+    let mut possible_vc_decision = decision_making_center.decide(
         game_flow_handler.get_active_card(),
         game_flow_handler.get_current_eligible(),
         &built_map,
         &track,
         &available_forces,
     );
+
+    let mut vc_decision;
+
+    match possible_vc_decision {
+        Ok(decision) => vc_decision = decision,
+        Err(error) => {
+            panic!("Something went wrong when producing the decision for VC during the first turn.")
+        }
+    }
 
     assert_eq!(
         vc_decision.get_choice(),
@@ -153,13 +162,22 @@ fn test_first_game_turn_playbook() -> Result<(), String> {
 
     // In this occasion, it chooses to pass. We gotta send the decision making center
     // the needed information, and we should get back "pass".
-    let mut nva_decision = decision_making_center.decide(
+    let mut possible_nva_decision = decision_making_center.decide(
         game_flow_handler.get_active_card(),
         game_flow_handler.get_current_eligible(),
         &built_map,
         &track,
         &available_forces,
     );
+
+    let mut nva_decision;
+
+    match possible_nva_decision {
+        Ok(decision) => nva_decision = decision,
+        Err(error) => panic!(
+            "Something went wrong when producing the decision for NVA during the first turn."
+        ),
+    }
 
     assert_eq!(
         nva_decision.get_choice(),
@@ -218,13 +236,20 @@ fn test_first_game_turn_playbook() -> Result<(), String> {
     // That increases Aid +6 (+3 per each city, 3x1 Pop)
     // Also, for Aid it also matters the CURRENT RNV LEADER, who is Minh. If ARVN Trains, Aid receives +5 bonus.
     // After implementing all these systems, we are a long way there.
-    let mut arvn_decision = decision_making_center.decide(
+    let mut possible_arvn_decision = decision_making_center.decide(
         game_flow_handler.get_active_card(),
         game_flow_handler.get_current_eligible(),
         &built_map,
         &track,
         &available_forces,
     );
+
+    let mut arvn_decision;
+
+    match possible_arvn_decision {
+        Ok(decision) => arvn_decision = decision,
+        Err(error) => panic!("Something went wrong when producing the decision for ARVN during the first turn. Error: {:?}", error)
+    }
 
     assert_eq!(
         arvn_decision.get_choice(),

@@ -69,13 +69,20 @@ fn test_third_game_turn_playbook() -> Result<(), String> {
 
     let mut available_forces = AvailableForces::new();
 
-    let mut arvn_decision = decision_making_center.decide(
+    let mut possible_arvn_decision = decision_making_center.decide(
         game_flow_handler.get_active_card(),
         game_flow_handler.get_current_eligible(),
         &built_map,
         &track,
         &available_forces,
     );
+
+    let mut arvn_decision;
+
+    match possible_arvn_decision {
+        Ok(decision) => arvn_decision = decision,
+        Err(error) => panic!("Something went wrong when producing the decision for ARVN during the third turn. Error: {:?}", error)
+    }
 
     assert_eq!(
         arvn_decision.get_choice(),
@@ -202,6 +209,16 @@ fn test_third_game_turn_playbook() -> Result<(), String> {
     );
 
     // VC's turn.
+    assert_eq!(
+        game_flow_handler.get_current_eligible(),
+        Factions::VC,
+        "After ARVN makes its choice, the next eligible should be the VC."
+    );
+
+    // They choose an Operation & Special Activity
+
+    // Prove VC's turn
+    //assert_eq!(track.get_vc_victory_marker(), 23, "VC's victory marker should have been 23, but was {:?}", track.get_vc_victory_marker());
 
     Ok(())
 }

@@ -1,3 +1,5 @@
+use decision_making::input_commands::InputCommands;
+
 #[derive(Hash, Debug, Clone, Copy, PartialEq)]
 pub enum SpaceIdentifiers {
     Saigon,
@@ -17,24 +19,24 @@ pub enum SpaceIdentifiers {
 
 impl Eq for SpaceIdentifiers {}
 
-pub fn translate_space_name_to_identifier(space_name: &str) -> SpaceIdentifiers {
-    if space_name == "saigon" {
+pub fn translate_space_name_to_identifier(space_name: InputCommands) -> SpaceIdentifiers {
+    if space_name == InputCommands::Saigon {
         SpaceIdentifiers::Saigon
-    } else if space_name == "an loc" {
+    } else if space_name == InputCommands::AnLoc {
         SpaceIdentifiers::AnLoc
-    } else if space_name == "can tho" {
+    } else if space_name == InputCommands::CanTho {
         SpaceIdentifiers::CanTho
-    } else if space_name == "north vietnam" {
+    } else if space_name == InputCommands::NorthVietnam {
         SpaceIdentifiers::NorthVietnam
-    } else if space_name == "the parrot's beak" {
+    } else if space_name == InputCommands::TheParrotsBeak {
         SpaceIdentifiers::TheParrotsBeak
-    } else if space_name == "kien phong" {
+    } else if space_name == InputCommands::KienPhong {
         SpaceIdentifiers::KienPhong
-    } else if space_name == "kien giang" {
+    } else if space_name == InputCommands::KienGiang {
         SpaceIdentifiers::KienGiangAnXuyen
-    } else if space_name == "quang tri" {
+    } else if space_name == InputCommands::QuangTri {
         SpaceIdentifiers::QuangTriThuaThien
-    } else if space_name == "binh dinh" {
+    } else if space_name == InputCommands::BinhDinh {
         SpaceIdentifiers::BinhDinh
     } else {
         todo!()

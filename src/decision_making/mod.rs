@@ -2,5 +2,8 @@ pub mod choices;
 pub mod commands_producer;
 pub mod decision;
 pub mod decision_making_center;
+pub mod input_commands;
+pub mod input_interpreter;
 pub mod player;
 pub mod testing;
+pub mod translate_input_command_to_digit;

@@ -1,24 +1,10 @@
 use board::track::Track;
-use commands::manipulate_nva_resources::ManipulateNvaResources;
+use commands::manipulate_nva_resources::manipulate_nva_resources;
 
-pub struct ImproveTrailNva {}
+pub fn improve_trail_nva(track: &mut Track) -> Result<(), String> {
+    manipulate_nva_resources(track, -2)?;
 
-impl Default for ImproveTrailNva {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+    track.set_trail(track.get_trail() + 1);
 
-impl ImproveTrailNva {
-    pub fn new() -> ImproveTrailNva {
-        ImproveTrailNva {}
-    }
-
-    pub fn execute(&self, track: &mut Track) -> Result<(), String> {
-        ManipulateNvaResources::new().execute(track, -2)?;
-
-        track.set_trail(track.get_trail() + 1);
-
-        Ok(())
-    }
+    Ok(())
 }

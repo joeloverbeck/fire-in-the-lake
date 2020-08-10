@@ -18,7 +18,7 @@ impl Default for PlaybookFirstTurnVc {
 }
 
 impl Player for PlaybookFirstTurnVc {
-    fn provide_command(&self, _active_card: u8, _map: &Map, _track: &Track) -> Vec<String> {
+    fn provide_commands(&self, _active_card: u8, _map: &Map, _track: &Track) -> Vec<String> {
         // During the first turn it just decides to execute the event. He just should have to say 'event'.
         // It's the receiver that should take into consideration which event each faction would trigger (want to).
         let mut vec = Vec::new();

@@ -18,7 +18,7 @@ impl Default for PlaybookFirstTurnNva {
 }
 
 impl Player for PlaybookFirstTurnNva {
-    fn provide_command(&self, _active_card: u8, _map: &Map, _track: &Track) -> Vec<String> {
+    fn provide_commands(&self, _active_card: u8, _map: &Map, _track: &Track) -> Vec<String> {
         // It should pass. Just return "pass".
         let mut vec = Vec::new();
         vec.push(String::from("pass").to_lowercase());

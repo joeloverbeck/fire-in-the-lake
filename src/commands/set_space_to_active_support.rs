@@ -3,9 +3,10 @@ use board::space::Space;
 use board::space_identifiers::translate_space_name_to_identifier;
 use board::support::SupportLevels;
 use board::track::Track;
+use decision_making::input_commands::InputCommands;
 
 pub fn set_space_to_active_support(
-    location: &str,
+    location: InputCommands,
     map: &mut Map,
     track: &mut Track,
 ) -> Result<(), String> {

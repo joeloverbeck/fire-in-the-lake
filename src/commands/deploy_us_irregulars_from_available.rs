@@ -3,10 +3,11 @@ use board::map::Map;
 use board::space::Space;
 use board::space_identifiers::translate_space_name_to_identifier;
 use board::track::Track;
+use decision_making::input_commands::InputCommands;
 use math::amount_that_was_removed_from_number::amount_that_was_removed_from_number;
 
 pub fn deploy_us_irregulars_from_available(
-    location: &str,
+    location: InputCommands,
     amount_of_us_irregulars: u8,
     map: &mut Map,
     track: &mut Track,

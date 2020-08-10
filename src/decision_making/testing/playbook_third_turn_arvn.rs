@@ -18,7 +18,7 @@ impl Default for PlaybookThirdTurnArvn {
 }
 
 impl Player for PlaybookThirdTurnArvn {
-    fn provide_command(&self, _active_card: u8, _map: &Map, _track: &Track) -> Vec<String> {
+    fn provide_commands(&self, _active_card: u8, _map: &Map, _track: &Track) -> Vec<String> {
         let mut vec: Vec<String> = Vec::new();
 
         vec.push(String::from("event").to_lowercase());

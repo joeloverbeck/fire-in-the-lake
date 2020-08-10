@@ -12,5 +12,5 @@ pub trait CommandsProducer {
         map: &Map,
         track: &Track,
         available_forces: &AvailableForces,
-    ) -> Decision;
+    ) -> Result<Decision, String>;
 }

@@ -12,7 +12,7 @@ use self::enum_dispatch::enum_dispatch;
 
 #[enum_dispatch]
 pub trait Player {
-    fn provide_command(&self, active_card: u8, map: &Map, track: &Track) -> Vec<String>;
+    fn provide_commands(&self, active_card: u8, map: &Map, track: &Track) -> Vec<String>;
 }
 
 #[enum_dispatch(Player)]

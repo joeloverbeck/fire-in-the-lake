@@ -18,7 +18,7 @@ impl Default for PlaybookSecondTurnNva {
 }
 
 impl Player for PlaybookSecondTurnNva {
-    fn provide_command(&self, _active_card: u8, _map: &Map, _track: &Track) -> Vec<String> {
+    fn provide_commands(&self, _active_card: u8, _map: &Map, _track: &Track) -> Vec<String> {
         // Decides to perform First Operation Only
         let mut vec = Vec::new();
         vec.push(String::from("op only").to_lowercase());

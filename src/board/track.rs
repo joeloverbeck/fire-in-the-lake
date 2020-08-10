@@ -10,6 +10,7 @@ pub struct Track {
     arvn_resources: u8,
     trail: u8,
     us_victory_marker: u8,
+    vc_victory_marker: u8,
     control_plus_patronage: u8,
     patronage: u8,
 }
@@ -22,6 +23,7 @@ impl Track {
             arvn_resources: 0,
             trail: 0,
             us_victory_marker: 0,
+            vc_victory_marker: 0,
             control_plus_patronage: 0,
             patronage: 0,
         }
@@ -96,6 +98,10 @@ impl Track {
 
     pub fn get_us_victory_marker(&self) -> u8 {
         self.us_victory_marker
+    }
+
+    pub fn get_vc_victory_marker(&self) -> u8 {
+        self.vc_victory_marker
     }
 
     pub fn adjust_us_victory_marker(&mut self, map: &Map) {

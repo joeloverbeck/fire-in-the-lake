@@ -18,7 +18,7 @@ impl Default for PlaybookFirstTurnArvn {
 }
 
 impl Player for PlaybookFirstTurnArvn {
-    fn provide_command(&self, _active_card: u8, _map: &Map, _track: &Track) -> Vec<String> {
+    fn provide_commands(&self, _active_card: u8, _map: &Map, _track: &Track) -> Vec<String> {
         // It will do lotsa stuff.
         // operation
         // train saigon
@@ -32,7 +32,8 @@ impl Player for PlaybookFirstTurnArvn {
 
         let mut vec = Vec::new();
         vec.push(String::from("operation").to_lowercase());
-        vec.push(String::from("train saigon").to_lowercase());
+        vec.push(String::from("train").to_lowercase());
+        vec.push(String::from("saigon").to_lowercase());
         vec.push(String::from("6").to_lowercase());
         vec.push(String::from("yes").to_lowercase());
         vec.push(String::from("yes").to_lowercase());
