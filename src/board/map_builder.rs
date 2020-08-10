@@ -84,6 +84,31 @@ impl MapBuilder {
         binh_dinh.set_population_value(2)?;
         binh_dinh.set_terrain_type(TerrainTypes::Highland);
 
+        // Create Quang Tin
+        let mut quang_tin: Spaces = Province::new(SpaceIdentifiers::QuangTinQuangNgai).into();
+        quang_tin.set_population_value(2)?;
+        quang_tin.set_terrain_type(TerrainTypes::Lowland);
+
+        // Create Quang Duc
+        let mut quang_duc: Spaces = Province::new(SpaceIdentifiers::QuangDucLongKhanh).into();
+        quang_duc.set_population_value(1)?;
+        quang_duc.set_terrain_type(TerrainTypes::Jungle);
+
+        // Create Binh Tuy
+        let mut binh_tuy: Spaces = Province::new(SpaceIdentifiers::BinhTuyBinhThuan).into();
+        binh_tuy.set_population_value(1)?;
+        binh_tuy.set_terrain_type(TerrainTypes::Jungle);
+
+        // Create Pleiku-Darlac
+        let mut pleiku: Spaces = Province::new(SpaceIdentifiers::PleikuDarlac).into();
+        pleiku.set_population_value(1)?;
+        pleiku.set_terrain_type(TerrainTypes::Highland);
+
+        // Create Hue
+        let mut hue: Spaces = Province::new(SpaceIdentifiers::Hue).into();
+        hue.set_population_value(2)?;
+        hue.set_terrain_type(TerrainTypes::City);
+
         let mut new_map = Map::new();
 
         new_map.add_space(saigon)?;
@@ -99,9 +124,14 @@ impl MapBuilder {
         new_map.add_space(parrots_beak)?;
         new_map.add_space(quang_tri)?;
         new_map.add_space(binh_dinh)?;
+        new_map.add_space(quang_tin)?;
+        new_map.add_space(quang_duc)?;
+        new_map.add_space(binh_tuy)?;
+        new_map.add_space(pleiku)?;
+        new_map.add_space(hue)?;
 
         // Sanity check: make sure the expected number of entries are on the hash.
-        let number_of_spaces = 13;
+        let number_of_spaces = 18;
         if new_map.spaces_stored() != number_of_spaces {
             panic!("After creating the hashmap with all the board spaces, there should have been {:?} spaces, but there were {:?}.", number_of_spaces, new_map.spaces_stored());
         }

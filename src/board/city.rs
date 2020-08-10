@@ -94,6 +94,10 @@ impl Space for City {
         self.forces.get_number_of_nva_bases() > 0
     }
 
+    fn are_there_vc_bases(&self) -> bool {
+        self.forces.get_number_of_vc_bases() > 0
+    }
+
     fn set_number_of_nva_bases(&mut self, _new_number_of_nva_bases: u8) {
         todo!()
     }
@@ -152,6 +156,10 @@ impl Space for City {
 
     fn get_total_number_of_vc_pieces(&self) -> u8 {
         todo!()
+    }
+
+    fn get_number_of_vc_bases(&self) -> u8 {
+        self.forces.get_number_of_vc_bases()
     }
 
     fn set_number_of_vc_bases(&mut self, _new_number_of_vc_bases: u8) {

@@ -15,6 +15,11 @@ pub enum SpaceIdentifiers {
     QuangTriThuaThien,
     NorthVietnam,
     TheParrotsBeak,
+    QuangTinQuangNgai,
+    QuangDucLongKhanh,
+    BinhTuyBinhThuan,
+    Hue,
+    PleikuDarlac,
 }
 
 impl Eq for SpaceIdentifiers {}
@@ -38,6 +43,16 @@ pub fn translate_space_name_to_identifier(space_name: InputCommands) -> SpaceIde
         SpaceIdentifiers::QuangTriThuaThien
     } else if space_name == InputCommands::BinhDinh {
         SpaceIdentifiers::BinhDinh
+    } else if space_name == InputCommands::PleikuDarlac {
+        SpaceIdentifiers::PleikuDarlac
+    } else if space_name == InputCommands::Hue {
+        SpaceIdentifiers::Hue
+    } else if space_name == InputCommands::QuangTinQuangNgai {
+        SpaceIdentifiers::QuangTinQuangNgai
+    } else if space_name == InputCommands::QuangDucLongKhanh {
+        SpaceIdentifiers::QuangDucLongKhanh
+    } else if space_name == InputCommands::BinhTuyBinhThuan {
+        SpaceIdentifiers::BinhTuyBinhThuan
     } else {
         todo!()
     }

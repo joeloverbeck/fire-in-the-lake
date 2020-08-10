@@ -70,6 +70,18 @@ impl InputInterpreter {
             .insert("quang tri".to_string(), InputCommands::QuangTri);
         self.interpretations
             .insert("binh dinh".to_string(), InputCommands::BinhDinh);
+        self.interpretations
+            .insert("pleiku".to_string(), InputCommands::PleikuDarlac);
+        self.interpretations
+            .insert("hue".to_string(), InputCommands::Hue);
+        self.interpretations
+            .insert("tax".to_string(), InputCommands::Tax);
+        self.interpretations
+            .insert("quang tin".to_string(), InputCommands::QuangTinQuangNgai);
+        self.interpretations
+            .insert("quang duc".to_string(), InputCommands::QuangDucLongKhanh);
+        self.interpretations
+            .insert("binh tuy".to_string(), InputCommands::BinhTuyBinhThuan);
     }
 
     pub fn interpret(

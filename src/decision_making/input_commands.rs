@@ -10,10 +10,12 @@ pub enum InputCommands {
     Rally,
     Sweep,
     Train,
+    Tax,
     Stop,
     Yes,
     No,
     Saigon,
+    Hue,
     AnLoc,
     CanTho,
     NorthVietnam,
@@ -22,6 +24,10 @@ pub enum InputCommands {
     KienGiang,
     QuangTri,
     BinhDinh,
+    PleikuDarlac,
+    QuangTinQuangNgai,
+    QuangDucLongKhanh,
+    BinhTuyBinhThuan,
     Six,
 }
 

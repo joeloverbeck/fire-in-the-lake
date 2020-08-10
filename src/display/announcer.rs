@@ -34,7 +34,7 @@ impl Announcer {
         ));
     }
 
-    pub fn instruct_to_move_faction_cylinder_from_eligible_to_operation_and_special_activity_box(
+    pub fn instruct_to_move_faction_cylinder_from_eligible_to_second_operation_and_special_activity_box(
         &self,
         faction: Factions,
     ) {

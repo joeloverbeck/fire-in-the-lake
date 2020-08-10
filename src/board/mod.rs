@@ -3,6 +3,7 @@ mod city;
 pub mod controls;
 pub mod current_rvn_leader;
 pub mod forces;
+pub mod get_space_from_map;
 mod line_of_communication;
 pub mod map;
 pub mod map_builder;

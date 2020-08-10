@@ -68,6 +68,12 @@ impl CommandsProducer for DecisionMakingCenter {
                         Choices::ShadedEvent,
                         player_commands,
                     ));
+                } else if player_commands[0] == InputCommands::Operation {
+                    return Ok(Decision::new(
+                        current_eligible,
+                        Choices::SecondOperationAndSpecialActivity,
+                        player_commands,
+                    ));
                 }
 
                 todo!()

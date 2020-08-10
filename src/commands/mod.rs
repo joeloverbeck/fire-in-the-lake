@@ -1,12 +1,16 @@
+pub mod atomic;
 pub mod deploy_arvn_troops_from_available;
-pub mod deploy_nva_guerrillas_from_available;
 pub mod deploy_us_irregulars_from_available;
+pub mod events;
 pub mod execute_commands;
 pub mod extract_multiword_command;
 pub mod improve_trail_nva;
 pub mod manipulate_aid;
 pub mod manipulate_arvn_resources;
 pub mod manipulate_nva_resources;
+pub mod operations;
+pub mod passing;
 pub mod set_space_to_active_support;
 pub mod shift_support_of_space;
+pub mod special_activities;
 pub mod sweep;

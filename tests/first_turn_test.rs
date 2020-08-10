@@ -218,7 +218,7 @@ fn test_first_game_turn_playbook() -> Result<(), String> {
         &mut built_map,
         &mut track,
         &mut available_forces,
-    );
+    )?;
 
     assert_eq!(track.get_nva_resources(), 11);
 
@@ -281,7 +281,7 @@ fn test_first_game_turn_playbook() -> Result<(), String> {
     );
 
     announcer
-        .instruct_to_move_faction_cylinder_from_eligible_to_operation_and_special_activity_box(
+        .instruct_to_move_faction_cylinder_from_eligible_to_second_operation_and_special_activity_box(
             Factions::ARVN,
         );
 

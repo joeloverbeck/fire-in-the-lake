@@ -25,7 +25,9 @@ pub trait Space {
     fn get_number_of_arvn_troops(&self) -> u8;
     fn set_number_of_arvn_troops(&mut self, new_number_of_arvn_troops: u8) -> Result<(), String>;
     fn are_there_nva_bases(&self) -> bool;
+    fn are_there_vc_bases(&self) -> bool;
     fn set_number_of_nva_bases(&mut self, new_number_of_nva_bases: u8);
+    fn get_number_of_vc_bases(&self) -> u8;
     fn set_number_of_vc_bases(&mut self, new_number_of_vc_bases: u8);
     fn get_number_of_underground_nva_guerrillas(&self) -> u8;
     fn set_number_of_underground_nva_guerrillas(

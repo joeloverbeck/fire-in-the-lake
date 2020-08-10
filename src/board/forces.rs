@@ -108,6 +108,10 @@ impl Forces {
         self.underground_vc_guerrillas + self.active_vc_guerrillas + self.vc_bases
     }
 
+    pub fn get_number_of_vc_bases(&self) -> u8 {
+        self.vc_bases
+    }
+
     pub fn set_number_of_vc_bases(&mut self, new_number_of_vc_bases: u8) {
         self.vc_bases = new_number_of_vc_bases;
     }

@@ -15,6 +15,7 @@ use fire_in_the_lake::decision_making::decision_making_center::DecisionMakingCen
 use fire_in_the_lake::decision_making::testing::playbook_second_turn_nva::PlaybookSecondTurnNva;
 use fire_in_the_lake::decision_making::testing::playbook_second_turn_us::PlaybookSecondTurnUs;
 use fire_in_the_lake::decision_making::testing::playbook_third_turn_arvn::PlaybookThirdTurnArvn;
+use fire_in_the_lake::decision_making::testing::playbook_third_turn_vc::PlaybookThirdTurnVc;
 use fire_in_the_lake::display::announcer::Announcer;
 use fire_in_the_lake::factions::Factions;
 use fire_in_the_lake::game_flow::game_flow_handler::GameFlowHandler;
@@ -57,7 +58,7 @@ fn test_third_game_turn_playbook() -> Result<(), String> {
     );
 
     let decision_making_center = DecisionMakingCenter::new(
-        PlaybookSecondTurnNva::new().into(),
+        PlaybookThirdTurnVc::new().into(),
         PlaybookSecondTurnUs::new().into(),
         PlaybookSecondTurnNva::new().into(),
         PlaybookThirdTurnArvn::new().into(),
@@ -216,9 +217,184 @@ fn test_third_game_turn_playbook() -> Result<(), String> {
     );
 
     // They choose an Operation & Special Activity
+    let mut possible_vc_decision = decision_making_center.decide(
+        game_flow_handler.get_active_card(),
+        game_flow_handler.get_current_eligible(),
+        &built_map,
+        &track,
+        &available_forces,
+    );
+
+    let mut vc_decision;
+
+    match possible_vc_decision {
+        Ok(decision) => vc_decision = decision,
+        Err(error) => panic!("Something went wrong when producing the decision for VC during the third turn. Error: {:?}", error)
+    }
+
+    assert_eq!(
+        vc_decision.get_choice(),
+        Choices::SecondOperationAndSpecialActivity,
+        "VC's choice should have been Second Operation and Special Activity."
+    );
+
+    // Should inform the game_flow_handler
+    game_flow_handler.report_choice(
+        game_flow_handler.get_current_eligible(),
+        vc_decision.get_choice(),
+    )?;
+
+    assert_eq!(
+        game_flow_handler.get_current_eligible(),
+        Factions::None,
+        "After VC makes its choice, there should be no next eligible."
+    );
+    assert_eq!(
+        game_flow_handler.faction_present_in_second_op_and_special_activity(),
+        Factions::VC,
+        "VC should have been registered as having chosen Second Operation and Special Activity.",
+    );
+    assert_eq!(
+        game_flow_handler.is_faction_eligible(Factions::VC),
+        false,
+        "After making a choice, VC should no longer be considered eligible."
+    );
+
+    // Setup
+    track.set_vc_resources(5);
+    built_map
+        .get_space_mut(SpaceIdentifiers::PleikuDarlac)
+        .unwrap()
+        .set_number_of_vc_bases(1);
+    built_map
+        .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+        .unwrap()
+        .set_number_of_vc_bases(1);
+    available_forces.set_amount_of_vc_guerrillas(10);
+    built_map
+        .get_space_mut(SpaceIdentifiers::QuangTinQuangNgai)
+        .unwrap()
+        .set_number_of_underground_vc_guerrillas(1);
+    built_map
+        .get_space_mut(SpaceIdentifiers::QuangDucLongKhanh)
+        .unwrap()
+        .set_number_of_underground_vc_guerrillas(1);
+    built_map
+        .get_space_mut(SpaceIdentifiers::BinhTuyBinhThuan)
+        .unwrap()
+        .set_number_of_underground_vc_guerrillas(1);
+    built_map
+        .get_space_mut(SpaceIdentifiers::QuangTinQuangNgai)
+        .unwrap()
+        .set_support_level(SupportLevels::ActiveOpposition);
+    built_map
+        .get_space_mut(SpaceIdentifiers::QuangDucLongKhanh)
+        .unwrap()
+        .set_support_level(SupportLevels::ActiveOpposition);
+    built_map
+        .get_space_mut(SpaceIdentifiers::BinhTuyBinhThuan)
+        .unwrap()
+        .set_support_level(SupportLevels::ActiveOpposition);
+
+    // Execute the commands
+    announcer.instruct_to_move_faction_cylinder_from_eligible_to_second_operation_and_special_activity_box(
+        Factions::VC,
+    );
+
+    execute_commands(
+        game_flow_handler.get_active_card(),
+        vc_decision.get_faction(),
+        vc_decision.get_commands(),
+        &mut built_map,
+        &mut track,
+        &mut available_forces,
+    );
 
     // Prove VC's turn
-    //assert_eq!(track.get_vc_victory_marker(), 23, "VC's victory marker should have been 23, but was {:?}", track.get_vc_victory_marker());
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::PleikuDarlac)
+            .unwrap()
+            .get_number_of_underground_vc_guerrillas(),
+        2
+    );
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::PleikuDarlac)
+            .unwrap()
+            .get_number_of_vc_bases(),
+        1
+    );
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+            .unwrap()
+            .get_number_of_underground_vc_guerrillas(),
+        3
+    );
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+            .unwrap()
+            .get_number_of_vc_bases(),
+        1
+    );
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::Hue)
+            .unwrap()
+            .get_number_of_underground_vc_guerrillas(),
+        1
+    );
+
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::QuangTinQuangNgai)
+            .unwrap()
+            .get_number_of_active_vc_guerrillas(),
+        1
+    );
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::QuangDucLongKhanh)
+            .unwrap()
+            .get_number_of_active_vc_guerrillas(),
+        1
+    );
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::BinhTuyBinhThuan)
+            .unwrap()
+            .get_number_of_active_vc_guerrillas(),
+        1
+    );
+
+    assert_eq!(track.get_vc_resources(), 10);
+
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::QuangTinQuangNgai)
+            .unwrap()
+            .get_support_level(),
+        SupportLevels::PassiveOpposition,
+        "The support level should have been PassiveSupport"
+    );
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::QuangDucLongKhanh)
+            .unwrap()
+            .get_support_level(),
+        SupportLevels::PassiveOpposition,
+        "The support level should have been PassiveSupport"
+    );
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::BinhTuyBinhThuan)
+            .unwrap()
+            .get_support_level(),
+        SupportLevels::PassiveOpposition,
+        "The support level should have been PassiveSupport"
+    );
 
     Ok(())
 }

@@ -128,6 +128,10 @@ impl Space for LineOfCommunication {
         todo!()
     }
 
+    fn are_there_vc_bases(&self) -> bool {
+        todo!()
+    }
+
     fn set_number_of_underground_vc_guerrillas(
         &mut self,
         _new_number_of_underground_vc_guerrillas: u8,
@@ -141,6 +145,11 @@ impl Space for LineOfCommunication {
 
     fn get_total_number_of_vc_pieces(&self) -> u8 {
         todo!()
+    }
+
+    fn get_number_of_vc_bases(&self) -> u8 {
+        // Can't have bases in a LoC.
+        0
     }
 
     fn set_number_of_vc_bases(&mut self, _new_number_of_vc_bases: u8) {

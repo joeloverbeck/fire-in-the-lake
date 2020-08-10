@@ -48,6 +48,9 @@ impl Support {
                 self.current_support_level = SupportLevels::ActiveSupport
             }
             SupportLevels::Neutral => self.current_support_level = SupportLevels::PassiveSupport,
+            SupportLevels::ActiveOpposition => {
+                self.current_support_level = SupportLevels::PassiveOpposition
+            }
             _ => todo!(),
         }
     }
