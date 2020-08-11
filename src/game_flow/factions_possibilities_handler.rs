@@ -1,4 +1,3 @@
-use game_flow::remove_faction_to_move_from_eligibles::remove_faction_to_move_from_eligibles;
 use cards::card::Card;
 use decision_making::choices::Choices;
 use factions::get_position_in_faction_order_of_faction::get_position_in_faction_order_of_faction;
@@ -6,6 +5,7 @@ use factions::Factions;
 use game_flow::faction_should_be_movable_sanity_check::faction_should_be_movable_sanity_check;
 use game_flow::move_faction_to_elegible::move_faction_to_eligible;
 use game_flow::populate_eligible_factions::populate_eligible_factions;
+use game_flow::remove_faction_to_move_from_eligibles::remove_faction_to_move_from_eligibles;
 
 pub struct FactionsPossibilitiesHandler {
     current_eligible: Factions,
@@ -148,8 +148,6 @@ impl FactionsPossibilitiesHandler {
 
         Ok(())
     }
-
-    
 
     fn check_eligibility_and_remove_faction_to_move(
         &mut self,

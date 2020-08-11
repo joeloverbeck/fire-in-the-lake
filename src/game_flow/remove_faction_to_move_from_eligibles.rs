@@ -1,8 +1,8 @@
-
-
 use factions::Factions;
 
-pub fn remove_faction_to_move_from_eligibles(faction_to_move: Factions, eligible: &mut [Factions; 4],
+pub fn remove_faction_to_move_from_eligibles(
+    faction_to_move: Factions,
+    eligible: &mut [Factions; 4],
 ) -> Result<(), String> {
     // First we gotta make sure it's there. Nobody should call this function if the faction to remove isn't
     // in the elegibles to begin with.
