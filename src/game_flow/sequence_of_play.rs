@@ -267,6 +267,14 @@ impl SequenceOfPlay {
                 self.ineligible[index] = Factions::None;
             }
         }
+        
+        // Should move those in passed to eligible.
+        for index in 0..4 {
+            if self.passed[index] != Factions::None {
+                self.move_faction_to_eligible(self.passed[index]);
+                self.passed[index] = Factions::None;
+            }
+        }
 
         // The factions that were in boxes different than eligible or pass should go to ineligible.
         if self.first_eligible_event != Factions::None {
@@ -279,14 +287,6 @@ impl SequenceOfPlay {
             // Move that faction to ineligible.
             self.slot_faction_in_ineligible(self.second_op_and_special_activity);
             self.second_op_and_special_activity = Factions::None;
-        }
-
-        // Should move those in passed to eligible.
-        for index in 0..4 {
-            if self.passed[index] != Factions::None {
-                self.move_faction_to_eligible(self.passed[index]);
-                self.passed[index] = Factions::None;
-            }
         }
 
         // Should move those in operation only to ineligible
