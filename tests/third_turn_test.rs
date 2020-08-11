@@ -19,14 +19,12 @@ use fire_in_the_lake::decision_making::testing::playbook_third_turn_vc::Playbook
 use fire_in_the_lake::display::announcer::Announcer;
 use fire_in_the_lake::factions::Factions;
 use fire_in_the_lake::game_flow::game_flow_handler::GameFlowHandler;
-use fire_in_the_lake::game_flow::sequence_of_play::SequenceOfPlay;
 
 #[test]
 fn test_third_game_turn_playbook() -> Result<(), String> {
     let card_registry = CardRegistry::new();
-    let mut sequence_of_play = SequenceOfPlay::new();
 
-    let mut game_flow_handler = GameFlowHandler::new(&card_registry, &mut sequence_of_play);
+    let mut game_flow_handler = GameFlowHandler::new(&card_registry);
 
     // Start. Game turn 3 (1/4)
     game_flow_handler.set_active_card(68);
@@ -390,6 +388,24 @@ fn test_third_game_turn_playbook() -> Result<(), String> {
             .unwrap()
             .get_support_level(),
         SupportLevels::PassiveOpposition
+    );
+
+    // Two eligible factions have acted, so the turn is over.
+    assert_eq!(game_flow_handler.has_turn_ended(), true);
+
+    game_flow_handler.perform_end_of_turn();
+
+    assert_eq!(game_flow_handler.is_faction_eligible(Factions::ARVN), false);
+    assert_eq!(game_flow_handler.is_faction_eligible(Factions::VC), false);
+    assert_eq!(
+        game_flow_handler.is_faction_eligible(Factions::NVA),
+        true,
+        "NVA should have been eligible, as it didn't act this turn."
+    );
+    assert_eq!(
+        game_flow_handler.is_faction_eligible(Factions::US),
+        true,
+        "US should have been eligible, as it didn't act this turn."
     );
 
     Ok(())

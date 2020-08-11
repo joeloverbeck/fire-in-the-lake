@@ -17,14 +17,12 @@ use fire_in_the_lake::decision_making::testing::playbook_second_turn_us::Playboo
 use fire_in_the_lake::display::announcer::Announcer;
 use fire_in_the_lake::factions::Factions;
 use fire_in_the_lake::game_flow::game_flow_handler::GameFlowHandler;
-use fire_in_the_lake::game_flow::sequence_of_play::SequenceOfPlay;
 
 #[test]
 fn test_second_game_turn_playbook() -> Result<(), String> {
     let card_registry = CardRegistry::new();
-    let mut sequence_of_play = SequenceOfPlay::new();
 
-    let mut game_flow_handler = GameFlowHandler::new(&card_registry, &mut sequence_of_play);
+    let mut game_flow_handler = GameFlowHandler::new(&card_registry);
 
     // Start. Game turn 2 (1/4)
 
