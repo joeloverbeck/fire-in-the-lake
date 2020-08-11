@@ -3,11 +3,11 @@ use board::space_identifiers::SpaceIdentifiers;
 use board::track::Track;
 use commands::manipulate_aid::manipulate_aid;
 use commands::shift_support_of_space::shift_support_of_space;
-use decision_making::input_commands::InputCommands;
+use decision_making::interpretation::interpreted_intentions::InterpretedIntentions;
 
 pub fn execute_shaded_event_for_vc(
     card_number: u8,
-    _commands: Vec<InputCommands>,
+    _interpreted_intentions: InterpretedIntentions,
     map: &mut Map,
     track: &mut Track,
 ) -> Result<(), String> {

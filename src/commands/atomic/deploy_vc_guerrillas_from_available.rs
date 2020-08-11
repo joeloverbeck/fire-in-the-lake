@@ -2,19 +2,19 @@ use board::available_forces::AvailableForces;
 use board::get_space_from_map::get_space_from_map;
 use board::map::Map;
 use board::space::Space;
+use board::space_identifiers::SpaceIdentifiers;
 use board::track::Track;
-use decision_making::input_commands::InputCommands;
 use math::amount_that_was_removed_from_number::amount_that_was_removed_from_number;
 
 pub fn deploy_vc_guerrillas_from_available(
-    location: InputCommands,
+    space_identifier: SpaceIdentifiers,
     map: &mut Map,
     _track: &mut Track,
     available_forces: &mut AvailableForces,
 ) -> Result<(), String> {
     // Bases allow 1 underground guerrilla, and more equivalent to the population level (NOT THE TRAIL, as in the case of the NVA).
     // Even if there is Active Opposition in the location, if there is no base they can only place one guerrilla.
-    let retrieved_space = get_space_from_map(location, map)?;
+    let retrieved_space = get_space_from_map(space_identifier, map)?;
 
     // Let's see how this works.
     // Bases add 1 to possible guerrillas

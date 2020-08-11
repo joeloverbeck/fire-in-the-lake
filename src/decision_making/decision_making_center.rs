@@ -4,14 +4,12 @@ use board::track::Track;
 use decision_making::choices::Choices;
 use decision_making::commands_producer::CommandsProducer;
 use decision_making::decision::Decision;
-use decision_making::input_commands::InputCommands;
-use decision_making::input_interpreter::InputInterpreter;
+use decision_making::interpretation::interpret_commands::interpret_commands;
 use decision_making::player::Player;
 use decision_making::player::Players;
 use factions::Factions;
 
 pub struct DecisionMakingCenter {
-    input_interpreter: InputInterpreter,
     vc_player: Players,
     nva_player: Players,
     us_player: Players,
@@ -26,7 +24,6 @@ impl DecisionMakingCenter {
         arvn_player: Players,
     ) -> DecisionMakingCenter {
         DecisionMakingCenter {
-            input_interpreter: InputInterpreter::new(),
             vc_player,
             nva_player,
             us_player,
@@ -54,91 +51,84 @@ impl CommandsProducer for DecisionMakingCenter {
 
         match current_eligible {
             Factions::VC => {
-                let player_commands = self
-                    .input_interpreter
-                    .interpret(self.vc_player.provide_commands(active_card, map, track))?;
+                let interpreted_intentions =
+                    interpret_commands(self.vc_player.provide_commands(active_card, map, track))?;
 
                 // The player could have written 'event'. In that case we need to execute just the corresponding event,
                 // which would be the shaded one in VC's case.
-                if player_commands.len() == 1 && player_commands[0] == InputCommands::Event {
+                if interpreted_intentions.does_it_want_to_activate_the_event() {
                     // VC player intended to execute the event. We will return the appropriate decision, along with
                     // with the written commands.
                     return Ok(Decision::new(
                         current_eligible,
                         Choices::ShadedEvent,
-                        player_commands,
+                        interpreted_intentions,
                     ));
-                } else if player_commands[0] == InputCommands::Operation {
+                } else if interpreted_intentions.does_it_want_to_do_an_operation() {
                     return Ok(Decision::new(
                         current_eligible,
                         Choices::SecondOperationAndSpecialActivity,
-                        player_commands,
+                        interpreted_intentions,
                     ));
                 }
 
                 todo!()
             }
             Factions::NVA => {
-                let player_commands = self
-                    .input_interpreter
-                    .interpret(self.nva_player.provide_commands(active_card, map, track))?;
+                let interpreted_intentions =
+                    interpret_commands(self.nva_player.provide_commands(active_card, map, track))?;
 
                 // Could be that it has chosen to pass
-                if player_commands.len() == 1 && player_commands[0] == InputCommands::Pass {
+                if interpreted_intentions.does_it_want_to_pass() {
                     return Ok(Decision::new(
                         current_eligible,
                         Choices::Pass,
-                        player_commands,
+                        interpreted_intentions,
                     ));
                 }
 
-                // Could have chosen to do an op only.
-                //let possible_op_only_command = extract_multiword_command(&player_commands[0]);
-
-                if player_commands[0] == InputCommands::OperationOnly {
+                if interpreted_intentions.does_it_want_to_do_an_operation_only() {
                     // NVA wants to do an op only.
                     return Ok(Decision::new(
                         current_eligible,
                         Choices::OperationOnly,
-                        player_commands,
+                        interpreted_intentions,
                     ));
                 }
 
                 todo!()
             }
             Factions::ARVN => {
-                let player_commands = self
-                    .input_interpreter
-                    .interpret(self.arvn_player.provide_commands(active_card, map, track))?;
+                let interpreted_intentions =
+                    interpret_commands(self.arvn_player.provide_commands(active_card, map, track))?;
 
-                if player_commands[0] == InputCommands::Operation {
+                if interpreted_intentions.does_it_want_to_do_an_operation() {
                     // Could play first the operation and then the special activity.
                     return Ok(Decision::new(
                         current_eligible,
                         Choices::SecondOperationAndSpecialActivity,
-                        player_commands,
+                        interpreted_intentions,
                     ));
-                } else if player_commands[0] == InputCommands::Event {
+                } else if interpreted_intentions.does_it_want_to_activate_the_event() {
                     return Ok(Decision::new(
                         current_eligible,
                         Choices::UnshadedEvent,
-                        player_commands,
+                        interpreted_intentions,
                     ));
                 }
 
                 todo!()
             }
             Factions::US => {
-                let player_commands = self
-                    .input_interpreter
-                    .interpret(self.us_player.provide_commands(active_card, map, track))?;
+                let interpreted_intentions =
+                    interpret_commands(self.us_player.provide_commands(active_card, map, track))?;
 
-                if player_commands[0] == InputCommands::Sweep {
+                if interpreted_intentions.does_it_want_to_sweep() {
                     // It's a special activity.
                     Ok(Decision::new(
                         current_eligible,
                         Choices::SecondLimitedOperation,
-                        player_commands,
+                        interpreted_intentions,
                     ))
                 } else {
                     todo!()

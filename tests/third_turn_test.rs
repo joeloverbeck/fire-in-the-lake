@@ -148,7 +148,7 @@ fn test_third_game_turn_playbook() -> Result<(), String> {
     execute_commands(
         game_flow_handler.get_active_card(),
         arvn_decision.get_faction(),
-        arvn_decision.get_commands(),
+        arvn_decision.get_interpreted_intentions(),
         &mut built_map,
         &mut track,
         &mut available_forces,
@@ -303,7 +303,7 @@ fn test_third_game_turn_playbook() -> Result<(), String> {
     execute_commands(
         game_flow_handler.get_active_card(),
         vc_decision.get_faction(),
-        vc_decision.get_commands(),
+        vc_decision.get_interpreted_intentions(),
         &mut built_map,
         &mut track,
         &mut available_forces,

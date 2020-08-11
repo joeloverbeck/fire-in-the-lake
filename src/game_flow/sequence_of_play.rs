@@ -267,7 +267,7 @@ impl SequenceOfPlay {
                 self.ineligible[index] = Factions::None;
             }
         }
-        
+
         // Should move those in passed to eligible.
         for index in 0..4 {
             if self.passed[index] != Factions::None {

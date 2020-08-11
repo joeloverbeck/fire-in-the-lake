@@ -26,13 +26,10 @@ impl Player for PlaybookThirdTurnVc {
         vec.push(String::from("pleiku"));
         vec.push(String::from("quang tri"));
         vec.push(String::from("hue"));
-        vec.push(String::from("stop"));
-        vec.push(String::from("yes"));
         vec.push(String::from("tax"));
         vec.push(String::from("quang tin"));
         vec.push(String::from("quang duc"));
         vec.push(String::from("binh tuy"));
-        vec.push(String::from("stop"));
 
         vec
     }

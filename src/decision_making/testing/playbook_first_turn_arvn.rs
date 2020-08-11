@@ -23,24 +23,20 @@ impl Player for PlaybookFirstTurnArvn {
         // operation
         // train saigon
         // 6 (as in six troops from his available)
-        // yes (as in you want pacify, which is allowed because of train or something)
-        // yes (as in you want to perform a special activity)
+        // pacify
         // govern
         // an loc
         // can tho
-        // stop
 
         let mut vec = Vec::new();
         vec.push(String::from("operation").to_lowercase());
         vec.push(String::from("train").to_lowercase());
         vec.push(String::from("saigon").to_lowercase());
         vec.push(String::from("6").to_lowercase());
-        vec.push(String::from("yes").to_lowercase());
-        vec.push(String::from("yes").to_lowercase());
+        vec.push(String::from("pacify").to_lowercase());
         vec.push(String::from("govern").to_lowercase());
         vec.push(String::from("an loc").to_lowercase());
         vec.push(String::from("can tho").to_lowercase());
-        vec.push(String::from("stop").to_lowercase());
 
         vec
     }

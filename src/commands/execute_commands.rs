@@ -1,8 +1,6 @@
 use board::available_forces::AvailableForces;
 use board::map::Map;
 use board::track::Track;
-use collections::create_vec_of_vec_from_index::create_vec_of_vec_from_index;
-use collections::get_index_of_next_batch_of_commands_after_stop::get_index_of_next_batch_of_commands_after_stop;
 use commands::events::execute_shaded_event_for_vc::execute_shaded_event_for_vc;
 use commands::events::execute_unshaded_event_for_arvn::execute_unshaded_event_for_arvn;
 use commands::operations::execute_operation_for_arvn::execute_operation_for_arvn;
@@ -12,13 +10,13 @@ use commands::passing::execute_passed_for_arvn::execute_passed_for_nva;
 use commands::special_activities::execute_special_activity_for_arvn::execute_special_activity_for_arvn;
 use commands::special_activities::execute_special_activity_for_vc::execute_special_activity_for_vc;
 use commands::sweep::sweep;
-use decision_making::input_commands::InputCommands;
+use decision_making::interpretation::interpreted_intentions::InterpretedIntentions;
 use factions::Factions;
 
 pub fn execute_commands(
     card_number: u8,
     faction: Factions,
-    commands: Vec<InputCommands>,
+    interpreted_intentions: InterpretedIntentions,
     map: &mut Map,
     track: &mut Track,
     available_forces: &mut AvailableForces,
@@ -27,34 +25,34 @@ pub fn execute_commands(
     // possible deviations and instantiations of executor commands so the map and track changes appropriately.
     match faction {
         Factions::VC => {
-            if commands[0] == InputCommands::Event {
+            if interpreted_intentions.does_it_want_to_activate_the_event() {
                 // Intends to execute the shaded event for a card and for the VC faction
-                execute_shaded_event_for_vc(card_number, commands, map, track)?;
-            } else if commands[0] == InputCommands::Operation {
-                // Has decided to do an operation.
-                let operation_commands = create_vec_of_vec_from_index(&commands, 1)?;
-
-                execute_operation_for_vc(operation_commands, map, track, available_forces)?;
-
-                let special_activity_commands = create_vec_of_vec_from_index(
-                    &commands,
-                    get_index_of_next_batch_of_commands_after_stop(&commands),
+                execute_shaded_event_for_vc(card_number, interpreted_intentions, map, track)?;
+            } else if interpreted_intentions.does_it_want_to_do_an_operation() {
+                execute_operation_for_vc(
+                    interpreted_intentions.clone(),
+                    map,
+                    track,
+                    available_forces,
                 )?;
-
-                if special_activity_commands[0] == InputCommands::Yes {
-                    execute_special_activity_for_vc(special_activity_commands, map, track)?;
-                }
+                execute_special_activity_for_vc(interpreted_intentions, map, track)?;
             } else {
                 todo!()
             }
             Ok(())
         }
         Factions::NVA => {
-            if commands[0] == InputCommands::Pass {
+            if interpreted_intentions.does_it_want_to_pass() {
                 // Has passed. Must receive some resources.
                 execute_passed_for_nva(track)?;
-            } else if commands[0] == InputCommands::OperationOnly {
-                execute_operation_for_nva(commands, map, track, available_forces, false)?;
+            } else if interpreted_intentions.does_it_want_to_do_an_operation_only() {
+                execute_operation_for_nva(
+                    interpreted_intentions,
+                    map,
+                    track,
+                    available_forces,
+                    false,
+                )?;
             } else {
                 todo!()
             }
@@ -62,29 +60,20 @@ pub fn execute_commands(
             Ok(())
         }
         Factions::ARVN => {
-            if commands[0] == InputCommands::Operation {
+            if interpreted_intentions.does_it_want_to_do_an_operation() {
                 // Has decided to do an operation.
-                execute_operation_for_arvn(commands.clone(), map, track, available_forces)?;
-
-                // Additionally, he might have chosen to perform a Special Activity
-                if commands[5] == InputCommands::No {
-                    // He doesn't want to.
-                    return Ok(());
-                }
-
-                // in commands[6] should be the name of the special activity
-                let mut special_activity_commands: Vec<InputCommands> = Vec::new();
-
-                for n in commands.iter().skip(6) {
-                    special_activity_commands.push(n.to_owned());
-                }
-
-                execute_special_activity_for_arvn(special_activity_commands, map, track)?;
-            } else if commands[0] == InputCommands::Event {
+                execute_operation_for_arvn(
+                    interpreted_intentions.clone(),
+                    map,
+                    track,
+                    available_forces,
+                )?;
+                execute_special_activity_for_arvn(interpreted_intentions, map, track)?;
+            } else if interpreted_intentions.does_it_want_to_activate_the_event() {
                 // Intends to execute the unshaded event for a card and for the ARVN faction
                 execute_unshaded_event_for_arvn(
                     card_number,
-                    commands,
+                    interpreted_intentions,
                     map,
                     track,
                     available_forces,
@@ -96,8 +85,11 @@ pub fn execute_commands(
             Ok(())
         }
         Factions::US => {
-            if commands[0] == InputCommands::Sweep {
-                sweep(commands[1], map)?;
+            if interpreted_intentions.does_it_want_to_sweep() {
+                if let Err(error) = sweep(interpreted_intentions.get_spaces_for_operation()[0], map)
+                {
+                    panic!("There was an error while performing sweep: {:?}. The interpreted intentions of the US player were the following: {:?}", error, interpreted_intentions)
+                }
             }
 
             Ok(())

@@ -27,10 +27,7 @@ impl Player for PlaybookSecondTurnNva {
         vec.push(String::from("the parrot's beak").to_lowercase());
         vec.push(String::from("kien phong").to_lowercase());
         vec.push(String::from("kien giang").to_lowercase());
-        vec.push(String::from("stop").to_lowercase());
-
-        // As part of rally they get the chance to improve the trail one level
-        vec.push(String::from("yes").to_lowercase());
+        vec.push(String::from("improve trail").to_lowercase());
 
         vec
     }

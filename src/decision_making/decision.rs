@@ -1,19 +1,23 @@
 use decision_making::choices::Choices;
-use decision_making::input_commands::InputCommands;
+use decision_making::interpretation::interpreted_intentions::InterpretedIntentions;
 use factions::Factions;
 
 pub struct Decision {
     faction: Factions,
     choice: Choices,
-    commands: Vec<InputCommands>,
+    interpreted_intentions: InterpretedIntentions,
 }
 
 impl Decision {
-    pub fn new(faction: Factions, new_choice: Choices, commands: Vec<InputCommands>) -> Decision {
+    pub fn new(
+        faction: Factions,
+        new_choice: Choices,
+        interpreted_intentions: InterpretedIntentions,
+    ) -> Decision {
         Decision {
             faction,
             choice: new_choice,
-            commands,
+            interpreted_intentions,
         }
     }
 
@@ -25,7 +29,7 @@ impl Decision {
         self.choice
     }
 
-    pub fn get_commands(&self) -> Vec<InputCommands> {
-        self.commands.to_owned()
+    pub fn get_interpreted_intentions(&self) -> InterpretedIntentions {
+        self.interpreted_intentions.clone()
     }
 }

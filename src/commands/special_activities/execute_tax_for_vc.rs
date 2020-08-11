@@ -1,11 +1,11 @@
 use board::get_space_from_map::get_space_from_map;
 use board::map::Map;
 use board::space::Space;
+use board::space_identifiers::SpaceIdentifiers;
 use board::track::Track;
-use decision_making::input_commands::InputCommands;
 
 pub fn execute_tax_for_vc(
-    tax_spaces: Vec<InputCommands>,
+    tax_spaces: Vec<SpaceIdentifiers>,
     map: &mut Map,
     track: &mut Track,
 ) -> Result<(), String> {
