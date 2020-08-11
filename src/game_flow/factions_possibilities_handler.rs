@@ -1,7 +1,11 @@
+use game_flow::remove_faction_to_move_from_eligibles::remove_faction_to_move_from_eligibles;
 use cards::card::Card;
 use decision_making::choices::Choices;
 use factions::get_position_in_faction_order_of_faction::get_position_in_faction_order_of_faction;
 use factions::Factions;
+use game_flow::faction_should_be_movable_sanity_check::faction_should_be_movable_sanity_check;
+use game_flow::move_faction_to_elegible::move_faction_to_eligible;
+use game_flow::populate_eligible_factions::populate_eligible_factions;
 
 pub struct FactionsPossibilitiesHandler {
     current_eligible: Factions,
@@ -41,18 +45,6 @@ impl FactionsPossibilitiesHandler {
             operation_only: Factions::None,
             second_limited_operation: Factions::None,
             second_op_and_special_activity: Factions::None,
-        }
-    }
-
-    fn move_faction_to_eligible(&mut self, faction_to_move: Factions) {
-        for item in self.eligible.iter_mut() {
-            match *item {
-                _ if item == &Factions::None => {
-                    *item = faction_to_move;
-                    break;
-                }
-                _ => (),
-            }
         }
     }
 
@@ -157,58 +149,15 @@ impl FactionsPossibilitiesHandler {
         Ok(())
     }
 
-    fn faction_should_be_movable_sanity_check(
-        &self,
-        faction_to_move: Factions,
-    ) -> Result<(), String> {
-        if !self.is_faction_eligible(faction_to_move) {
-            return Err(format!(
-                "The faction to move {:?} wasn't eligible to begin with.",
-                faction_to_move
-            ));
-        }
-
-        Ok(())
-    }
-
-    pub fn populate_eligible_factions(&mut self, faction_order: [Factions; 4]) {
-        self.eligible[0] = faction_order[0];
-        self.eligible[1] = faction_order[1];
-        self.eligible[2] = faction_order[2];
-        self.eligible[3] = faction_order[3];
-    }
-
-    fn remove_faction_to_move_from_eligibles(
-        &mut self,
-        faction_to_move: Factions,
-    ) -> Result<(), String> {
-        // First we gotta make sure it's there. Nobody should call this function if the faction to remove isn't
-        // in the elegibles to begin with.
-        if !self
-            .eligible
-            .iter()
-            .any(|eligible_faction| eligible_faction == &faction_to_move)
-        {
-            return Err(format!("Was ordered to remove the faction {:?} from the list of elegibles, but it wasn't there in the first place. The list is: {:?}", faction_to_move, self.eligible));
-        }
-
-        for item in self.eligible.iter_mut() {
-            match *item {
-                _ if item == &faction_to_move => *item = Factions::None,
-                _ => (),
-            }
-        }
-
-        Ok(())
-    }
+    
 
     fn check_eligibility_and_remove_faction_to_move(
         &mut self,
         faction_to_move: Factions,
     ) -> Result<(), String> {
         // Sanity check: the passed faction should be in the list of eligible factions.
-        self.faction_should_be_movable_sanity_check(faction_to_move)?;
-        self.remove_faction_to_move_from_eligibles(faction_to_move)?;
+        faction_should_be_movable_sanity_check(faction_to_move, &self)?;
+        remove_faction_to_move_from_eligibles(faction_to_move, &mut self.eligible)?;
 
         Ok(())
     }
@@ -225,6 +174,10 @@ impl FactionsPossibilitiesHandler {
         self.ineligible
             .iter()
             .any(|ineligible_faction| ineligible_faction == &faction)
+    }
+
+    pub fn populate_eligible_factions(&mut self, faction_order: [Factions; 4]) {
+        populate_eligible_factions(faction_order, &mut self.eligible);
     }
 
     fn slot_faction_in_ineligible(&mut self, faction_to_slot: Factions) {
@@ -310,7 +263,7 @@ impl FactionsPossibilitiesHandler {
         // Should move those ineligible to eligible.
         for index in 0..4 {
             if self.ineligible[index] != Factions::None {
-                self.move_faction_to_eligible(self.ineligible[index]);
+                move_faction_to_eligible(self.ineligible[index], &mut self.eligible);
                 self.ineligible[index] = Factions::None;
             }
         }
@@ -318,7 +271,7 @@ impl FactionsPossibilitiesHandler {
         // Should move those in passed to eligible.
         for index in 0..4 {
             if self.passed[index] != Factions::None {
-                self.move_faction_to_eligible(self.passed[index]);
+                move_faction_to_eligible(self.passed[index], &mut self.eligible);
                 self.passed[index] = Factions::None;
             }
         }
