@@ -139,7 +139,6 @@ fn test_second_game_turn_playbook() -> Result<(), String> {
 
     let announcer = Announcer::new();
 
-    // Execute the commands
     announcer.instruct_to_move_faction_cylinder_from_eligible_to_operation_only_box(Factions::NVA);
 
     // Must execute the pass command, because it gives resources.
