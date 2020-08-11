@@ -145,7 +145,6 @@ fn test_third_game_turn_playbook() -> Result<(), String> {
         Factions::ARVN,
     );
 
-    // Must execute the pass command, because it gives resources.
     execute_commands(
         game_flow_handler.get_active_card(),
         arvn_decision.get_faction(),
@@ -376,24 +375,21 @@ fn test_third_game_turn_playbook() -> Result<(), String> {
             .get_space_mut(SpaceIdentifiers::QuangTinQuangNgai)
             .unwrap()
             .get_support_level(),
-        SupportLevels::PassiveOpposition,
-        "The support level should have been PassiveSupport"
+        SupportLevels::PassiveOpposition
     );
     assert_eq!(
         built_map
             .get_space_mut(SpaceIdentifiers::QuangDucLongKhanh)
             .unwrap()
             .get_support_level(),
-        SupportLevels::PassiveOpposition,
-        "The support level should have been PassiveSupport"
+        SupportLevels::PassiveOpposition
     );
     assert_eq!(
         built_map
             .get_space_mut(SpaceIdentifiers::BinhTuyBinhThuan)
             .unwrap()
             .get_support_level(),
-        SupportLevels::PassiveOpposition,
-        "The support level should have been PassiveSupport"
+        SupportLevels::PassiveOpposition
     );
 
     Ok(())
