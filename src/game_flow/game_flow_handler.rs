@@ -3,9 +3,11 @@ use cards::card_registry::CardRegistry;
 use decision_making::choices::Choices;
 use factions::get_position_in_faction_order_of_faction::get_position_in_faction_order_of_faction;
 use factions::Factions;
+use game_flow::cards_involved::CardsInvolved;
 
 pub struct GameFlowHandler<'a> {
     card_registry: &'a CardRegistry,
+    cards_involved: CardsInvolved,
     eligible: [Factions; 4],
     ineligible: [Factions; 4],
     passed: [Factions; 4],
@@ -13,8 +15,6 @@ pub struct GameFlowHandler<'a> {
     operation_only: Factions,
     second_limited_operation: Factions,
     second_op_and_special_activity: Factions,
-    active_card: u8,
-    preview_card: u8,
     current_eligible: Factions,
 }
 
@@ -22,6 +22,7 @@ impl<'a> GameFlowHandler<'a> {
     pub fn new(card_registry: &'a CardRegistry) -> GameFlowHandler<'a> {
         GameFlowHandler {
             card_registry,
+            cards_involved: CardsInvolved::new(),
             eligible: [Factions::VC, Factions::NVA, Factions::ARVN, Factions::US],
             ineligible: [
                 Factions::None,
@@ -39,55 +40,40 @@ impl<'a> GameFlowHandler<'a> {
             operation_only: Factions::None,
             second_limited_operation: Factions::None,
             second_op_and_special_activity: Factions::None,
-            active_card: 0,
-            preview_card: 0,
             current_eligible: Factions::None,
         }
     }
 
-    pub fn get_active_card(&self) -> u8 {
-        self.active_card
-    }
+    pub fn set_active_card(&mut self, new_active_card: u8) -> Result<[Factions; 4], String> {
+        let faction_order = self
+            .cards_involved
+            .set_active_card(new_active_card, &self.card_registry)?;
 
-    pub fn set_active_card(&mut self, new_active_card: u8) -> Result<(), String> {
-        self.active_card = new_active_card;
-
-        // When setting the active card, the whole sequence of play should get reset.
-        // We start by putting the current eligible as the first in the corresponding
-        // faction order of the card
-        let active_card_object_result = self.card_registry.get_card(self.active_card);
-
-        match active_card_object_result {
-            Err(active_card_object) => {
-                return Err(format!(
-                    "Could not retrieve the card details for card {:?}. That should not happen.",
-                    active_card_object
-                ))
-            }
-            Ok(active_card_object) => {
-                // First, pass the information to the sequence of play in order to populate
-                // its mantained list of eligible factions.
-                // However, if at this point there is any faction that was eligible,
-                // that was due to another previous turn having left factions eligible
-                // for the next one, so this shouldn't be done.
-                if !self.is_any_faction_elegible() {
-                    self.populate_eligible_factions(active_card_object.get_faction_order());
-                }
-
-                // We have the correct active card object in there.
-                self.current_eligible = active_card_object.get_faction_order()[0];
-            }
+        // First, pass the information to the sequence of play in order to populate
+        // its mantained list of eligible factions.
+        // However, if at this point there is any faction that was eligible,
+        // that was due to another previous turn having left factions eligible
+        // for the next one, so this shouldn't be done.
+        if !self.is_any_faction_elegible() {
+            self.populate_eligible_factions(faction_order);
         }
 
-        Ok(())
+        // We have the correct active card object in there.
+        self.current_eligible = faction_order[0];
+
+        Ok(faction_order)
     }
 
-    pub fn get_preview_card(&self) -> u8 {
-        self.preview_card
+    pub fn get_active_card(&self) -> u8 {
+        if self.cards_involved.get_active_card() == 0 {
+            panic!("The program attempted to recover the active card when none had been set!");
+        }
+
+        self.cards_involved.get_active_card()
     }
 
-    pub fn set_preview_card(&mut self, card_number: u8) {
-        self.preview_card = card_number;
+    pub fn set_preview_card(&mut self, new_preview_card: u8) {
+        self.cards_involved.set_preview_card(new_preview_card);
     }
 
     pub fn has_turn_ended(&self) -> bool {
@@ -201,7 +187,9 @@ impl<'a> GameFlowHandler<'a> {
     }
 
     fn move_to_next_eligible(&mut self, faction_that_decided: Factions) -> Result<(), String> {
-        let active_card_object_result = self.card_registry.get_card(self.active_card);
+        let active_card_object_result = self
+            .card_registry
+            .get_card(self.cards_involved.get_active_card());
 
         match active_card_object_result {
             Err(active_card_object) => {
@@ -512,7 +500,7 @@ impl<'a> GameFlowHandler<'a> {
         }
 
         // Gotta exchange the active card for the preview card.
-        self.active_card = self.preview_card;
+        self.cards_involved.exchange_active_card_for_preview_card();
 
         // Remains asking for the new preview card.
         // TODO
@@ -589,10 +577,10 @@ mod tests {
 
         let mut game_flow_handler = GameFlowHandler::new(&card_registry);
 
-        game_flow_handler.set_active_card(107);
+        game_flow_handler.set_active_card(107)?;
 
         assert_eq!(
-            game_flow_handler.get_active_card(),
+            game_flow_handler.cards_involved.get_active_card(),
             107,
             "The active card should have been 107"
         );

@@ -38,6 +38,10 @@ impl CardRegistry {
     }
 
     pub fn get_card(&self, card_number: u8) -> Result<&Card, String> {
+        if card_number == 0 {
+            panic!("Attempted to get the card details of a card with the number 0. Either the active or the preview card hadn't been set.");
+        }
+
         let retrieved_card_option = self.cards.get(&card_number);
 
         match retrieved_card_option {
