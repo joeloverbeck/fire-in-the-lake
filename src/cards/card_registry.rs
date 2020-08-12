@@ -26,6 +26,9 @@ impl CardRegistry {
 
     fn register_all_game_cards(&mut self) {
         // Handles registring every single card and its appropriate codified detail.
+        let gulf_of_tonkin = Card::new([Factions::US, Factions::NVA, Factions::ARVN, Factions::VC]);
+        self.cards.insert(1, gulf_of_tonkin);
+
         let trucks = Card::new([Factions::NVA, Factions::VC, Factions::US, Factions::ARVN]);
         self.cards.insert(55, trucks);
 

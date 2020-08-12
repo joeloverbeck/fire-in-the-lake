@@ -130,6 +130,12 @@ impl CommandsProducer for DecisionMakingCenter {
                         Choices::SecondLimitedOperation,
                         interpreted_intentions,
                     ))
+                } else if interpreted_intentions.does_it_want_to_activate_the_event() {
+                    Ok(Decision::new(
+                        current_eligible,
+                        Choices::UnshadedEvent,
+                        interpreted_intentions,
+                    ))
                 } else {
                     todo!()
                 }

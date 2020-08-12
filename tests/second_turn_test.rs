@@ -103,11 +103,6 @@ fn test_second_game_turn_playbook() -> Result<(), String> {
         "After NVA makes its choice, the next eligible should be the US."
     );
     assert_eq!(
-        game_flow_handler.faction_present_in_operation_only(),
-        Factions::NVA,
-        "NVA should have been registered as having chosen Operation Only.",
-    );
-    assert_eq!(
         game_flow_handler.is_faction_eligible(Factions::NVA),
         false,
         "After making a choice, NVA should no longer be considered eligible."
@@ -243,11 +238,6 @@ fn test_second_game_turn_playbook() -> Result<(), String> {
         game_flow_handler.get_current_eligible(),
         Factions::None,
         "After US makes its choice, there should be no eligible faction."
-    );
-    assert_eq!(
-        game_flow_handler.faction_present_in_second_limited_operation(),
-        Factions::US,
-        "US should have been registered as having chosen Second Limited Operation.",
     );
     assert_eq!(
         game_flow_handler.is_faction_eligible(Factions::US),

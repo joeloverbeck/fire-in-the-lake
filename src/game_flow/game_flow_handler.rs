@@ -148,11 +148,6 @@ impl<'a> GameFlowHandler<'a> {
         self.faction_possibilities_handler.get_current_eligible()
     }
 
-    pub fn faction_present_in_second_limited_operation(&self) -> Factions {
-        self.faction_possibilities_handler
-            .faction_present_in_second_limited_operation()
-    }
-
     pub fn has_faction_passed(&self, faction: Factions) -> bool {
         self.faction_possibilities_handler
             .has_faction_passed(faction)
@@ -161,11 +156,6 @@ impl<'a> GameFlowHandler<'a> {
     pub fn faction_present_in_first_eligible_event(&self) -> Factions {
         self.faction_possibilities_handler
             .faction_present_in_first_eligible_event()
-    }
-
-    pub fn faction_present_in_operation_only(&self) -> Factions {
-        self.faction_possibilities_handler
-            .faction_present_in_operation_only()
     }
 
     pub fn set_faction_as_ineligible(&mut self, faction: Factions) -> Result<(), String> {
