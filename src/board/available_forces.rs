@@ -7,6 +7,8 @@ pub struct AvailableForces {
     nva_guerrillas_available: u8,
     vc_guerrillas_available: u8,
     us_irregulars_available: u8,
+    out_of_play_us_bases: u8,
+    out_of_play_us_troops: u8,
 }
 
 impl AvailableForces {
@@ -16,6 +18,8 @@ impl AvailableForces {
             nva_guerrillas_available: 0,
             vc_guerrillas_available: 0,
             us_irregulars_available: 0,
+            out_of_play_us_bases: 0,
+            out_of_play_us_troops: 0,
         }
     }
 
@@ -59,6 +63,10 @@ impl AvailableForces {
         self.nva_guerrillas_available = amount;
     }
 
+    pub fn get_amount_of_vc_guerrillas(&self) -> u8 {
+        self.vc_guerrillas_available
+    }
+
     pub fn set_amount_of_vc_guerrillas(&mut self, amount: u8) {
         self.vc_guerrillas_available = amount;
     }
@@ -98,6 +106,22 @@ impl AvailableForces {
             previous_amount_of_vc_guerrillas_available,
             self.vc_guerrillas_available,
         ))
+    }
+
+    pub fn get_out_of_play_us_bases(&self) -> u8 {
+        self.out_of_play_us_bases
+    }
+
+    pub fn set_out_of_play_us_bases(&mut self, amount: u8) {
+        self.out_of_play_us_bases = amount;
+    }
+
+    pub fn get_out_of_play_us_troops(&self) -> u8 {
+        self.out_of_play_us_troops
+    }
+
+    pub fn set_out_of_play_us_troops(&mut self, amount: u8) {
+        self.out_of_play_us_troops = amount;
     }
 }
 

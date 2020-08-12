@@ -156,6 +156,14 @@ impl Space for LineOfCommunication {
         todo!()
     }
 
+    fn get_number_of_us_bases(&self) -> u8 {
+        todo!()
+    }
+
+    fn set_number_of_us_bases(&mut self, _new_number_of_us_bases: u8) {
+        todo!()
+    }
+
     fn adjust_control(&mut self) {
         todo!()
     }

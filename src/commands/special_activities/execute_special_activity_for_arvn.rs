@@ -2,7 +2,7 @@ use board::current_rvn_leader::CurrentRvnLeader;
 use board::map::Map;
 use board::space::Space;
 use board::track::Track;
-use commands::manipulate_aid::manipulate_aid;
+use commands::atomic::manipulate_aid::manipulate_aid;
 use decision_making::interpretation::interpreted_intentions::InterpretedIntentions;
 
 pub fn execute_special_activity_for_arvn(

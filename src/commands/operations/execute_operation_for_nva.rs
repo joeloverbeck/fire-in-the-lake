@@ -1,8 +1,8 @@
 use board::available_forces::AvailableForces;
 use board::map::Map;
 use board::track::Track;
-use commands::improve_trail_nva::improve_trail_nva;
 use commands::operations::execute_rally_for_nva::execute_rally_for_nva;
+use commands::operations::improve_trail_nva::improve_trail_nva;
 use decision_making::interpretation::interpreted_intentions::InterpretedIntentions;
 
 pub fn execute_operation_for_nva(

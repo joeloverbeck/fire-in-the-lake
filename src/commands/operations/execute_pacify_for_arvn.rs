@@ -1,7 +1,7 @@
 use board::map::Map;
 use board::space_identifiers::SpaceIdentifiers;
 use board::track::Track;
-use commands::shift_support_of_space::shift_support_of_space;
+use commands::atomic::shift_support_of_space::shift_support_of_space;
 
 pub fn execute_pacify_for_arvn(
     space_identifier: SpaceIdentifiers,

@@ -1,4 +1,5 @@
 use board::space_identifiers::SpaceIdentifiers;
+use decision_making::interpretation::event_instructions::deploy_from_out_of_play_data::DeployFromOutOfPlayData;
 
 #[derive(Debug, Clone)]
 pub struct InterpretedIntentions {
@@ -18,6 +19,7 @@ pub struct InterpretedIntentions {
     wants_to_tax: bool,
     spaces_for_special_activity: Vec<SpaceIdentifiers>,
     digits_for_special_activity: Vec<u8>,
+    deploy_from_out_of_play_data: Vec<DeployFromOutOfPlayData>,
 }
 
 impl Default for InterpretedIntentions {
@@ -45,6 +47,7 @@ impl InterpretedIntentions {
             wants_to_tax: false,
             spaces_for_special_activity: Vec::new(),
             digits_for_special_activity: Vec::new(),
+            deploy_from_out_of_play_data: Vec::<DeployFromOutOfPlayData>::new(),
         }
     }
 
@@ -178,5 +181,17 @@ impl InterpretedIntentions {
 
     pub fn does_it_want_to_improve_the_trail(&self) -> bool {
         self.wants_to_improve_the_trail
+    }
+
+    pub fn add_to_deploy_from_out_of_play_data(
+        &mut self,
+        deploy_from_out_of_play_data: DeployFromOutOfPlayData,
+    ) {
+        self.deploy_from_out_of_play_data
+            .push(deploy_from_out_of_play_data);
+    }
+
+    pub fn get_deploy_from_out_of_play_data(&self) -> &Vec<DeployFromOutOfPlayData> {
+        &self.deploy_from_out_of_play_data
     }
 }

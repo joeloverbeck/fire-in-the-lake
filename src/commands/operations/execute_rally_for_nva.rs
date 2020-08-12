@@ -3,7 +3,7 @@ use board::map::Map;
 use board::space_identifiers::SpaceIdentifiers;
 use board::track::Track;
 use commands::atomic::deploy_nva_guerrillas_from_available::deploy_nva_guerrillas_from_available;
-use commands::manipulate_nva_resources::manipulate_nva_resources;
+use commands::atomic::manipulate_nva_resources::manipulate_nva_resources;
 
 pub fn execute_rally_for_nva(
     spaces_for_operation: Vec<SpaceIdentifiers>,

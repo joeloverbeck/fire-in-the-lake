@@ -174,6 +174,14 @@ impl Space for Province {
         self.adjust_control();
     }
 
+    fn get_number_of_us_bases(&self) -> u8 {
+        self.forces.get_number_of_us_bases()
+    }
+
+    fn set_number_of_us_bases(&mut self, new_number_of_us_bases: u8) {
+        self.forces.set_number_of_us_bases(new_number_of_us_bases)
+    }
+
     fn adjust_control(&mut self) {
         // COIN control: US forces outnumber VC ones
         if self.forces.get_total_number_of_us_pieces() > self.forces.get_total_number_of_vc_pieces()

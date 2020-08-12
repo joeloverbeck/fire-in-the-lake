@@ -89,5 +89,106 @@ fn test_third_game_turn_playbook() -> Result<(), String> {
         us_decision.get_choice(),
     )?;
 
+    assert_eq!(
+        game_flow_handler.get_current_eligible(),
+        Factions::NVA,
+        "After US makes its choice, the next eligible should be the NVA."
+    );
+    assert_eq!(
+        game_flow_handler.faction_present_in_first_eligible_event(),
+        Factions::US,
+    );
+    assert_eq!(
+        game_flow_handler.is_faction_eligible(Factions::US),
+        false,
+        "After making a choice, US should no longer be considered eligible."
+    );
+
+    // Setup board and all that
+    built_map
+        .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+        .unwrap()
+        .set_number_of_underground_special_forces_irregulars(1);
+    built_map
+        .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+        .unwrap()
+        .set_number_of_us_troops(1);
+    built_map
+        .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+        .unwrap()
+        .set_number_of_active_vc_guerrillas(2);
+
+    track.set_trail(2);
+
+    available_forces.set_out_of_play_us_bases(1);
+    available_forces.set_out_of_play_us_troops(5);
+
+    let announcer = Announcer::new();
+
+    // Execute the commands
+    announcer
+        .instruct_to_move_faction_cylinder_from_eligible_to_first_eligible_event_box(Factions::US);
+
+    execute_commands(
+        game_flow_handler.get_active_card(),
+        us_decision.get_faction(),
+        us_decision.get_interpreted_intentions(),
+        &mut built_map,
+        &mut track,
+        &mut available_forces,
+    );
+
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+            .unwrap()
+            .get_number_of_active_vc_guerrillas(),
+        0
+    );
+
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+            .unwrap()
+            .get_number_of_underground_special_forces_irregulars(),
+        1
+    );
+
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+            .unwrap()
+            .get_number_of_us_troops(),
+        1
+    );
+
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+            .unwrap()
+            .get_support_level(),
+        SupportLevels::PassiveOpposition,
+    );
+
+    assert_eq!(track.get_vc_victory_marker(), 2,);
+
+    assert_eq!(track.get_trail(), 1,);
+
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::Saigon)
+            .unwrap()
+            .get_number_of_us_troops(),
+        2
+    );
+
+    assert_eq!(
+        built_map
+            .get_space_mut(SpaceIdentifiers::Hue)
+            .unwrap()
+            .get_number_of_us_troops(),
+        3
+    );
+
     Ok(())
 }

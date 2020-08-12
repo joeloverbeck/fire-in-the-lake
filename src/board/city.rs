@@ -125,11 +125,11 @@ impl Space for City {
     }
 
     fn get_number_of_us_troops(&self) -> u8 {
-        todo!()
+        self.forces.get_number_of_us_troops()
     }
 
-    fn set_number_of_us_troops(&mut self, _new_number_of_us_troops: u8) {
-        todo!()
+    fn set_number_of_us_troops(&mut self, new_number_of_us_troops: u8) {
+        self.forces.set_number_of_us_troops(new_number_of_us_troops);
     }
 
     fn get_number_of_active_vc_guerrillas(&self) -> u8 {
@@ -163,6 +163,14 @@ impl Space for City {
     }
 
     fn set_number_of_vc_bases(&mut self, _new_number_of_vc_bases: u8) {
+        todo!()
+    }
+
+    fn get_number_of_us_bases(&self) -> u8 {
+        todo!()
+    }
+
+    fn set_number_of_us_bases(&mut self, _new_number_of_us_bases: u8) {
         todo!()
     }
 

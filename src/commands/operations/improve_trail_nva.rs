@@ -1,5 +1,5 @@
 use board::track::Track;
-use commands::manipulate_nva_resources::manipulate_nva_resources;
+use commands::atomic::manipulate_nva_resources::manipulate_nva_resources;
 
 pub fn improve_trail_nva(track: &mut Track) -> Result<(), String> {
     manipulate_nva_resources(track, -2)?;

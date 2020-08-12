@@ -1,8 +1,8 @@
 use board::map::Map;
 use board::space_identifiers::SpaceIdentifiers;
 use board::track::Track;
-use commands::manipulate_aid::manipulate_aid;
-use commands::shift_support_of_space::shift_support_of_space;
+use commands::atomic::manipulate_aid::manipulate_aid;
+use commands::atomic::shift_support_of_space::shift_support_of_space;
 use decision_making::interpretation::interpreted_intentions::InterpretedIntentions;
 
 pub fn execute_shaded_event_for_vc(

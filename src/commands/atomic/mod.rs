@@ -1,3 +1,11 @@
+pub mod deploy_arvn_troops_from_available;
+pub mod deploy_force_type_from_out_of_play;
 pub mod deploy_nva_guerrillas_from_available;
+pub mod deploy_us_irregulars_from_available;
 pub mod deploy_vc_guerrillas_from_available;
+pub mod manipulate_aid;
+pub mod manipulate_arvn_resources;
+pub mod manipulate_nva_resources;
 pub mod manipulate_vc_resources;
+pub mod set_space_to_active_support;
+pub mod shift_support_of_space;

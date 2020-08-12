@@ -10,8 +10,6 @@ use fire_in_the_lake::board::support::SupportLevels;
 use fire_in_the_lake::board::track::Track;
 use fire_in_the_lake::cards::card_registry::CardRegistry;
 use fire_in_the_lake::commands::execute_commands::execute_commands;
-use fire_in_the_lake::commands::manipulate_aid::manipulate_aid;
-use fire_in_the_lake::commands::shift_support_of_space::shift_support_of_space;
 use fire_in_the_lake::decision_making::choices::Choices;
 use fire_in_the_lake::decision_making::commands_producer::CommandsProducer;
 use fire_in_the_lake::decision_making::decision::Decision;

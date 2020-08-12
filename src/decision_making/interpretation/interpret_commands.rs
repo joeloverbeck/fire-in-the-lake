@@ -1,27 +1,9 @@
+use decision_making::interpretation::does_typed_command_refer_to_space::does_typed_command_refer_to_space;
+use decision_making::interpretation::event_instructions::collect_deploy_from_out_of_play_data::collect_deploy_from_out_of_play_data;
 use decision_making::interpretation::interpreted_intentions::InterpretedIntentions;
+use decision_making::interpretation::is_the_typed_command_a_number::is_the_typed_command_a_number;
 use decision_making::interpretation::transform_typed_digit_into_integer::transform_typed_digit_into_integer;
 use decision_making::interpretation::transform_typed_space_into_space_identifier::transform_typed_space_into_space_identifier;
-
-fn does_typed_command_refer_to_space(typed_input_command: &str) -> bool {
-    typed_input_command == "north vietnam"
-        || typed_input_command == "saigon"
-        || typed_input_command == "an loc"
-        || typed_input_command == "can tho"
-        || typed_input_command == "the parrot's beak"
-        || typed_input_command == "kien phong"
-        || typed_input_command == "kien giang"
-        || typed_input_command == "quang tri"
-        || typed_input_command == "binh dinh"
-        || typed_input_command == "pleiku"
-        || typed_input_command == "hue"
-        || typed_input_command == "quang tin"
-        || typed_input_command == "quang duc"
-        || typed_input_command == "binh tuy"
-}
-
-fn is_the_typed_command_a_number(typed_input_command: &str) -> bool {
-    typed_input_command == "6"
-}
 
 pub fn interpret_commands(
     typed_input_commands: Vec<String>,
@@ -36,7 +18,22 @@ pub fn interpret_commands(
             typed_input_command
         );
 
-        if typed_input_command == "operation" {
+        // The most complicated input command to deal with is a variation on one
+        // that the player doesn't even type directly: they are instructions for
+        // the events to play.
+        let split_typed_input_command: Vec<&str> = typed_input_command.split(' ').collect();
+
+        if split_typed_input_command[0] == "event_instruction" {
+            // The second item in that array will be the specific type of instruction. Very different ones.
+            if split_typed_input_command[1] == "deploy_from_out_of_play" {
+                collect_deploy_from_out_of_play_data(
+                    split_typed_input_command,
+                    &mut interpreted_intentions,
+                )?;
+            } else {
+                todo!();
+            }
+        } else if typed_input_command == "operation" {
             interpreted_intentions.wants_to_do_an_operation();
         } else if typed_input_command == "pass" {
             interpreted_intentions.wants_to_pass();

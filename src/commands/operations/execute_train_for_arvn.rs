@@ -2,8 +2,8 @@ use board::available_forces::AvailableForces;
 use board::map::Map;
 use board::space_identifiers::SpaceIdentifiers;
 use board::track::Track;
-use commands::deploy_arvn_troops_from_available::deploy_arvn_troops_from_available;
-use commands::manipulate_arvn_resources::manipulate_arvn_resources;
+use commands::atomic::deploy_arvn_troops_from_available::deploy_arvn_troops_from_available;
+use commands::atomic::manipulate_arvn_resources::manipulate_arvn_resources;
 
 pub fn execute_train_for_arvn(
     space_identifier: SpaceIdentifiers,

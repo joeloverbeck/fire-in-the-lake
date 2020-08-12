@@ -29,6 +29,8 @@ pub trait Space {
     fn set_number_of_nva_bases(&mut self, new_number_of_nva_bases: u8);
     fn get_number_of_vc_bases(&self) -> u8;
     fn set_number_of_vc_bases(&mut self, new_number_of_vc_bases: u8);
+    fn get_number_of_us_bases(&self) -> u8;
+    fn set_number_of_us_bases(&mut self, new_number_of_us_bases: u8);
     fn get_number_of_underground_nva_guerrillas(&self) -> u8;
     fn set_number_of_underground_nva_guerrillas(
         &mut self,

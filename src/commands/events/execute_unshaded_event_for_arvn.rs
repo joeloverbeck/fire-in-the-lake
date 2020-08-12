@@ -1,8 +1,8 @@
 use board::available_forces::AvailableForces;
 use board::map::Map;
 use board::track::Track;
-use commands::deploy_us_irregulars_from_available::deploy_us_irregulars_from_available;
-use commands::set_space_to_active_support::set_space_to_active_support;
+use commands::atomic::deploy_us_irregulars_from_available::deploy_us_irregulars_from_available;
+use commands::atomic::set_space_to_active_support::set_space_to_active_support;
 use decision_making::interpretation::interpreted_intentions::InterpretedIntentions;
 
 pub fn execute_unshaded_event_for_arvn(
