@@ -1,5 +1,7 @@
+use decision_making::interpretation::operation_instructions::infiltrate_instructions::InfiltrateInstructions;
 use board::space_identifiers::SpaceIdentifiers;
 use decision_making::interpretation::event_instructions::deploy_from_out_of_play_data::DeployFromOutOfPlayData;
+use decision_making::interpretation::operation_instructions::march_order::MarchOrder;
 
 #[derive(Debug, Clone)]
 pub struct InterpretedIntentions {
@@ -10,6 +12,7 @@ pub struct InterpretedIntentions {
     wants_to_do_an_operation_only: bool,
     wants_to_train: bool,
     wants_to_rally: bool,
+    wants_to_march: bool,
     wants_to_sweep: bool,
     wants_to_pacify: bool,
     spaces_for_operation: Vec<SpaceIdentifiers>,
@@ -17,6 +20,9 @@ pub struct InterpretedIntentions {
     wants_to_improve_the_trail: bool,
     wants_to_govern: bool,
     wants_to_tax: bool,
+    wants_to_infiltrate: bool,
+    march_orders: Vec<MarchOrder>,
+    infiltrate_instructions: Vec<InfiltrateInstructions>,
     spaces_for_special_activity: Vec<SpaceIdentifiers>,
     digits_for_special_activity: Vec<u8>,
     deploy_from_out_of_play_data: Vec<DeployFromOutOfPlayData>,
@@ -38,6 +44,7 @@ impl InterpretedIntentions {
             wants_to_do_an_operation_only: false,
             wants_to_train: false,
             wants_to_rally: false,
+            wants_to_march: false,
             wants_to_sweep: false,
             wants_to_pacify: false,
             spaces_for_operation: Vec::new(),
@@ -45,6 +52,9 @@ impl InterpretedIntentions {
             wants_to_improve_the_trail: false,
             wants_to_govern: false,
             wants_to_tax: false,
+            wants_to_infiltrate: false,
+            march_orders: Vec::new(),
+            infiltrate_instructions: Vec::new(),
             spaces_for_special_activity: Vec::new(),
             digits_for_special_activity: Vec::new(),
             deploy_from_out_of_play_data: Vec::<DeployFromOutOfPlayData>::new(),
@@ -99,6 +109,14 @@ impl InterpretedIntentions {
         self.wants_to_rally
     }
 
+    pub fn wants_to_march(&mut self) {
+        self.wants_to_march = true;
+    }
+
+    pub fn does_it_want_to_march(&self) -> bool {
+        self.wants_to_march
+    }
+
     pub fn wants_to_sweep(&mut self) {
         self.wants_to_sweep = true;
     }
@@ -117,6 +135,22 @@ impl InterpretedIntentions {
 
     pub fn does_it_want_to_pacify(&self) -> bool {
         self.wants_to_pacify
+    }
+
+    pub fn add_march_order(&mut self, march_order: MarchOrder) {
+        self.march_orders.push(march_order);
+    }
+
+    pub fn get_march_orders(&self) -> &Vec<MarchOrder> {
+        &self.march_orders
+    }
+
+    pub fn add_infiltrate_instructions(&mut self, infiltrate_instructions: InfiltrateInstructions){
+        self.infiltrate_instructions.push(infiltrate_instructions);
+    }
+
+    pub fn get_infiltrate_instructions(&self) -> &Vec<InfiltrateInstructions>{
+        &self.infiltrate_instructions
     }
 
     pub fn add_space_for_event(&mut self, space_to_add: SpaceIdentifiers) {
@@ -193,5 +227,13 @@ impl InterpretedIntentions {
 
     pub fn get_deploy_from_out_of_play_data(&self) -> &Vec<DeployFromOutOfPlayData> {
         &self.deploy_from_out_of_play_data
+    }
+
+    pub fn wants_to_infiltrate(&mut self) {
+        self.wants_to_infiltrate = true;
+    }
+
+    pub fn does_it_want_to_infiltrate(&self) -> bool {
+        self.wants_to_infiltrate
     }
 }

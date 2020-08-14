@@ -4,6 +4,7 @@ use math::sum_i8_to_u8::sum_i8_to_u8;
 
 pub struct AvailableForces {
     arvn_available: u8,
+    nva_troops: u8,
     nva_guerrillas_available: u8,
     vc_guerrillas_available: u8,
     us_irregulars_available: u8,
@@ -15,6 +16,7 @@ impl AvailableForces {
     pub fn new() -> AvailableForces {
         AvailableForces {
             arvn_available: 0,
+            nva_troops: 0,
             nva_guerrillas_available: 0,
             vc_guerrillas_available: 0,
             us_irregulars_available: 0,
@@ -53,6 +55,14 @@ impl AvailableForces {
             previous_amount_of_us_irregulars_available,
             self.us_irregulars_available,
         ))
+    }
+
+    pub fn get_amount_of_nva_troops(&self) -> u8{
+        self.nva_troops
+    }
+
+    pub fn set_amount_of_nva_troops(&mut self, new_amount_of_nva_troops: u8) {
+        self.nva_troops = new_amount_of_nva_troops;
     }
 
     pub fn set_amount_of_arvn_troops(&mut self, amount: u8) {

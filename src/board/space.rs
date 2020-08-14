@@ -22,10 +22,13 @@ pub trait Space {
     fn set_population_value(&mut self, new_population_value: u8) -> Result<(), String>;
     fn get_control(&self) -> Controls;
     fn set_control(&mut self, new_control: Controls);
+    fn get_number_of_nva_troops(&self) -> u8;
+    fn set_number_of_nva_troops(&mut self, new_number_of_nva_troops: u8) -> Result<(), String>;
     fn get_number_of_arvn_troops(&self) -> u8;
     fn set_number_of_arvn_troops(&mut self, new_number_of_arvn_troops: u8) -> Result<(), String>;
     fn are_there_nva_bases(&self) -> bool;
     fn are_there_vc_bases(&self) -> bool;
+    fn get_number_of_nva_bases(&self) -> u8;
     fn set_number_of_nva_bases(&mut self, new_number_of_nva_bases: u8);
     fn get_number_of_vc_bases(&self) -> u8;
     fn set_number_of_vc_bases(&mut self, new_number_of_vc_bases: u8);
@@ -52,6 +55,8 @@ pub trait Space {
     fn set_number_of_active_vc_guerrillas(&mut self, new_number_of_active_vc_guerrillas: u8);
     fn get_total_number_of_us_pieces(&self) -> u8;
     fn get_total_number_of_vc_pieces(&self) -> u8;
+    fn get_total_number_of_nva_pieces(&self) -> u8;
+    fn get_total_number_of_arvn_pieces(&self) -> u8;
     fn adjust_control(&mut self);
 }
 

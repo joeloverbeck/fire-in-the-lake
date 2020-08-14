@@ -18,6 +18,8 @@ pub enum SpaceIdentifiers {
     BinhTuyBinhThuan,
     Hue,
     PleikuDarlac,
+    CentralLaos,
+    SouthernLaos,
 }
 
 impl Eq for SpaceIdentifiers {}

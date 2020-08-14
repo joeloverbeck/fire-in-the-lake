@@ -109,6 +109,16 @@ impl MapBuilder {
         hue.set_population_value(2)?;
         hue.set_terrain_type(TerrainTypes::City);
 
+        // Create Southern Laos
+        let mut southern_laos: Spaces = Province::new(SpaceIdentifiers::SouthernLaos).into();
+        southern_laos.set_population_value(0)?;
+        southern_laos.set_terrain_type(TerrainTypes::Jungle);
+
+        // Create Central Laos
+        let mut central_laos: Spaces = Province::new(SpaceIdentifiers::CentralLaos).into();
+        central_laos.set_population_value(0)?;
+        central_laos.set_terrain_type(TerrainTypes::Jungle);
+
         let mut new_map = Map::new();
 
         new_map.add_space(saigon)?;
@@ -129,9 +139,11 @@ impl MapBuilder {
         new_map.add_space(binh_tuy)?;
         new_map.add_space(pleiku)?;
         new_map.add_space(hue)?;
+        new_map.add_space(southern_laos)?;
+        new_map.add_space(central_laos)?;
 
         // Sanity check: make sure the expected number of entries are on the hash.
-        let number_of_spaces = 18;
+        let number_of_spaces = 20;
         if new_map.spaces_stored() != number_of_spaces {
             panic!("After creating the hashmap with all the board spaces, there should have been {:?} spaces, but there were {:?}.", number_of_spaces, new_map.spaces_stored());
         }

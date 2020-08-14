@@ -98,7 +98,19 @@ impl Space for City {
         self.forces.get_number_of_vc_bases() > 0
     }
 
+    fn get_number_of_nva_bases(&self) -> u8 {
+        self.forces.get_number_of_nva_bases()
+    }
+
     fn set_number_of_nva_bases(&mut self, _new_number_of_nva_bases: u8) {
+        todo!()
+    }
+
+    fn get_number_of_nva_troops(&self) -> u8 {
+        todo!()
+    }
+
+    fn set_number_of_nva_troops(&mut self, new_number_of_nva_troops: u8) -> Result<(), String> {
         todo!()
     }
 
@@ -171,6 +183,14 @@ impl Space for City {
     }
 
     fn set_number_of_us_bases(&mut self, _new_number_of_us_bases: u8) {
+        todo!()
+    }
+
+    fn get_total_number_of_nva_pieces(&self) -> u8{
+        todo!()
+    }
+
+    fn get_total_number_of_arvn_pieces(&self) -> u8{
         todo!()
     }
 

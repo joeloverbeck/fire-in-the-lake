@@ -5,6 +5,8 @@ pub fn transform_typed_digit_into_integer(typed_input_command: &str) -> u8 {
         2
     } else if typed_input_command == "3" {
         3
+    } else if typed_input_command == "5" {
+        5
     } else if typed_input_command == "6" {
         6
     } else {

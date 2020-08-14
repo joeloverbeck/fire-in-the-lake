@@ -3,6 +3,7 @@ use board::track::Track;
 use decision_making::testing::playbook_first_turn_arvn::PlaybookFirstTurnArvn;
 use decision_making::testing::playbook_first_turn_nva::PlaybookFirstTurnNva;
 use decision_making::testing::playbook_first_turn_vc::PlaybookFirstTurnVc;
+use decision_making::testing::playbook_fourth_turn_nva::PlaybookFourthTurnNva;
 use decision_making::testing::playbook_fourth_turn_us::PlaybookFourthTurnUs;
 use decision_making::testing::playbook_second_turn_nva::PlaybookSecondTurnNva;
 use decision_making::testing::playbook_second_turn_us::PlaybookSecondTurnUs;
@@ -28,4 +29,5 @@ pub enum Players {
     PlaybookThirdTurnArvn,
     PlaybookThirdTurnVc,
     PlaybookFourthTurnUs,
+    PlaybookFourthTurnNva,
 }

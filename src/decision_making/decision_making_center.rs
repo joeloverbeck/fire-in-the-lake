@@ -85,18 +85,23 @@ impl CommandsProducer for DecisionMakingCenter {
                         Choices::Pass,
                         interpreted_intentions,
                     ));
-                }
-
-                if interpreted_intentions.does_it_want_to_do_an_operation_only() {
+                } else if interpreted_intentions.does_it_want_to_do_an_operation_only() {
                     // NVA wants to do an op only.
                     return Ok(Decision::new(
                         current_eligible,
                         Choices::OperationOnly,
                         interpreted_intentions,
                     ));
+                } else if interpreted_intentions.does_it_want_to_do_an_operation() {
+                    // NVA wants to do an operation and a possible special activity.
+                    return Ok(Decision::new(
+                        current_eligible,
+                        Choices::SecondOperationAndSpecialActivity,
+                        interpreted_intentions,
+                    ));
+                } else {
+                    todo!()
                 }
-
-                todo!()
             }
             Factions::ARVN => {
                 let interpreted_intentions =

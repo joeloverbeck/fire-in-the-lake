@@ -29,6 +29,10 @@ pub fn transform_typed_space_into_space_identifier(typed_space: &str) -> SpaceId
         SpaceIdentifiers::QuangDucLongKhanh
     } else if typed_space == "binh tuy" {
         SpaceIdentifiers::BinhTuyBinhThuan
+    } else if typed_space == "central laos" {
+        SpaceIdentifiers::CentralLaos
+    } else if typed_space == "southern laos" {
+        SpaceIdentifiers::SouthernLaos
     } else {
         panic!("Not implemented for {:?}", typed_space);
     }

@@ -10,6 +10,7 @@ pub struct Track {
     vc_resources: u8,
     arvn_resources: u8,
     trail: u8,
+    nva_victory_marker: u8,
     us_victory_marker: u8,
     vc_victory_marker: u8,
     control_plus_patronage: u8,
@@ -24,6 +25,7 @@ impl Track {
             vc_resources: 0,
             arvn_resources: 0,
             trail: 0,
+            nva_victory_marker: 0,
             us_victory_marker: 0,
             vc_victory_marker: 0,
             control_plus_patronage: 0,
@@ -106,12 +108,45 @@ impl Track {
         self.control_plus_patronage
     }
 
+    pub fn get_nva_victory_marker(&self) -> u8 {
+        self.nva_victory_marker
+    }
+
     pub fn get_us_victory_marker(&self) -> u8 {
         self.us_victory_marker
     }
 
     pub fn get_vc_victory_marker(&self) -> u8 {
         self.vc_victory_marker
+    }
+
+    pub fn adjust_nva_victory_marker(&mut self, map: &Map) {
+        // Total Population Controlled by the NVA plus the number of NVA Bases on the map
+        
+        let mut sum: u8 = map
+        .get_spaces()
+        .iter()
+        .map(|space_entry| {
+            let (_, space) = space_entry;
+
+            match space.get_control() {
+                Controls::NVA => space.get_population_value(),
+                _ => 0,
+            }
+        })
+        .sum();
+
+        let number_of_nva_bases_on_map: u8 = map
+        .get_spaces()
+        .iter()
+        .map(|space_entry| {
+            let (_, space) = space_entry;
+
+            space.get_number_of_nva_bases()
+        })
+        .sum();
+
+        self.nva_victory_marker = sum + number_of_nva_bases_on_map;
     }
 
     pub fn adjust_us_victory_marker(&mut self, map: &Map) {

@@ -1,9 +1,12 @@
 #[derive(Debug)]
 pub struct Forces {
     arvn_troops: u8,
+    nva_troops: u8,
     nva_bases: u8,
     vc_bases: u8,
     us_bases: u8,
+    arvn_bases: u8,
+    active_nva_guerrillas: u8,
     underground_nva_guerrillas: u8,
     underground_vc_guerrillas: u8,
     active_vc_guerrillas: u8,
@@ -21,9 +24,12 @@ impl Forces {
     pub fn new() -> Forces {
         Forces {
             arvn_troops: 0,
+            nva_troops: 0,
             nva_bases: 0,
             vc_bases: 0,
             us_bases: 0,
+            arvn_bases: 0,
+            active_nva_guerrillas: 0,
             underground_nva_guerrillas: 0,
             underground_vc_guerrillas: 0,
             active_vc_guerrillas: 0,
@@ -34,6 +40,14 @@ impl Forces {
 
     pub fn get_number_of_arvn_troops(&self) -> u8 {
         self.arvn_troops
+    }
+
+    pub fn get_number_of_nva_troops(&self) -> u8 {
+        self.nva_troops
+    }
+
+    pub fn set_number_of_nva_troops(&mut self, new_number_of_nva_troops: u8) {
+        self.nva_troops = new_number_of_nva_troops;
     }
 
     pub fn get_number_of_nva_bases(&self) -> u8 {
@@ -106,6 +120,14 @@ impl Forces {
 
     pub fn get_total_number_of_vc_pieces(&self) -> u8 {
         self.underground_vc_guerrillas + self.active_vc_guerrillas + self.vc_bases
+    }
+
+    pub fn get_total_number_of_nva_pieces(&self) -> u8 {
+        self.underground_nva_guerrillas + self.active_nva_guerrillas + self.nva_bases
+    }
+
+    pub fn get_total_number_of_arvn_pieces(&self) -> u8 {
+        self.arvn_troops + self.arvn_bases
     }
 
     pub fn get_number_of_vc_bases(&self) -> u8 {
