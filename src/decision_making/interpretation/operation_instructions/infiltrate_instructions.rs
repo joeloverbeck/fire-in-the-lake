@@ -1,21 +1,22 @@
-
-
-
 use board::space_identifiers::SpaceIdentifiers;
 
 #[derive(Debug, Clone)]
 pub struct InfiltrateInstructions {
     type_of_infiltrate: String,
     space: SpaceIdentifiers,
-    vc_piece: Option<String>,    
+    vc_piece: Option<String>,
 }
 
-impl InfiltrateInstructions{
-    pub fn new(type_of_infiltrate: String, space: SpaceIdentifiers, vc_piece: std::option::Option<String>) -> InfiltrateInstructions {
-        InfiltrateInstructions{
+impl InfiltrateInstructions {
+    pub fn new(
+        type_of_infiltrate: String,
+        space: SpaceIdentifiers,
+        vc_piece: std::option::Option<String>,
+    ) -> InfiltrateInstructions {
+        InfiltrateInstructions {
             type_of_infiltrate,
             space,
-            vc_piece
+            vc_piece,
         }
     }
 

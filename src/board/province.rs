@@ -89,7 +89,8 @@ impl Space for Province {
     }
 
     fn set_number_of_nva_troops(&mut self, new_number_of_nva_troops: u8) -> Result<(), String> {
-        self.forces.set_number_of_nva_troops(new_number_of_nva_troops);
+        self.forces
+            .set_number_of_nva_troops(new_number_of_nva_troops);
 
         Ok(())
     }
@@ -196,21 +197,27 @@ impl Space for Province {
         self.forces.set_number_of_us_bases(new_number_of_us_bases)
     }
 
-    fn get_total_number_of_nva_pieces(&self) -> u8{
+    fn get_total_number_of_nva_pieces(&self) -> u8 {
         todo!()
     }
 
-    fn get_total_number_of_arvn_pieces(&self) -> u8{
+    fn get_total_number_of_arvn_pieces(&self) -> u8 {
         todo!()
     }
 
     fn adjust_control(&mut self) {
         // COIN control: US + ARVN forces outnumber VC + NVA ones
-        if (self.forces.get_total_number_of_us_pieces() + self.forces.get_total_number_of_arvn_pieces()) > (self.forces.get_total_number_of_vc_pieces() + self.forces.get_total_number_of_nva_pieces())
+        if (self.forces.get_total_number_of_us_pieces()
+            + self.forces.get_total_number_of_arvn_pieces())
+            > (self.forces.get_total_number_of_vc_pieces()
+                + self.forces.get_total_number_of_nva_pieces())
         {
             self.control = Controls::Counterinsurgent;
-        }
-        else if self.forces.get_total_number_of_nva_pieces() > (self.forces.get_total_number_of_us_pieces() + self.forces.get_total_number_of_vc_pieces() + self.forces.get_total_number_of_arvn_pieces()){
+        } else if self.forces.get_total_number_of_nva_pieces()
+            > (self.forces.get_total_number_of_us_pieces()
+                + self.forces.get_total_number_of_vc_pieces()
+                + self.forces.get_total_number_of_arvn_pieces())
+        {
             // NVA control if more NVA pieces present than all the other factions combined.
             self.control = Controls::NVA;
         }

@@ -1,11 +1,7 @@
-
-use commands::special_activities::execute_infiltrate_for_nva::execute_infiltrate_for_nva;
 use board::available_forces::AvailableForces;
-use board::current_rvn_leader::CurrentRvnLeader;
 use board::map::Map;
-use board::space::Space;
 use board::track::Track;
-use commands::atomic::manipulate_aid::manipulate_aid;
+use commands::special_activities::execute_infiltrate_for_nva::execute_infiltrate_for_nva;
 use decision_making::interpretation::interpreted_intentions::InterpretedIntentions;
 
 pub fn execute_special_activity_for_nva(

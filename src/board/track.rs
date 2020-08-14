@@ -122,29 +122,29 @@ impl Track {
 
     pub fn adjust_nva_victory_marker(&mut self, map: &Map) {
         // Total Population Controlled by the NVA plus the number of NVA Bases on the map
-        
-        let mut sum: u8 = map
-        .get_spaces()
-        .iter()
-        .map(|space_entry| {
-            let (_, space) = space_entry;
 
-            match space.get_control() {
-                Controls::NVA => space.get_population_value(),
-                _ => 0,
-            }
-        })
-        .sum();
+        let sum: u8 = map
+            .get_spaces()
+            .iter()
+            .map(|space_entry| {
+                let (_, space) = space_entry;
+
+                match space.get_control() {
+                    Controls::NVA => space.get_population_value(),
+                    _ => 0,
+                }
+            })
+            .sum();
 
         let number_of_nva_bases_on_map: u8 = map
-        .get_spaces()
-        .iter()
-        .map(|space_entry| {
-            let (_, space) = space_entry;
+            .get_spaces()
+            .iter()
+            .map(|space_entry| {
+                let (_, space) = space_entry;
 
-            space.get_number_of_nva_bases()
-        })
-        .sum();
+                space.get_number_of_nva_bases()
+            })
+            .sum();
 
         self.nva_victory_marker = sum + number_of_nva_bases_on_map;
     }

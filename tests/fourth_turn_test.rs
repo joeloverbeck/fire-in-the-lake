@@ -233,11 +233,11 @@ fn test_fourth_game_turn_playbook() -> Result<(), String> {
         .get_space_mut(SpaceIdentifiers::SouthernLaos)
         .unwrap()
         .set_number_of_underground_nva_guerrillas(3);
-        built_map
+    built_map
         .get_space_mut(SpaceIdentifiers::SouthernLaos)
         .unwrap()
         .set_number_of_underground_vc_guerrillas(1);
-        built_map
+    built_map
         .get_space_mut(SpaceIdentifiers::SouthernLaos)
         .unwrap()
         .set_number_of_nva_bases(1);
@@ -246,34 +246,35 @@ fn test_fourth_game_turn_playbook() -> Result<(), String> {
         .get_space_mut(SpaceIdentifiers::TheParrotsBeak)
         .unwrap()
         .set_number_of_underground_nva_guerrillas(4);
-        built_map
+    built_map
         .get_space_mut(SpaceIdentifiers::CentralLaos)
         .unwrap()
         .set_number_of_underground_nva_guerrillas(2);
-        built_map
+    built_map
         .get_space_mut(SpaceIdentifiers::NorthVietnam)
         .unwrap()
         .set_number_of_underground_nva_guerrillas(5);
     built_map
-    .get_space_mut(SpaceIdentifiers::KienPhong)
-    .unwrap()
-    .set_number_of_underground_vc_guerrillas(1);
+        .get_space_mut(SpaceIdentifiers::KienPhong)
+        .unwrap()
+        .set_number_of_underground_vc_guerrillas(1);
     built_map
-    .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
-    .unwrap()
-    .set_number_of_underground_vc_guerrillas(1);
+        .get_space_mut(SpaceIdentifiers::QuangTriThuaThien)
+        .unwrap()
+        .set_number_of_underground_vc_guerrillas(1);
     built_map
-    .get_space_mut(SpaceIdentifiers::KienGiangAnXuyen)
-    .unwrap()
-    .set_number_of_underground_vc_guerrillas(1);
+        .get_space_mut(SpaceIdentifiers::KienGiangAnXuyen)
+        .unwrap()
+        .set_number_of_underground_vc_guerrillas(1);
     built_map
-    .get_space_mut(SpaceIdentifiers::KienGiangAnXuyen)
-    .unwrap()
-    .set_number_of_underground_nva_guerrillas(1);
+        .get_space_mut(SpaceIdentifiers::KienGiangAnXuyen)
+        .unwrap()
+        .set_number_of_underground_nva_guerrillas(1);
     track.set_nva_resources(5);
     built_map
-    .get_space_mut(SpaceIdentifiers::KienGiangAnXuyen)
-    .unwrap().set_support_level(SupportLevels::ActiveOpposition);
+        .get_space_mut(SpaceIdentifiers::KienGiangAnXuyen)
+        .unwrap()
+        .set_support_level(SupportLevels::ActiveOpposition);
 
     // Execute the commands
     announcer.instruct_to_move_faction_cylinder_from_eligible_to_second_operation_and_special_activity_box(
@@ -330,9 +331,11 @@ fn test_fourth_game_turn_playbook() -> Result<(), String> {
             .get_space_mut(SpaceIdentifiers::SouthernLaos)
             .unwrap()
             .get_control(),
-        Controls::NVA, "Should have been NVA control in Southern Laos: {:?}", built_map
-        .get_space_mut(SpaceIdentifiers::SouthernLaos)
-        .unwrap()
+        Controls::NVA,
+        "Should have been NVA control in Southern Laos: {:?}",
+        built_map
+            .get_space_mut(SpaceIdentifiers::SouthernLaos)
+            .unwrap()
     );
     assert_eq!(
         built_map

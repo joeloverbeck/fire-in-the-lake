@@ -36,9 +36,7 @@ impl Player for PlaybookFourthTurnNva {
             "march_order:underground_nva_guerrillas:5:north vietnam:quang tri",
         ));
         vec.push(String::from("infiltrate"));
-        vec.push(String::from(
-            "infiltrate_instructions:place:southern laos",
-        ));
+        vec.push(String::from("infiltrate_instructions:place:southern laos"));
         vec.push(String::from(
             "infiltrate_instructions:exchange:southern laos",
         ));

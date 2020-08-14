@@ -83,7 +83,7 @@ impl Space for LineOfCommunication {
         todo!()
     }
 
-    fn set_number_of_nva_troops(&mut self, new_number_of_nva_troops: u8) -> Result<(), String> {
+    fn set_number_of_nva_troops(&mut self, _new_number_of_nva_troops: u8) -> Result<(), String> {
         todo!()
     }
 
@@ -176,11 +176,11 @@ impl Space for LineOfCommunication {
         todo!()
     }
 
-    fn get_total_number_of_nva_pieces(&self) -> u8{
+    fn get_total_number_of_nva_pieces(&self) -> u8 {
         todo!()
     }
 
-    fn get_total_number_of_arvn_pieces(&self) -> u8{
+    fn get_total_number_of_arvn_pieces(&self) -> u8 {
         todo!()
     }
 

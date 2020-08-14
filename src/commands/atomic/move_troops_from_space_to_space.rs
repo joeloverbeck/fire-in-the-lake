@@ -8,7 +8,7 @@ pub fn move_troops_from_space_to_space(
     from: SpaceIdentifiers,
     to: SpaceIdentifiers,
     map: &mut Map,
-) -> Result<(), String>{
+) -> Result<(), String> {
     // Gotta remove the specific amount of troops from the "from" space, and add them to the "to" space. But we have to
     // test the control of the place.
     let from_space = map.get_space_mut(from).unwrap();
@@ -18,17 +18,21 @@ pub fn move_troops_from_space_to_space(
             panic!("Was going to move {:?} of underground nva guerrillas from the space '{:?}', but in the space there were only {:?}. Space: {:?}", amount, from, from_space.get_number_of_underground_nva_guerrillas(), from_space);
         }
 
-        from_space.set_number_of_underground_nva_guerrillas(from_space.get_number_of_underground_nva_guerrillas() - amount);
+        from_space.set_number_of_underground_nva_guerrillas(
+            from_space.get_number_of_underground_nva_guerrillas() - amount,
+        );
 
         let to_space = map.get_space_mut(to).unwrap();
-        to_space.set_number_of_underground_nva_guerrillas(to_space.get_number_of_underground_nva_guerrillas() + amount);        
+        to_space.set_number_of_underground_nva_guerrillas(
+            to_space.get_number_of_underground_nva_guerrillas() + amount,
+        );
     } else {
         todo!()
     }
 
     // Should trigger the adjust control calculations in the involved space.
     let to_space = map.get_space_mut(to).unwrap();
-    to_space.adjust_control();    
+    to_space.adjust_control();
 
     Ok(())
 }

@@ -9,10 +9,10 @@ pub fn execute_march_for_nva(
     interpreted_intentions: &InterpretedIntentions,
     map: &mut Map,
     track: &mut Track,
-    available_forces: &mut AvailableForces,
+    _available_forces: &mut AvailableForces,
 ) -> Result<(), String> {
     // Sanity check
-    if interpreted_intentions.get_march_orders().len() == 0 {
+    if interpreted_intentions.get_march_orders().is_empty() {
         panic!("Had to execute a march for NVA, but there were no march orders!");
     }
 
@@ -20,9 +20,10 @@ pub fn execute_march_for_nva(
     let mut destinations: Vec<SpaceIdentifiers> = Vec::new();
 
     for march_order in interpreted_intentions.get_march_orders().iter() {
-        if let None = destinations
+        if destinations
             .iter()
             .find(|destination| *destination == &march_order.get_to())
+            .is_none()
         {
             destinations.push(march_order.get_to());
         }
@@ -43,7 +44,7 @@ pub fn execute_march_for_nva(
             march_order.get_from(),
             march_order.get_to(),
             map,
-        );
+        )?;
     }
 
     Ok(())

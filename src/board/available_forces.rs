@@ -57,7 +57,7 @@ impl AvailableForces {
         ))
     }
 
-    pub fn get_amount_of_nva_troops(&self) -> u8{
+    pub fn get_amount_of_nva_troops(&self) -> u8 {
         self.nva_troops
     }
 

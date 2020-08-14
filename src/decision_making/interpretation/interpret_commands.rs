@@ -1,9 +1,8 @@
-use decision_making::interpretation::operation_instructions::register_infiltrate_instructions::register_infiltrate_instructions;
 use decision_making::interpretation::does_typed_command_refer_to_space::does_typed_command_refer_to_space;
 use decision_making::interpretation::event_instructions::collect_deploy_from_out_of_play_data::collect_deploy_from_out_of_play_data;
 use decision_making::interpretation::interpreted_intentions::InterpretedIntentions;
 use decision_making::interpretation::is_the_typed_command_a_number::is_the_typed_command_a_number;
-use decision_making::interpretation::operation_instructions::march_order::MarchOrder;
+use decision_making::interpretation::operation_instructions::register_infiltrate_instructions::register_infiltrate_instructions;
 use decision_making::interpretation::operation_instructions::register_march_orders::register_march_orders;
 use decision_making::interpretation::transform_typed_digit_into_integer::transform_typed_digit_into_integer;
 use decision_making::interpretation::transform_typed_space_into_space_identifier::transform_typed_space_into_space_identifier;
@@ -43,14 +42,12 @@ pub fn interpret_commands(
                 split_with_colon_typed_input_command,
                 &mut interpreted_intentions,
             );
-        } 
-        else if split_with_colon_typed_input_command[0] == "infiltrate_instructions"{
+        } else if split_with_colon_typed_input_command[0] == "infiltrate_instructions" {
             register_infiltrate_instructions(
                 split_with_colon_typed_input_command,
-                &mut interpreted_intentions
-            );
-        }        
-        else if typed_input_command == "operation" {
+                &mut interpreted_intentions,
+            )?;
+        } else if typed_input_command == "operation" {
             interpreted_intentions.wants_to_do_an_operation();
         } else if typed_input_command == "pass" {
             interpreted_intentions.wants_to_pass();
@@ -66,8 +63,7 @@ pub fn interpret_commands(
             interpreted_intentions.wants_to_rally();
         } else if typed_input_command == "sweep" {
             interpreted_intentions.wants_to_sweep();
-        }         
-        else if does_typed_command_refer_to_space(typed_input_command)
+        } else if does_typed_command_refer_to_space(typed_input_command)
             && interpreted_intentions.has_it_decided_on_an_operation()
             && !interpreted_intentions.has_it_chosen_a_special_activity()
         {
@@ -100,11 +96,9 @@ pub fn interpret_commands(
             interpreted_intentions.wants_to_govern();
         } else if typed_input_command == "tax" {
             interpreted_intentions.wants_to_tax();
-        } 
-        else if typed_input_command == "infiltrate"{
+        } else if typed_input_command == "infiltrate" {
             interpreted_intentions.wants_to_infiltrate();
-        }
-        else {
+        } else {
             panic!(
                 "Not implemented for {:?}. Interpreted intentions: {:?}",
                 typed_input_command, interpreted_intentions

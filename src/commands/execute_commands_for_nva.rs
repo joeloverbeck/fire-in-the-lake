@@ -1,9 +1,9 @@
-use commands::special_activities::execute_special_activity_for_nva::execute_special_activity_for_nva;
 use board::available_forces::AvailableForces;
 use board::map::Map;
 use board::track::Track;
 use commands::operations::execute_operation_for_nva::execute_operation_for_nva;
 use commands::passing::execute_passed_for_arvn::execute_passed_for_nva;
+use commands::special_activities::execute_special_activity_for_nva::execute_special_activity_for_nva;
 use decision_making::interpretation::interpreted_intentions::InterpretedIntentions;
 
 pub fn execute_commands_for_nva(

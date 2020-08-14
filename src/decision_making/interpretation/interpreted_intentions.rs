@@ -1,6 +1,6 @@
-use decision_making::interpretation::operation_instructions::infiltrate_instructions::InfiltrateInstructions;
 use board::space_identifiers::SpaceIdentifiers;
 use decision_making::interpretation::event_instructions::deploy_from_out_of_play_data::DeployFromOutOfPlayData;
+use decision_making::interpretation::operation_instructions::infiltrate_instructions::InfiltrateInstructions;
 use decision_making::interpretation::operation_instructions::march_order::MarchOrder;
 
 #[derive(Debug, Clone)]
@@ -145,11 +145,11 @@ impl InterpretedIntentions {
         &self.march_orders
     }
 
-    pub fn add_infiltrate_instructions(&mut self, infiltrate_instructions: InfiltrateInstructions){
+    pub fn add_infiltrate_instructions(&mut self, infiltrate_instructions: InfiltrateInstructions) {
         self.infiltrate_instructions.push(infiltrate_instructions);
     }
 
-    pub fn get_infiltrate_instructions(&self) -> &Vec<InfiltrateInstructions>{
+    pub fn get_infiltrate_instructions(&self) -> &Vec<InfiltrateInstructions> {
         &self.infiltrate_instructions
     }
 
