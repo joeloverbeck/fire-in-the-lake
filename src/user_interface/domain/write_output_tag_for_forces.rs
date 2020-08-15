@@ -51,6 +51,16 @@ pub fn write_output_tag_for_forces<'a>(
         write_output_for_case(" UNDERGROUND ARVN RANGERS ", Color::Yellow, buffer)?;
     } else if text == "[ActiveArvnRanger]" {
         write_output_for_case(" ACTIVE ARVN RANGERS ", Color::Yellow, buffer)?;
+    } else if text == "[ArvnPolice]" {
+        write_output_for_case(" ARVN POLICE ", Color::Yellow, buffer)?;
+    } else if text == "[UndergroundVcGuerrilla]" {
+        write_output_for_case(" UNDERGROUND VC GUERRILLAS ", Color::Blue, buffer)?;
+    } else if text == "[ActiveVcGuerrilla]" {
+        write_output_for_case(" ACTIVE VC GUERRILLAS ", Color::Blue, buffer)?;
+    } else if text == "[UndergroundNvaGuerrilla]" {
+        write_output_for_case(" UNDERGROUND NVA GUERRILLAS ", Color::Red, buffer)?;
+    } else if text == "[ActiveNvaGuerrilla]" {
+        write_output_for_case(" ACTIVE NVA GUERRILLAS ", Color::Red, buffer)?;
     }
 
     Ok(buffer)

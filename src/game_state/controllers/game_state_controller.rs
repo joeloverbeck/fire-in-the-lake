@@ -39,6 +39,12 @@ impl GameStateController {
             user_interface_controller.write_instruction(instruction.as_str())?;
         }
 
+        user_interface_controller.write_section("Forces in Spaces")?;
+
+        for instruction in collection_of_instructions[2].iter() {
+            user_interface_controller.write_instruction(instruction.as_str())?;
+        }
+
         Ok(())
     }
 }

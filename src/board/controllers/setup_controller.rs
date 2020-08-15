@@ -219,6 +219,353 @@ impl SetupController {
             SpaceIdentifiers::TheParrotsBeak,
         )?;
 
+        // Push all the damn instructions about placing forces to the player
+        let mut forces_in_spaces_instructions: Vec<String> = Vec::new();
+
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::UsBase,
+            SpaceIdentifiers::Saigon,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::UsTroop,
+            SpaceIdentifiers::Saigon,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::ArvnTroop,
+            SpaceIdentifiers::Saigon,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            3,
+            Forces::ArvnPolice,
+            SpaceIdentifiers::Saigon,
+        ));
+
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::ArvnTroop,
+            SpaceIdentifiers::Hue,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::ArvnPolice,
+            SpaceIdentifiers::Hue,
+        ));
+
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::ArvnTroop,
+            SpaceIdentifiers::QuiNhon,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::ArvnPolice,
+            SpaceIdentifiers::QuiNhon,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::ArvnTroop,
+            SpaceIdentifiers::CamRanh,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::ArvnPolice,
+            SpaceIdentifiers::CamRanh,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::ArvnTroop,
+            SpaceIdentifiers::AnLoc,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::ArvnPolice,
+            SpaceIdentifiers::AnLoc,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::ArvnTroop,
+            SpaceIdentifiers::CanTho,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::ArvnPolice,
+            SpaceIdentifiers::CanTho,
+        ));
+
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::UsTroop,
+            SpaceIdentifiers::DaNang,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::ArvnPolice,
+            SpaceIdentifiers::DaNang,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::UsTroop,
+            SpaceIdentifiers::Kontum,
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::ArvnPolice,
+            SpaceIdentifiers::Kontum,
+        ));
+
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::UndergroundUsIrregular,
+            SpaceIdentifiers::QuangTriThuaThien
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::UsTroop,
+            SpaceIdentifiers::QuangTriThuaThien
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::VcBase,
+            SpaceIdentifiers::QuangTriThuaThien
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::UndergroundVcGuerrilla,
+            SpaceIdentifiers::QuangTriThuaThien
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::UndergroundUsIrregular,
+            SpaceIdentifiers::BinhDinh
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::UsTroop,
+            SpaceIdentifiers::BinhDinh
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::VcBase,
+            SpaceIdentifiers::BinhDinh
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::UndergroundVcGuerrilla,
+            SpaceIdentifiers::BinhDinh
+        ));
+
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::UndergroundArvnRanger,
+            SpaceIdentifiers::QuangNam
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::ArvnPolice,
+            SpaceIdentifiers::QuangNam
+        ));
+
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::UsBase,
+            SpaceIdentifiers::PleikuDarlac
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::UndergroundUsIrregular,
+            SpaceIdentifiers::PleikuDarlac
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::UsTroop,
+            SpaceIdentifiers::PleikuDarlac
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::VcBase,
+            SpaceIdentifiers::PleikuDarlac
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::UndergroundVcGuerrilla,
+            SpaceIdentifiers::PleikuDarlac
+        ));
+
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::VcBase,
+            SpaceIdentifiers::QuangTinQuangNgai
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::UndergroundVcGuerrilla,
+            SpaceIdentifiers::QuangTinQuangNgai
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::VcBase,
+            SpaceIdentifiers::QuangDucLongKhanh
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::UndergroundVcGuerrilla,
+            SpaceIdentifiers::QuangDucLongKhanh
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::VcBase,
+            SpaceIdentifiers::BinhTuyBinhThuan
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::UndergroundVcGuerrilla,
+            SpaceIdentifiers::BinhTuyBinhThuan
+        ));
+
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::TunneledVcBase,
+            SpaceIdentifiers::TayNinh
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            2,
+            Forces::UndergroundVcGuerrilla,
+            SpaceIdentifiers::TayNinh
+        ));
+
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::ArvnPolice,
+            SpaceIdentifiers::PhuBonPhuYen
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::ArvnPolice,
+            SpaceIdentifiers::KhanhHoa
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::ArvnPolice,
+            SpaceIdentifiers::KienHoaVinhBinh
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::ArvnPolice,
+            SpaceIdentifiers::BaXuyen
+        ));
+
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::UndergroundVcGuerrilla,
+            SpaceIdentifiers::KienPhong
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::UndergroundVcGuerrilla,
+            SpaceIdentifiers::KienGiangAnXuyen
+        ));
+
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::NvaBase,
+            SpaceIdentifiers::NorthVietnam
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            3,
+            Forces::UndergroundNvaGuerrilla,
+            SpaceIdentifiers::NorthVietnam
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::NvaBase,
+            SpaceIdentifiers::CentralLaos
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            3,
+            Forces::UndergroundNvaGuerrilla,
+            SpaceIdentifiers::CentralLaos
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::NvaBase,
+            SpaceIdentifiers::SouthernLaos
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            3,
+            Forces::UndergroundNvaGuerrilla,
+            SpaceIdentifiers::SouthernLaos
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            1,
+            Forces::NvaBase,
+            SpaceIdentifiers::TheParrotsBeak
+        ));
+        forces_in_spaces_instructions.push(format!(
+            "Place {} {} in {}.",
+            3,
+            Forces::UndergroundNvaGuerrilla,
+            SpaceIdentifiers::TheParrotsBeak
+        ));
+
+        collection_of_instructions.push(forces_in_spaces_instructions);
+
         Ok((board, collection_of_instructions))
     }
 }

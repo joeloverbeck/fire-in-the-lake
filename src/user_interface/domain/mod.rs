@@ -10,4 +10,5 @@ pub mod section_writer;
 pub mod write_output_tag_for_faction;
 pub mod write_output_tag_for_faction_stat;
 pub mod write_output_tag_for_forces;
+pub mod write_output_tag_for_space;
 pub mod write_regular_text;

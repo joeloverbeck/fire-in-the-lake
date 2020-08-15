@@ -8,6 +8,7 @@ use user_interface::domain::reset_console_output_to_normal::reset_console_output
 use user_interface::domain::write_output_tag_for_faction::write_output_tag_for_faction;
 use user_interface::domain::write_output_tag_for_faction_stat::write_output_tag_for_faction_stat;
 use user_interface::domain::write_output_tag_for_forces::write_output_tag_for_forces;
+use user_interface::domain::write_output_tag_for_space::write_output_tag_for_space;
 use user_interface::domain::write_regular_text::write_regular_text;
 
 extern crate termcolor;
@@ -76,19 +77,7 @@ impl<'a> InstructionsComposer {
             if entry == "[VC]" || entry == "[ARVN]" || entry == "[US]" || entry == "[NVA]" {
                 write_output_tag_for_faction(entry, buffer)?;
             } else if does_text_refer_to_a_space(entry) {
-                let filtered_text = replace_extraneous_characters_from_text(entry);
-
-                if let Err(error) = buffer.set_color(
-                    ColorSpec::new()
-                        .set_fg(Some(Color::Red))
-                        .set_bg(Some(Color::White)),
-                ) {
-                    return Err(error.to_string());
-                }
-
-                if let Err(error) = write!(buffer, " {} ", filtered_text) {
-                    return Err(error.to_string());
-                }
+                write_output_tag_for_space(entry, buffer)?;
             } else if does_text_refer_to_a_faction_stat(entry) {
                 write_output_tag_for_faction_stat(entry, buffer)?;
             } else if does_text_refer_to_forces(entry) {
