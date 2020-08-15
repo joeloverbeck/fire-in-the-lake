@@ -27,13 +27,13 @@ pub fn write_output_tag_for_faction<'a>(
     text: &str,
     buffer: &'a mut Buffer,
 ) -> Result<&'a mut Buffer, String> {
-    if text == "{VC}" {
+    if text == "[VC]" {
         write_output_for_case(" VC ", Color::Blue, buffer)?;
-    } else if text == "{ARVN}" {
+    } else if text == "[ARVN]" {
         write_output_for_case(" ARVN ", Color::Yellow, buffer)?;
-    } else if text == "{US}" {
+    } else if text == "[US]" {
         write_output_for_case(" US ", Color::Green, buffer)?;
-    } else if text == "{NVA}" {
+    } else if text == "[NVA]" {
         write_output_for_case(" NVA ", Color::Red, buffer)?;
     }
 

@@ -24,8 +24,9 @@ impl<'a> SectionWriter {
     }
 
     pub fn write(&self, text: &str, buffer: &'a mut Buffer) -> Result<&'a mut Buffer, String> {
-        // Write the instruction "tag".
+        reset_console_output_to_normal(buffer)?;
 
+        // Write the instruction "tag".
         if let Err(error) = buffer.set_color(
             ColorSpec::new()
                 .set_fg(Some(Color::Red))

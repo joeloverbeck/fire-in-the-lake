@@ -27,9 +27,15 @@ impl GameStateController {
 
         user_interface_controller.write_section("Faction stats")?;
 
-        let (_board, instructions) = SetupController::new().setup_full()?;
+        let (_board, collection_of_instructions) = SetupController::new().setup_full()?;
 
-        for instruction in instructions {
+        for instruction in collection_of_instructions[0].iter() {
+            user_interface_controller.write_instruction(instruction.as_str())?;
+        }
+
+        user_interface_controller.write_section("Out of Play")?;
+
+        for instruction in collection_of_instructions[1].iter() {
             user_interface_controller.write_instruction(instruction.as_str())?;
         }
 

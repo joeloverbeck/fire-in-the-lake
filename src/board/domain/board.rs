@@ -1,10 +1,16 @@
+use board::domain::initialize_hashmap_of_forces::initialize_hashmap_of_forces;
+use board::domain::occupable_space::OccupableSpace;
 use game_definitions::faction_stats::FactionStats;
+use game_definitions::forces::Forces;
+use game_definitions::space_identifiers::SpaceIdentifiers;
 
 use std::collections::HashMap;
 
 #[derive(Clone)]
 pub struct Board {
     faction_stats: HashMap<FactionStats, u8>,
+    out_of_play: HashMap<Forces, u8>,
+    occupable_spaces: HashMap<SpaceIdentifiers, OccupableSpace>,
 }
 
 impl Default for Board {
@@ -28,6 +34,38 @@ impl Board {
                 (FactionStats::OppositionPlusBases, 0),
                 (FactionStats::NvaPlusBases, 0),
                 (FactionStats::TheTrail, 0),
+            ]
+            .iter()
+            .cloned()
+            .collect(),
+            out_of_play: initialize_hashmap_of_forces(),
+            occupable_spaces: [
+                (SpaceIdentifiers::Saigon, OccupableSpace::new()),
+                (SpaceIdentifiers::Hue, OccupableSpace::new()),
+                (SpaceIdentifiers::AnLoc, OccupableSpace::new()),
+                (SpaceIdentifiers::KienGiangAnXuyen, OccupableSpace::new()),
+                (SpaceIdentifiers::BaXuyen, OccupableSpace::new()),
+                (SpaceIdentifiers::QuangNam, OccupableSpace::new()),
+                (SpaceIdentifiers::BinhDinh, OccupableSpace::new()),
+                (SpaceIdentifiers::CanTho, OccupableSpace::new()),
+                (SpaceIdentifiers::KienPhong, OccupableSpace::new()),
+                (SpaceIdentifiers::QuangTriThuaThien, OccupableSpace::new()),
+                (SpaceIdentifiers::NorthVietnam, OccupableSpace::new()),
+                (SpaceIdentifiers::TheParrotsBeak, OccupableSpace::new()),
+                (SpaceIdentifiers::QuangTinQuangNgai, OccupableSpace::new()),
+                (SpaceIdentifiers::QuangDucLongKhanh, OccupableSpace::new()),
+                (SpaceIdentifiers::BinhTuyBinhThuan, OccupableSpace::new()),
+                (SpaceIdentifiers::PleikuDarlac, OccupableSpace::new()),
+                (SpaceIdentifiers::CentralLaos, OccupableSpace::new()),
+                (SpaceIdentifiers::SouthernLaos, OccupableSpace::new()),
+                (SpaceIdentifiers::QuiNhon, OccupableSpace::new()),
+                (SpaceIdentifiers::KhanhHoa, OccupableSpace::new()),
+                (SpaceIdentifiers::KienHoaVinhBinh, OccupableSpace::new()),
+                (SpaceIdentifiers::PhuBonPhuYen, OccupableSpace::new()),
+                (SpaceIdentifiers::TayNinh, OccupableSpace::new()),
+                (SpaceIdentifiers::Kontum, OccupableSpace::new()),
+                (SpaceIdentifiers::DaNang, OccupableSpace::new()),
+                (SpaceIdentifiers::CamRanh, OccupableSpace::new()),
             ]
             .iter()
             .cloned()
@@ -61,6 +99,87 @@ impl Board {
             Ok(*value)
         } else {
             Err(format!("Attempted to get the faction stat {:?} from the board, but it wasn't found there! Stored faction stats: {:?}", faction_stat, self.faction_stats))
+        }
+    }
+
+    pub fn get_forces_in_out_of_play(&self, forces: Forces) -> Result<u8, String> {
+        // Sanity checks
+        if self.out_of_play.is_empty() {
+            return Err(format!("Attempted to get the number of {:?} out of play, but the out of play container was empty! The setup for this scenario wasn't done correctly.", forces));
+        }
+
+        if !self.out_of_play.contains_key(&forces) {
+            return Err(format!("Attempted to get the number of {:?} out of play, but there wasn't an entry for that type! Stored Out of Play: {:?}", forces, self.out_of_play));
+        }
+
+        Ok(*self.out_of_play.get(&forces).unwrap())
+    }
+
+    pub fn set_forces_in_out_of_play(&mut self, forces: Forces, value: u8) -> Result<(), String> {
+        *self.out_of_play.get_mut(&forces).unwrap() = value;
+
+        Ok(())
+    }
+
+    pub fn set_forces_in_space(
+        &mut self,
+        forces: Forces,
+        value: u8,
+        space: SpaceIdentifiers,
+    ) -> Result<(), String> {
+        let occupable_space = self.get_space_mut(space)?;
+
+        occupable_space.set_forces(forces, value)?;
+
+        Ok(())
+    }
+
+    fn get_space_mut(&mut self, space: SpaceIdentifiers) -> Result<&mut OccupableSpace, String> {
+        let possible_space = self.occupable_spaces.get_mut(&space);
+
+        if let Some(occupable_space) = possible_space {
+            Ok(occupable_space)
+        } else {
+            Err(format!("Was requested to return a mutable reference to {:?}, but couldn't retrieve it from the collection.", space))
+        }
+    }
+
+    fn get_space(&self, space: SpaceIdentifiers) -> Result<&OccupableSpace, String> {
+        let possible_space = self.occupable_spaces.get(&space);
+
+        if possible_space.is_none() {
+            Err(format!(
+                "Requested the space {:?}, but it wasn't in the collection! Collection: {:?}",
+                space, self.occupable_spaces
+            ))
+        } else if let Some(occupable_space) = possible_space {
+            Ok(occupable_space)
+        } else {
+            Err(format!(
+                "Failed to get the appropriate space for {:?}.",
+                space
+            ))
+        }
+    }
+
+    pub fn get_forces_in_space(
+        &self,
+        forces: Forces,
+        space: SpaceIdentifiers,
+    ) -> Result<u8, String> {
+        let occupable_space = self.get_space(space)?;
+
+        let number_of_forces_result = occupable_space.get_forces(forces);
+
+        if let Err(error) = number_of_forces_result {
+            Err(error)
+        } else if let Ok(value) = number_of_forces_result {
+            Ok(value)
+        } else {
+            Err(format!(
+                "Requested the number of {:?} in {:?}, but couldn't retrieve the number of forces!",
+                forces, space
+            ))
         }
     }
 }

@@ -20,6 +20,14 @@ pub enum SpaceIdentifiers {
     PleikuDarlac,
     CentralLaos,
     SouthernLaos,
+    QuiNhon,
+    KhanhHoa,
+    KienHoaVinhBinh,
+    PhuBonPhuYen,
+    TayNinh,
+    Kontum,
+    DaNang,
+    CamRanh,
 }
 
 impl Eq for SpaceIdentifiers {}
