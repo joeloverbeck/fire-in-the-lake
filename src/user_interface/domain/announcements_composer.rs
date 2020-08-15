@@ -1,4 +1,5 @@
 use std::io::Write;
+use user_interface::domain::reset_console_output_to_normal::reset_console_output_to_normal;
 
 extern crate termcolor;
 use self::termcolor::{Buffer, Color, ColorSpec, WriteColor};
@@ -60,17 +61,7 @@ impl<'a> AnnouncementsComposer {
             return Err(error.to_string());
         }
 
-        if let Err(error) = buffer.set_color(
-            ColorSpec::new()
-                .set_fg(Some(Color::White))
-                .set_bg(Some(Color::Black)),
-        ) {
-            return Err(error.to_string());
-        }
-
-        if let Err(error) = writeln!(buffer) {
-            return Err(error.to_string());
-        }
+        reset_console_output_to_normal(buffer)?;
 
         println!();
 

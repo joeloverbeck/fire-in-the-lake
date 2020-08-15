@@ -1,18 +1,8 @@
 extern crate fire_in_the_lake;
-use fire_in_the_lake::user_interface::controllers::user_interface_controller::UserInterfaceController;
-
-extern crate termcolor;
-use self::termcolor::{BufferWriter, ColorChoice};
+use fire_in_the_lake::game_state::controllers::game_state_controller::GameStateController;
 
 fn main() {
-    let user_interface_writer =
-        UserInterfaceController::new(BufferWriter::stdout(ColorChoice::Always));
-
-    if let Err(error) = user_interface_writer.write_announcement("Welcome to 'Fire in the Lake'") {
-        println!("Error: {:?}", error);
-    }
-
-    if let Err(error) = user_interface_writer.write_announcement("Let's begin setup:") {
-        println!("Error: {:?}", error);
+    if let Err(error) = GameStateController::new().run() {
+        panic!("The game crashed for the following error: {:?}", error);
     }
 }
