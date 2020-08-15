@@ -1,3 +1,4 @@
+use board::controllers::setup_controller::SetupController;
 use user_interface::controllers::user_interface_controller::UserInterfaceController;
 
 extern crate termcolor;
@@ -22,15 +23,15 @@ impl GameStateController {
 
         user_interface_controller.write_announcement("Welcome to 'Fire in the Lake'")?;
 
-        user_interface_controller.write_announcement("Full game scenario setup")?;
+        user_interface_controller.write_announcement("Full scenario setup")?;
 
-        user_interface_controller.write_instruction("Place a {VC} troop in {SAIGON}")?;
+        user_interface_controller.write_section("Faction stats")?;
 
-        let player_input = user_interface_controller
-            .request_player_input("Enter where are you moving your damn troops from: ")?;
+        let (_board, instructions) = SetupController::new().setup_full()?;
 
-        user_interface_controller
-            .write_announcement(format!("Player inputted {:?}", player_input).as_str())?;
+        for instruction in instructions {
+            user_interface_controller.write_instruction(instruction.as_str())?;
+        }
 
         Ok(())
     }

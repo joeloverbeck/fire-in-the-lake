@@ -1,8 +1,11 @@
 use std::io::Write;
 use text_manipulation::replace_extraneous_characters_from_text::replace_extraneous_characters_from_text;
+use user_interface::domain::does_text_refer_to_a_faction_stat::does_text_refer_to_a_faction_stat;
 use user_interface::domain::does_text_refer_to_space::does_text_refer_to_a_space;
+use user_interface::domain::does_text_unit_have_special_meaning::does_text_unit_have_special_meaning;
 use user_interface::domain::reset_console_output_to_normal::reset_console_output_to_normal;
 use user_interface::domain::write_output_tag_for_faction::write_output_tag_for_faction;
+use user_interface::domain::write_output_tag_for_faction_stat::write_output_tag_for_faction_stat;
 use user_interface::domain::write_regular_text::write_regular_text;
 
 extern crate termcolor;
@@ -48,12 +51,7 @@ impl<'a> InstructionsComposer {
         let mut separated_text: Vec<String> = Vec::new();
 
         for entry in split_text_iter {
-            if entry == "{VC}"
-                || entry == "{ARVN}"
-                || entry == "{US}"
-                || entry == "NVA"
-                || does_text_refer_to_a_space(entry)
-            {
+            if does_text_unit_have_special_meaning(entry) {
                 // if there's something in plain text, push it into the vec and clean the current
                 // plain text
                 if !plain_text.is_empty() {
@@ -87,6 +85,27 @@ impl<'a> InstructionsComposer {
                 }
 
                 if let Err(error) = write!(buffer, " {} ", filtered_text) {
+                    return Err(error.to_string());
+                }
+            } else if does_text_refer_to_a_faction_stat(entry) {
+                write_output_tag_for_faction_stat(entry, buffer)?;
+            } else if replace_extraneous_characters_from_text(entry)
+                .parse::<u8>()
+                .is_ok()
+            {
+                if let Err(error) = buffer.set_color(
+                    ColorSpec::new()
+                        .set_fg(Some(Color::Black))
+                        .set_bg(Some(Color::White)),
+                ) {
+                    return Err(error.to_string());
+                }
+
+                if let Err(error) = write!(
+                    buffer,
+                    " {} ",
+                    replace_extraneous_characters_from_text(entry)
+                ) {
                     return Err(error.to_string());
                 }
             } else {
