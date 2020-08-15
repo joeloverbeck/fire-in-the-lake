@@ -3,5 +3,14 @@ name = "fire-in-the-lake"
 version = "0.1.1"
 authors = ["joeloverbeck"]
 
+[lib]
+name = "fire_in_the_lake"
+path = "src/lib.rs"
+
+[[bin]]
+name = "fire_in_the_lake"
+path = "src/bin/main.rs"
+
 [dependencies]
 enum_dispatch = "0.3.2"
+termcolor = "1.1"
