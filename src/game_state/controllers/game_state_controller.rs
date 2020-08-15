@@ -24,8 +24,13 @@ impl GameStateController {
 
         user_interface_controller.write_announcement("Full game scenario setup")?;
 
+        user_interface_controller.write_instruction("Place a {VC} troop in {SAIGON}")?;
+
+        let player_input = user_interface_controller
+            .request_player_input("Enter where are you moving your damn troops from: ")?;
+
         user_interface_controller
-            .write_instruction("Place a {VC} troop in {SAIGON}, you dangy!")?;
+            .write_announcement(format!("Player inputted {:?}", player_input).as_str())?;
 
         Ok(())
     }

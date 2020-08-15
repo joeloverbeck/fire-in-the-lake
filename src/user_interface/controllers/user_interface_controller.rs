@@ -1,5 +1,6 @@
 use user_interface::domain::announcements_composer::AnnouncementsComposer;
 use user_interface::domain::instructions_composer::InstructionsComposer;
+use user_interface::domain::player_input_requester::PlayerInputRequester;
 
 extern crate termcolor;
 use self::termcolor::BufferWriter;
@@ -8,6 +9,7 @@ pub struct UserInterfaceController {
     buffer_writer: BufferWriter,
     announcements_composer: AnnouncementsComposer,
     instructions_composer: InstructionsComposer,
+    player_input_requester: PlayerInputRequester,
 }
 
 impl UserInterfaceController {
@@ -16,6 +18,7 @@ impl UserInterfaceController {
             buffer_writer,
             announcements_composer: AnnouncementsComposer::new(),
             instructions_composer: InstructionsComposer::new(),
+            player_input_requester: PlayerInputRequester::new(),
         }
     }
 
@@ -45,5 +48,11 @@ impl UserInterfaceController {
         }
 
         Ok(())
+    }
+
+    pub fn request_player_input(&self, text: &str) -> Result<String, String> {
+        let player_input = self.player_input_requester.request(text)?;
+
+        Ok(player_input)
     }
 }

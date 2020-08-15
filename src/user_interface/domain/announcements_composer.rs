@@ -23,7 +23,7 @@ impl<'a> AnnouncementsComposer {
 
     pub fn compose(&self, text: &str, buffer: &'a mut Buffer) -> Result<&'a mut Buffer, String> {
         // Bookend the announcement with empty lines.
-        println!();
+        reset_console_output_to_normal(buffer)?;
 
         if let Err(error) = buffer.set_color(
             ColorSpec::new()
@@ -61,9 +61,9 @@ impl<'a> AnnouncementsComposer {
             return Err(error.to_string());
         }
 
+        // Doing it twice because it's nice.
         reset_console_output_to_normal(buffer)?;
-
-        println!();
+        reset_console_output_to_normal(buffer)?;
 
         Ok(buffer)
     }

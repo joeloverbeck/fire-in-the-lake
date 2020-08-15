@@ -3,6 +3,7 @@ use text_manipulation::replace_extraneous_characters_from_text::replace_extraneo
 use user_interface::domain::does_text_refer_to_space::does_text_refer_to_a_space;
 use user_interface::domain::reset_console_output_to_normal::reset_console_output_to_normal;
 use user_interface::domain::write_output_tag_for_faction::write_output_tag_for_faction;
+use user_interface::domain::write_regular_text::write_regular_text;
 
 extern crate termcolor;
 use self::termcolor::{Buffer, Color, ColorSpec, WriteColor};
@@ -89,18 +90,7 @@ impl<'a> InstructionsComposer {
                     return Err(error.to_string());
                 }
             } else {
-                // Write plain text.
-                if let Err(error) = buffer.set_color(
-                    ColorSpec::new()
-                        .set_fg(Some(Color::White))
-                        .set_bg(Some(Color::Black)),
-                ) {
-                    return Err(error.to_string());
-                }
-
-                if let Err(error) = write!(buffer, "{}", entry) {
-                    return Err(error.to_string());
-                }
+                write_regular_text(entry, buffer)?;
             }
         }
 
