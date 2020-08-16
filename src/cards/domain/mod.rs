@@ -1,0 +1,1 @@
+pub mod create_collection_of_regular_cards;

@@ -18,7 +18,7 @@ impl<'a> PlayerInputRequester {
     pub fn request(&self, text: &str) -> Result<String, String> {
         println!();
 
-        print!("{}", text);
+        print!(" >> {}", text);
 
         stdout().flush().unwrap();
 
@@ -27,6 +27,8 @@ impl<'a> PlayerInputRequester {
         if let Err(error) = std::io::stdin().read_line(&mut input) {
             return Err(error.to_string());
         }
+
+        println!();
 
         Ok(input.trim_end().to_string())
     }
