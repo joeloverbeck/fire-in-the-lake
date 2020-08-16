@@ -46,6 +46,18 @@ impl OccupableSpace {
         Ok(())
     }
 
+    pub fn reduce_forces(&mut self, forces: &Forces, number: u8) -> Result<(), String> {
+        *self.forces.get_mut(&forces).unwrap() -= number;
+
+        Ok(())
+    }
+
+    pub fn increase_forces(&mut self, forces: &Forces, number: u8) -> Result<(), String> {
+        *self.forces.get_mut(&forces).unwrap() += number;
+
+        Ok(())
+    }
+
     pub fn set_control_type(&mut self, control_type: ControlTypes) -> Result<(), String> {
         self.control_type = control_type;
 

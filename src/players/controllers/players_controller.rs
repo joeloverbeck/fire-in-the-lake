@@ -41,9 +41,7 @@ impl PlayersController {
                 user_interface_controller,
             );
 
-            if let Ok(decision) = decide_result {
-                return Ok(decision);
-            }
+            return Ok(decide_result?);
         }
 
         panic!("Shouldn't have gotten here!");

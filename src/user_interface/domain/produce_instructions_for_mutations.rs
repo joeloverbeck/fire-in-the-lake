@@ -52,7 +52,30 @@ pub fn produce_instructions_for_mutations(
         }
     }
 
-    // Third handle the flag mutations
+    // Third handle the mutations to the forces.
+    for mutation in decision.get_forces_mutations().iter() {
+        if mutation.get_mutation_type() == &MutationTypes::Move {
+            // Sanity check
+            if mutation.get_from().is_none() || mutation.get_to().is_none() {
+                return Err(format!("While attempting to produce the instruction for an order to move troops from a place to another, either the origin or the destination hadn't been set! Mutation: {:?}", mutation));
+            }
+
+            instructions.push(format!(
+                "Move {} {} from {} to {}.",
+                mutation.get_number(),
+                mutation.get_forces(),
+                mutation.get_from().unwrap(),
+                mutation.get_to().unwrap()
+            ));
+        } else {
+            panic!(
+                "Case not implemented for mutation type {:?}",
+                mutation.get_mutation_type()
+            );
+        }
+    }
+
+    // Fourth handle the flag mutations
     for mutation in decision.get_flags_mutations().iter() {
         if mutation.get_flag() == &Flags::BlowtorchComer && mutation.get_value() {
             // 'Blowtorch Komer' will be active throughout the next Coup Round.

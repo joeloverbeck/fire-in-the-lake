@@ -12,6 +12,7 @@ use std::collections::HashMap;
 pub struct Board {
     faction_stats: HashMap<FactionStats, u8>,
     out_of_play: HashMap<Forces, u8>,
+    available: HashMap<Forces, u8>,
     occupable_spaces: HashMap<SpaceIdentifiers, OccupableSpace>,
 }
 
@@ -41,6 +42,7 @@ impl Board {
             .cloned()
             .collect(),
             out_of_play: initialize_hashmap_of_forces(),
+            available: initialize_hashmap_of_forces(),
             occupable_spaces: [
                 (SpaceIdentifiers::Saigon, OccupableSpace::new()),
                 (SpaceIdentifiers::Hue, OccupableSpace::new()),
@@ -202,11 +204,77 @@ impl Board {
         }
     }
 
+    pub fn reduce_forces_in_space(
+        &mut self,
+        forces: &Forces,
+        space: SpaceIdentifiers,
+        number: u8,
+    ) -> Result<(), String> {
+        // Note: there are two exceptions. Given that the cards treat Out of Play and Available as
+        // spaces, they have an identifier, but obviously aren't in the list of spaces.
+        if space == SpaceIdentifiers::Available {
+            *self.available.get_mut(&forces).unwrap() -= number;
+
+            return Ok(());
+        }
+        if space == SpaceIdentifiers::OutOfPlay {
+            *self.out_of_play.get_mut(&forces).unwrap() -= number;
+
+            return Ok(());
+        }
+
+        let occupable_space = self.get_space_mut(space)?;
+
+        // Sanity check
+        if occupable_space.get_forces(*forces)? < number {
+            return Err(format!("Attempted to reduce the number of {:?} in {:?} by {:?}, but there were only {:?}. Something is seriously wrong in the calling code.", forces, space, number, occupable_space.get_forces(*forces)? ));
+        }
+
+        occupable_space.reduce_forces(forces, number)?;
+
+        Ok(())
+    }
+
+    pub fn increase_forces_in_space(
+        &mut self,
+        forces: &Forces,
+        space: SpaceIdentifiers,
+        number: u8,
+    ) -> Result<(), String> {
+        // Note: there are two exceptions. Given that the cards treat Out of Play and Available as
+        // spaces, they have an identifier, but obviously aren't in the list of spaces.
+        if space == SpaceIdentifiers::Available {
+            *self.available.get_mut(&forces).unwrap() += number;
+
+            return Ok(());
+        }
+        if space == SpaceIdentifiers::OutOfPlay {
+            *self.out_of_play.get_mut(&forces).unwrap() += number;
+
+            return Ok(());
+        }
+
+        let occupable_space = self.get_space_mut(space)?;
+
+        occupable_space.increase_forces(forces, number)?;
+
+        Ok(())
+    }
+
     pub fn get_forces_in_space(
         &self,
         forces: Forces,
         space: SpaceIdentifiers,
     ) -> Result<u8, String> {
+        // Note: there are two exceptions. Given that the cards treat Out of Play and Available as
+        // spaces, they have an identifier, but obviously aren't in the list of spaces.
+        if space == SpaceIdentifiers::Available {
+            return Ok(*self.available.get(&forces).unwrap());
+        }
+        if space == SpaceIdentifiers::OutOfPlay {
+            return Ok(*self.out_of_play.get(&forces).unwrap());
+        }
+
         let occupable_space = self.get_space(space)?;
 
         let number_of_forces_result = occupable_space.get_forces(forces);

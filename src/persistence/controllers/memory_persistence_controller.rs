@@ -41,6 +41,28 @@ impl MemoryPersistenceController {
             }
         }
 
+        // Persist forces mutations
+        for mutation in decision.get_forces_mutations() {
+            if mutation.get_mutation_type() == &MutationTypes::Move {
+                board.reduce_forces_in_space(
+                    mutation.get_forces(),
+                    mutation.get_from().unwrap(),
+                    mutation.get_number(),
+                )?;
+                board.increase_forces_in_space(
+                    mutation.get_forces(),
+                    mutation.get_to().unwrap(),
+                    mutation.get_number(),
+                )?;
+            } else {
+                panic!(
+                    "Case not handled for persist forces mutations type {:?}. Mutation: {:?}",
+                    mutation.get_mutation_type(),
+                    mutation
+                );
+            }
+        }
+
         for mutation in decision.get_flags_mutations() {
             flags_controller.set_flag(*mutation.get_flag(), mutation.get_value())?;
         }
@@ -75,7 +97,7 @@ mod tests {
             4,
         ));
 
-        let decision = Decision::new(Vec::new(), faction_stats_mutations, Vec::new());
+        let decision = Decision::new(Vec::new(), faction_stats_mutations, Vec::new(), Vec::new());
 
         sut.persist_decision(
             &decision,

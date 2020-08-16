@@ -2,4 +2,5 @@
 pub enum MutationTypes {
     Increase,
     Reduce,
+    Move,
 }
