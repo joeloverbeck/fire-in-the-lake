@@ -1,0 +1,6 @@
+pub mod does_text_refer_to_a_faction_stat;
+pub mod does_text_refer_to_control_types;
+pub mod does_text_refer_to_forces;
+pub mod does_text_refer_to_space;
+pub mod does_text_refer_to_support_levels;
+pub mod does_text_unit_have_special_meaning;

@@ -10,7 +10,7 @@ fn write_output_for_case(
 ) -> Result<(), String> {
     if let Err(error) = buffer.set_color(
         ColorSpec::new()
-            .set_fg(Some(Color::Magenta))
+            .set_fg(Some(Color::White))
             .set_bg(Some(background_color)),
     ) {
         return Err(error.to_string());

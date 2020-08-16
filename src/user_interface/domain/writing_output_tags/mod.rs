@@ -1,0 +1,7 @@
+pub mod write_output_tag_for_control_types;
+pub mod write_output_tag_for_faction;
+pub mod write_output_tag_for_faction_stat;
+pub mod write_output_tag_for_forces;
+pub mod write_output_tag_for_numbers;
+pub mod write_output_tag_for_space;
+pub mod write_output_tag_for_support_levels;

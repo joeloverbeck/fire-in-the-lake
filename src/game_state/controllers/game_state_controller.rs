@@ -45,6 +45,18 @@ impl GameStateController {
             user_interface_controller.write_instruction(instruction.as_str())?;
         }
 
+        user_interface_controller.write_section("Control")?;
+
+        for instruction in collection_of_instructions[3].iter() {
+            user_interface_controller.write_instruction(instruction.as_str())?;
+        }
+
+        user_interface_controller.write_section("Support")?;
+
+        for instruction in collection_of_instructions[4].iter() {
+            user_interface_controller.write_instruction(instruction.as_str())?;
+        }
+
         Ok(())
     }
 }

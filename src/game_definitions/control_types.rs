@@ -10,9 +10,9 @@ pub enum ControlTypes {
 impl fmt::Display for ControlTypes {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            ControlTypes::Coin => write!(f, "[Coin]"),
+            ControlTypes::Coin => write!(f, "[CoinControl]"),
             ControlTypes::Uncontrolled => write!(f, "[Uncontrolled]"),
-            ControlTypes::Nva => write!(f, "[Nva]"),
+            ControlTypes::Nva => write!(f, "[NvaControl]"),
         }
     }
 }

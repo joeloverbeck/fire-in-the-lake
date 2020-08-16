@@ -1,8 +1,10 @@
 extern crate fire_in_the_lake;
 use fire_in_the_lake::board::controllers::setup_controller::SetupController;
+use fire_in_the_lake::game_definitions::control_types::ControlTypes;
 use fire_in_the_lake::game_definitions::faction_stats::FactionStats;
 use fire_in_the_lake::game_definitions::forces::Forces;
 use fire_in_the_lake::game_definitions::space_identifiers::SpaceIdentifiers;
+use fire_in_the_lake::game_definitions::support_levels::SupportLevels;
 
 #[test]
 fn running_full_setup_should_end_up_with_a_board_in_the_correct_state() -> Result<(), String> {
@@ -332,6 +334,138 @@ fn running_full_setup_should_end_up_with_a_board_in_the_correct_state() -> Resul
             SpaceIdentifiers::TheParrotsBeak
         )?,
         3
+    );
+
+    // Assert full scenario control
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::Saigon)?,
+        ControlTypes::Coin
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::Hue)?,
+        ControlTypes::Coin
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::QuiNhon)?,
+        ControlTypes::Coin
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::CamRanh)?,
+        ControlTypes::Coin
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::AnLoc)?,
+        ControlTypes::Coin
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::CanTho)?,
+        ControlTypes::Coin
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::DaNang)?,
+        ControlTypes::Coin
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::Kontum)?,
+        ControlTypes::Coin
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::QuangNam)?,
+        ControlTypes::Coin
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::PhuBonPhuYen)?,
+        ControlTypes::Coin
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::KhanhHoa)?,
+        ControlTypes::Coin
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::KienHoaVinhBinh)?,
+        ControlTypes::Coin
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::BaXuyen)?,
+        ControlTypes::Coin
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::NorthVietnam)?,
+        ControlTypes::Nva
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::CentralLaos)?,
+        ControlTypes::Nva
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::SouthernLaos)?,
+        ControlTypes::Nva
+    );
+    assert_eq!(
+        created_board.get_control_type_of_space(SpaceIdentifiers::TheParrotsBeak)?,
+        ControlTypes::Nva
+    );
+
+    // Assert initial support levels
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::Saigon)?,
+        SupportLevels::PassiveSupport
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::QuiNhon)?,
+        SupportLevels::PassiveSupport
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::CamRanh)?,
+        SupportLevels::PassiveSupport
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::AnLoc)?,
+        SupportLevels::PassiveSupport
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::CanTho)?,
+        SupportLevels::PassiveSupport
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::QuangTinQuangNgai)?,
+        SupportLevels::ActiveOpposition
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::QuangDucLongKhanh)?,
+        SupportLevels::ActiveOpposition
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::BinhTuyBinhThuan)?,
+        SupportLevels::ActiveOpposition
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::TayNinh)?,
+        SupportLevels::ActiveOpposition
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::PhuBonPhuYen)?,
+        SupportLevels::PassiveSupport
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::KhanhHoa)?,
+        SupportLevels::PassiveSupport
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::KienHoaVinhBinh)?,
+        SupportLevels::PassiveSupport
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::BaXuyen)?,
+        SupportLevels::PassiveSupport
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::KienPhong)?,
+        SupportLevels::ActiveOpposition
+    );
+    assert_eq!(
+        created_board.get_support_level_of_space(SpaceIdentifiers::KienGiangAnXuyen)?,
+        SupportLevels::ActiveOpposition
     );
 
     Ok(())

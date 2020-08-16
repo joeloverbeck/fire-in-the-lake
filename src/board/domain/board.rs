@@ -1,8 +1,10 @@
 use board::domain::initialize_hashmap_of_forces::initialize_hashmap_of_forces;
 use board::domain::occupable_space::OccupableSpace;
+use game_definitions::control_types::ControlTypes;
 use game_definitions::faction_stats::FactionStats;
 use game_definitions::forces::Forces;
 use game_definitions::space_identifiers::SpaceIdentifiers;
+use game_definitions::support_levels::SupportLevels;
 
 use std::collections::HashMap;
 
@@ -181,5 +183,47 @@ impl Board {
                 forces, space
             ))
         }
+    }
+
+    pub fn get_support_level_of_space(
+        &self,
+        space: SpaceIdentifiers,
+    ) -> Result<SupportLevels, String> {
+        let occupable_space = self.get_space(space)?;
+
+        Ok(occupable_space.get_support_level()?)
+    }
+
+    pub fn set_support_level_of_space(
+        &mut self,
+        support_level: SupportLevels,
+        space: SpaceIdentifiers,
+    ) -> Result<(), String> {
+        let occupable_space = self.get_space_mut(space)?;
+
+        occupable_space.set_support_level(support_level)?;
+
+        Ok(())
+    }
+
+    pub fn get_control_type_of_space(
+        &self,
+        space: SpaceIdentifiers,
+    ) -> Result<ControlTypes, String> {
+        let occupable_space = self.get_space(space)?;
+
+        Ok(occupable_space.get_control_type()?)
+    }
+
+    pub fn set_control_type_of_space(
+        &mut self,
+        control_type: ControlTypes,
+        space: SpaceIdentifiers,
+    ) -> Result<(), String> {
+        let occupable_space = self.get_space_mut(space)?;
+
+        occupable_space.set_control_type(control_type)?;
+
+        Ok(())
     }
 }

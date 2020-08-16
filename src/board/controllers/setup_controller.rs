@@ -1,7 +1,9 @@
 use board::domain::board::Board;
+use game_definitions::control_types::ControlTypes;
 use game_definitions::faction_stats::FactionStats;
 use game_definitions::forces::Forces;
 use game_definitions::space_identifiers::SpaceIdentifiers;
+use game_definitions::support_levels::SupportLevels;
 
 pub struct SetupController {}
 
@@ -565,6 +567,246 @@ impl SetupController {
         ));
 
         collection_of_instructions.push(forces_in_spaces_instructions);
+
+        // Setup the initial control types for the occupable spaces.
+        board.set_control_type_of_space(ControlTypes::Coin, SpaceIdentifiers::Saigon)?;
+        board.set_control_type_of_space(ControlTypes::Coin, SpaceIdentifiers::Hue)?;
+        board.set_control_type_of_space(ControlTypes::Coin, SpaceIdentifiers::QuiNhon)?;
+        board.set_control_type_of_space(ControlTypes::Coin, SpaceIdentifiers::CamRanh)?;
+        board.set_control_type_of_space(ControlTypes::Coin, SpaceIdentifiers::AnLoc)?;
+        board.set_control_type_of_space(ControlTypes::Coin, SpaceIdentifiers::CanTho)?;
+        board.set_control_type_of_space(ControlTypes::Coin, SpaceIdentifiers::DaNang)?;
+        board.set_control_type_of_space(ControlTypes::Coin, SpaceIdentifiers::Kontum)?;
+        board.set_control_type_of_space(ControlTypes::Coin, SpaceIdentifiers::QuangNam)?;
+        board.set_control_type_of_space(ControlTypes::Coin, SpaceIdentifiers::PhuBonPhuYen)?;
+        board.set_control_type_of_space(ControlTypes::Coin, SpaceIdentifiers::KhanhHoa)?;
+        board.set_control_type_of_space(ControlTypes::Coin, SpaceIdentifiers::KienHoaVinhBinh)?;
+        board.set_control_type_of_space(ControlTypes::Coin, SpaceIdentifiers::BaXuyen)?;
+        board.set_control_type_of_space(ControlTypes::Nva, SpaceIdentifiers::NorthVietnam)?;
+        board.set_control_type_of_space(ControlTypes::Nva, SpaceIdentifiers::CentralLaos)?;
+        board.set_control_type_of_space(ControlTypes::Nva, SpaceIdentifiers::SouthernLaos)?;
+        board.set_control_type_of_space(ControlTypes::Nva, SpaceIdentifiers::TheParrotsBeak)?;
+
+        // Push instructions regarding initial control.
+        let mut control_types_in_spaces_instructions: Vec<String> = Vec::new();
+
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::Saigon)?,
+            SpaceIdentifiers::Saigon
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::Hue)?,
+            SpaceIdentifiers::Hue
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::QuiNhon)?,
+            SpaceIdentifiers::QuiNhon
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::CamRanh)?,
+            SpaceIdentifiers::CamRanh
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::AnLoc)?,
+            SpaceIdentifiers::AnLoc
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::CanTho)?,
+            SpaceIdentifiers::CanTho
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::DaNang)?,
+            SpaceIdentifiers::DaNang
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::Kontum)?,
+            SpaceIdentifiers::Kontum
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::QuangNam)?,
+            SpaceIdentifiers::QuangNam
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::PhuBonPhuYen)?,
+            SpaceIdentifiers::PhuBonPhuYen
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::KhanhHoa)?,
+            SpaceIdentifiers::KhanhHoa
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::KienHoaVinhBinh)?,
+            SpaceIdentifiers::KienHoaVinhBinh
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::BaXuyen)?,
+            SpaceIdentifiers::BaXuyen
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::NorthVietnam)?,
+            SpaceIdentifiers::NorthVietnam
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::CentralLaos)?,
+            SpaceIdentifiers::CentralLaos
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::SouthernLaos)?,
+            SpaceIdentifiers::SouthernLaos
+        ));
+        control_types_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_control_type_of_space(SpaceIdentifiers::TheParrotsBeak)?,
+            SpaceIdentifiers::TheParrotsBeak
+        ));
+
+        collection_of_instructions.push(control_types_in_spaces_instructions);
+
+        // Set up initial Support levels
+        board
+            .set_support_level_of_space(SupportLevels::PassiveSupport, SpaceIdentifiers::Saigon)?;
+        board
+            .set_support_level_of_space(SupportLevels::PassiveSupport, SpaceIdentifiers::QuiNhon)?;
+        board
+            .set_support_level_of_space(SupportLevels::PassiveSupport, SpaceIdentifiers::CamRanh)?;
+        board.set_support_level_of_space(SupportLevels::PassiveSupport, SpaceIdentifiers::AnLoc)?;
+        board
+            .set_support_level_of_space(SupportLevels::PassiveSupport, SpaceIdentifiers::CanTho)?;
+        board.set_support_level_of_space(
+            SupportLevels::ActiveOpposition,
+            SpaceIdentifiers::QuangTinQuangNgai,
+        )?;
+        board.set_support_level_of_space(
+            SupportLevels::ActiveOpposition,
+            SpaceIdentifiers::QuangDucLongKhanh,
+        )?;
+        board.set_support_level_of_space(
+            SupportLevels::ActiveOpposition,
+            SpaceIdentifiers::BinhTuyBinhThuan,
+        )?;
+        board.set_support_level_of_space(
+            SupportLevels::ActiveOpposition,
+            SpaceIdentifiers::TayNinh,
+        )?;
+        board.set_support_level_of_space(
+            SupportLevels::PassiveSupport,
+            SpaceIdentifiers::PhuBonPhuYen,
+        )?;
+        board.set_support_level_of_space(
+            SupportLevels::PassiveSupport,
+            SpaceIdentifiers::KhanhHoa,
+        )?;
+        board.set_support_level_of_space(
+            SupportLevels::PassiveSupport,
+            SpaceIdentifiers::KienHoaVinhBinh,
+        )?;
+        board
+            .set_support_level_of_space(SupportLevels::PassiveSupport, SpaceIdentifiers::BaXuyen)?;
+        board.set_support_level_of_space(
+            SupportLevels::ActiveOpposition,
+            SpaceIdentifiers::KienPhong,
+        )?;
+        board.set_support_level_of_space(
+            SupportLevels::ActiveOpposition,
+            SpaceIdentifiers::KienGiangAnXuyen,
+        )?;
+
+        // Push instructions regarding initial support levels.
+        let mut support_levels_in_spaces_instructions: Vec<String> = Vec::new();
+
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::Saigon)?,
+            SpaceIdentifiers::Saigon
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::QuiNhon)?,
+            SpaceIdentifiers::QuiNhon
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::CamRanh)?,
+            SpaceIdentifiers::CamRanh
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::AnLoc)?,
+            SpaceIdentifiers::AnLoc
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::CanTho)?,
+            SpaceIdentifiers::CanTho
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::QuangTinQuangNgai)?,
+            SpaceIdentifiers::QuangTinQuangNgai
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::QuangDucLongKhanh)?,
+            SpaceIdentifiers::QuangDucLongKhanh
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::BinhTuyBinhThuan)?,
+            SpaceIdentifiers::BinhTuyBinhThuan
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::TayNinh)?,
+            SpaceIdentifiers::TayNinh
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::PhuBonPhuYen)?,
+            SpaceIdentifiers::PhuBonPhuYen
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::KhanhHoa)?,
+            SpaceIdentifiers::KhanhHoa
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::KienHoaVinhBinh)?,
+            SpaceIdentifiers::KienHoaVinhBinh
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::BaXuyen)?,
+            SpaceIdentifiers::BaXuyen
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::KienPhong)?,
+            SpaceIdentifiers::KienPhong
+        ));
+        support_levels_in_spaces_instructions.push(format!(
+            "Place a {} marker in {}.",
+            board.get_support_level_of_space(SpaceIdentifiers::KienGiangAnXuyen)?,
+            SpaceIdentifiers::KienGiangAnXuyen
+        ));
+
+        collection_of_instructions.push(support_levels_in_spaces_instructions);
 
         Ok((board, collection_of_instructions))
     }
