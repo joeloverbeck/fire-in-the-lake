@@ -29,10 +29,24 @@ impl CardsController {
         Ok(())
     }
 
+    pub fn get_active_card(&self) -> Result<u8, String> {
+        Ok(self.active_card)
+    }
+
     pub fn set_preview_card(&mut self, number: u8) -> Result<(), String> {
         self.preview_card = number;
 
         Ok(())
+    }
+
+    pub fn get_preview_card(&self) -> Result<u8, String> {
+        Ok(self.preview_card)
+    }
+
+    pub fn get_active_card_name(&self) -> Result<&String, String> {
+        let (name, _) = self.regular_cards.get(&self.active_card).unwrap();
+
+        Ok(name)
     }
 
     pub fn get_faction_order(&self, number: u8) -> Result<&[Factions; 4], String> {
