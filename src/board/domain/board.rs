@@ -136,6 +136,44 @@ impl Board {
         Ok(())
     }
 
+    pub fn increase_faction_stat(
+        &mut self,
+        faction_stat: &FactionStats,
+        value: u8,
+    ) -> Result<(), String> {
+        *self.faction_stats.get_mut(&faction_stat).unwrap() += value;
+
+        Ok(())
+    }
+
+    pub fn reduce_faction_stat(
+        &mut self,
+        faction_stat: &FactionStats,
+        value: u8,
+    ) -> Result<(), String> {
+        // Sanity check
+        let previous_value = **self.faction_stats.get(&faction_stat).as_ref().unwrap();
+
+        if previous_value < value {
+            panic!(
+                "Was going to reduce the faction stat {:?} by {:?}, when it was {:?}!",
+                faction_stat, value, previous_value
+            );
+        }
+
+        *self.faction_stats.get_mut(&faction_stat).unwrap() -= value;
+
+        // Sanity check
+        if **self.faction_stats.get(&faction_stat).as_mut().unwrap() == previous_value {
+            panic!(
+                "Had attempted to change the value of {:?} by {:?}, but the value hasn't changed!",
+                faction_stat, value
+            );
+        }
+
+        Ok(())
+    }
+
     fn get_space_mut(&mut self, space: SpaceIdentifiers) -> Result<&mut OccupableSpace, String> {
         let possible_space = self.occupable_spaces.get_mut(&space);
 

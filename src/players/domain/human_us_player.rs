@@ -1,7 +1,10 @@
 use board::domain::board::Board;
 use game_definitions::faction_stats::FactionStats;
+use game_definitions::factions::Factions;
+use game_definitions::flags::Flags;
 use players::domain::decision::Decision;
 use players::domain::faction_stats_mutation::FactionStatsMutation;
+use players::domain::flags_mutation::FlagsMutation;
 use players::domain::mutation_types::MutationTypes;
 use players::domain::sequence_of_play_mutation::SequenceOfPlayMutation;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
@@ -26,7 +29,7 @@ impl HumanUsPlayer {
         active_card: u8,
         _preview_card: u8,
         possible_actions: Vec<String>,
-        _board: &Board,
+        board: &Board,
         user_interface_controller: &UserInterfaceController,
     ) -> Result<Decision, String> {
         let mut possible_actions_text = "[".to_string();
@@ -55,7 +58,8 @@ impl HumanUsPlayer {
                 let mut faction_stat_mutations: Vec<FactionStatsMutation> = Vec::new();
                 faction_stat_mutations.push(FactionStatsMutation::new(
                     FactionStats::Aid,
-                    MutationTypes::Reduce,
+                    MutationTypes::Increase,
+                    board.get_faction_stat(FactionStats::Aid)?,
                     10,
                 ));
 
@@ -63,11 +67,16 @@ impl HumanUsPlayer {
                 sequence_of_play_mutations.push(SequenceOfPlayMutation::new(
                     SequenceOfPlaySlots::FirstFactionEvent,
                     SlotOccupancy::Occupied,
+                    Factions::US,
                 ));
+
+                let mut flag_mutations: Vec<FlagsMutation> = Vec::new();
+                flag_mutations.push(FlagsMutation::new(Flags::BlowtorchComer, true));
 
                 Ok(Decision::new(
                     sequence_of_play_mutations,
                     faction_stat_mutations,
+                    flag_mutations,
                 ))
             } else {
                 panic!("Not contemplated for {:?}", active_card);

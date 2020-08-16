@@ -1,8 +1,10 @@
 use game_definitions::factions::Factions;
+use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 
 pub struct SequenceOfPlayController {
     first_eligible: Option<Factions>,
     second_eligible: Option<Factions>,
+    first_faction_event: Option<Factions>,
 }
 
 impl Default for SequenceOfPlayController {
@@ -16,6 +18,7 @@ impl SequenceOfPlayController {
         SequenceOfPlayController {
             first_eligible: None,
             second_eligible: None,
+            first_faction_event: None,
         }
     }
 
@@ -40,6 +43,25 @@ impl SequenceOfPlayController {
         }
 
         &self.first_eligible
+    }
+
+    pub fn register_pick(
+        &mut self,
+        faction: &Factions,
+        slot: &SequenceOfPlaySlots,
+    ) -> Result<(), String> {
+        if slot == &SequenceOfPlaySlots::FirstFactionEvent {
+            // The faction was the first elegible, and played for the event.
+            if self.first_faction_event.is_some() {
+                panic!("Had attempted to register {:?} as having chosen to play the event being the first elegible faction, but there was a faction already in that position!: {:?}", faction, self.first_faction_event.as_ref().unwrap());
+            }
+
+            self.first_faction_event = Some(*faction);
+        } else {
+            panic!("Registering a pick in the sequence of play wasn't handled for the following: {:?} and {:?}", faction, slot);
+        }
+
+        Ok(())
     }
 
     pub fn get_possible_actions_for_current_elegible(&self) -> Result<Vec<String>, String> {

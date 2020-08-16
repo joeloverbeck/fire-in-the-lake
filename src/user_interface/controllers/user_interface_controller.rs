@@ -1,10 +1,9 @@
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
-use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
-use sequence_of_play::domain::slot_occupancy::SlotOccupancy;
 use user_interface::domain::announcements_composer::AnnouncementsComposer;
 use user_interface::domain::instructions_composer::InstructionsComposer;
 use user_interface::domain::player_input_requester::PlayerInputRequester;
+use user_interface::domain::produce_instructions_for_mutations::produce_instructions_for_mutations;
 use user_interface::domain::section_writer::SectionWriter;
 
 extern crate termcolor;
@@ -48,22 +47,10 @@ impl UserInterfaceController {
         decision: &Decision,
         faction: &Factions,
     ) -> Result<(), String> {
-        // First create the instructions for moving the pieces around in the Sequence of Play area.
-        for mutation in decision.get_sequence_of_play_mutations().iter() {
-            if mutation.get_sequence_of_play_slot() == &SequenceOfPlaySlots::FirstFactionEvent
-                && mutation.get_slot_occupancy() == &SlotOccupancy::Occupied
-            {
-                // Player needs to move that faction's cylinder to First Faction Event
-                self.write_instruction(
-                    format!(
-                        "Move {} cylinder from Elegible to First Faction Event",
-                        faction
-                    )
-                    .as_str(),
-                )?;
-            } else {
-                todo!()
-            }
+        let instructions = produce_instructions_for_mutations(decision, faction)?;
+
+        for instruction in instructions.iter() {
+            self.write_instruction(instruction)?;
         }
 
         Ok(())

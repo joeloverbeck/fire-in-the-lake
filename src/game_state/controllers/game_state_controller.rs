@@ -1,7 +1,9 @@
 use board::controllers::setup_controller::SetupController;
 use board::domain::board::Board;
 use cards::controllers::cards_controller::CardsController;
+use flags::controllers::flags_controller::FlagsController;
 use game_definitions::factions::Factions;
+use persistence::controllers::memory_persistence_controller::MemoryPersistenceController;
 use players::controllers::players_controller::PlayersController;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
 use user_interface::controllers::user_interface_controller::UserInterfaceController;
@@ -116,6 +118,8 @@ impl GameStateController {
 
         let mut players_controller = PlayersController::new();
         let mut sequence_of_play_controller = SequenceOfPlayController::new();
+        let mut flags_controller = FlagsController::new();
+        let memory_persistence_controller = MemoryPersistenceController::new();
 
         let turn = 1;
 
@@ -144,7 +148,8 @@ impl GameStateController {
         // section and then delegate the decision of what to do to that faction's player (Human/AI).
         if let Some(faction) = current_eligible_faction {
             // Write section.
-            user_interface_controller.write_section(format!("{} action", faction).as_str())?;
+            user_interface_controller
+                .write_section(format!(" {} Action Phase ", faction).as_str())?;
 
             let decision = players_controller.decide(
                 faction,
@@ -157,6 +162,14 @@ impl GameStateController {
 
             // The decision should have contained all the decisions.
             user_interface_controller.write_instructions_for_decision(&decision, faction)?;
+
+            // Delegate persisting the changes.
+            memory_persistence_controller.persist_decision(
+                &decision,
+                self.board.as_mut().unwrap(),
+                &mut sequence_of_play_controller,
+                &mut flags_controller,
+            )?;
         } else {
             panic!(
                 "Not handled for faction: {:?}",
