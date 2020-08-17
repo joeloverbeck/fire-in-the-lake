@@ -5,7 +5,8 @@ use players::domain::dummy_player::DummyPlayer;
 use players::domain::human_us_player::HumanUsPlayer;
 use players::domain::player::Player;
 use players::domain::player::Players;
-use user_interface::controllers::user_interface_controller::UserInterfaceController;
+use user_interface::controllers::display_controller::DisplayController;
+use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
 pub struct PlayersController {
     us_player: Players,
@@ -37,7 +38,8 @@ impl PlayersController {
         preview_card: u8,
         possible_actions: Vec<String>,
         board: &Board,
-        user_interface_controller: &UserInterfaceController,
+        keyboard_input_controller: &KeyboardInputController,
+        display_controller: &DisplayController,
     ) -> Result<Decision, String> {
         // Depending on the faction that has to decide and is passed as an argument,
         // this delegates asking the appropriate stored player.
@@ -48,7 +50,8 @@ impl PlayersController {
                 *faction,
                 possible_actions,
                 board,
-                user_interface_controller,
+                keyboard_input_controller,
+                display_controller,
             );
 
             return Ok(decide_result?);
@@ -59,7 +62,8 @@ impl PlayersController {
                 *faction,
                 possible_actions,
                 board,
-                user_interface_controller,
+                keyboard_input_controller,
+                display_controller,
             );
 
             return Ok(decide_result?);
@@ -70,7 +74,8 @@ impl PlayersController {
                 *faction,
                 possible_actions,
                 board,
-                user_interface_controller,
+                keyboard_input_controller,
+                display_controller,
             );
 
             return Ok(decide_result?);
@@ -81,7 +86,8 @@ impl PlayersController {
                 *faction,
                 possible_actions,
                 board,
-                user_interface_controller,
+                keyboard_input_controller,
+                display_controller,
             );
 
             return Ok(decide_result?);

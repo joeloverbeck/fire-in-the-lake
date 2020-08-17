@@ -5,7 +5,8 @@ use game_definitions::space_identifiers::SpaceIdentifiers;
 use players::domain::decision::Decision;
 use players::domain::forces_mutation::ForcesMutation;
 use players::domain::mutation_types::MutationTypes;
-use user_interface::controllers::user_interface_controller::UserInterfaceController;
+use user_interface::controllers::display_controller::DisplayController;
+use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 use user_interface::domain::input_violation_types::InputViolationTypes;
 
 pub fn request_forces_movement_from_human(
@@ -14,7 +15,8 @@ pub fn request_forces_movement_from_human(
     mut limit_of_forces_to_move: u8,
     limit_for_particular_space: Option<(SpaceIdentifiers, u8)>,
     board: &Board,
-    user_interface_controller: &UserInterfaceController,
+    keyboard_input_controller: &KeyboardInputController,
+    display_controller: &DisplayController,
 ) -> Result<Decision, String> {
     let mut forces_mutations: Vec<ForcesMutation> = Vec::new();
 
@@ -23,7 +25,7 @@ pub fn request_forces_movement_from_human(
             break;
         }
 
-        let (user_typed_space, wants_out) = user_interface_controller
+        let (user_typed_space, wants_out) = keyboard_input_controller
             .request_player_input_configurable(
                 "Where do you want to move your troops from? (or else write 'done'): ",
                 Some("done"),
@@ -70,7 +72,7 @@ pub fn request_forces_movement_from_human(
             "Can't get so many forces from the space!".to_string(),
         ));
 
-        let numeric_request_result = user_interface_controller
+        let numeric_request_result = keyboard_input_controller
             .request_numeric_player_input_configurable(
                 format!(
                     "How many {} do you want to move from {}? (has {}): ",
@@ -79,6 +81,7 @@ pub fn request_forces_movement_from_human(
                 .as_str(),
                 None,
                 Some(input_violations),
+                &display_controller,
             );
 
         if let Ok((number, _)) = numeric_request_result {

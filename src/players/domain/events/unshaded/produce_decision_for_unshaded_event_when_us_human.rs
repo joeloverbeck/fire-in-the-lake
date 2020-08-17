@@ -12,12 +12,14 @@ use players::domain::mutation_types::MutationTypes;
 use players::domain::sequence_of_play_mutation::SequenceOfPlayMutation;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 use sequence_of_play::domain::slot_occupancy::SlotOccupancy;
-use user_interface::controllers::user_interface_controller::UserInterfaceController;
+use user_interface::controllers::display_controller::DisplayController;
+use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
 pub fn produce_decision_for_unshaded_event_when_us_human(
     active_card: u8,
     board: &Board,
-    user_interface_controller: &UserInterfaceController,
+    keyboard_input_controller: &KeyboardInputController,
+    display_controller: &DisplayController,
 ) -> Result<Decision, String> {
     let mut sequence_of_play_mutations: Vec<SequenceOfPlayMutation> = Vec::new();
     sequence_of_play_mutations.push(SequenceOfPlayMutation::new(
@@ -55,7 +57,8 @@ pub fn produce_decision_for_unshaded_event_when_us_human(
             6,
             Some((SpaceIdentifiers::OutOfPlay, 3)),
             board,
-            user_interface_controller,
+            keyboard_input_controller,
+            display_controller,
         )?)
     } else {
         panic!("Not contemplated for {:?}", active_card);

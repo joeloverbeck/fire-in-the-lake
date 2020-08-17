@@ -3,7 +3,8 @@ use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
 use players::domain::events::unshaded::produce_decision_for_unshaded_event_when_us_human::produce_decision_for_unshaded_event_when_us_human;
 use players::domain::player::Player;
-use user_interface::controllers::user_interface_controller::UserInterfaceController;
+use user_interface::controllers::display_controller::DisplayController;
+use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
 #[derive(Debug)]
 pub struct HumanUsPlayer {}
@@ -22,7 +23,8 @@ impl Player for HumanUsPlayer {
         _current_elegible_faction: Factions,
         possible_actions: Vec<String>,
         board: &Board,
-        user_interface_controller: &UserInterfaceController,
+        keyboard_input_controller: &KeyboardInputController,
+        display_controller: &DisplayController,
     ) -> Result<Decision, String> {
         let mut possible_actions_text = "[".to_string();
 
@@ -32,7 +34,7 @@ impl Player for HumanUsPlayer {
 
         possible_actions_text += &"]".to_string();
 
-        let input = user_interface_controller.request_player_input(
+        let input = keyboard_input_controller.request_player_input(
             format!(
                 "What action do you want to take? {}: ",
                 possible_actions_text
@@ -48,7 +50,8 @@ impl Player for HumanUsPlayer {
             Ok(produce_decision_for_unshaded_event_when_us_human(
                 active_card,
                 board,
-                user_interface_controller,
+                keyboard_input_controller,
+                display_controller,
             )?)
         } else {
             todo!()

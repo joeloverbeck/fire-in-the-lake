@@ -3,7 +3,8 @@ use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
 use players::domain::dummy_player::DummyPlayer;
 use players::domain::human_us_player::HumanUsPlayer;
-use user_interface::controllers::user_interface_controller::UserInterfaceController;
+use user_interface::controllers::display_controller::DisplayController;
+use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
 extern crate enum_dispatch;
 use self::enum_dispatch::enum_dispatch;
@@ -17,7 +18,8 @@ pub trait Player {
         current_elegible_faction: Factions,
         possible_actions: Vec<String>,
         board: &Board,
-        user_interface_controller: &UserInterfaceController,
+        keyboard_input_controller: &KeyboardInputController,
+        display_controller: &DisplayController,
     ) -> Result<Decision, String>;
 }
 
