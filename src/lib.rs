@@ -7,6 +7,7 @@ pub mod game_definitions;
 pub mod game_state;
 pub mod persistence;
 pub mod players;
+pub mod randomization;
 pub mod sequence_of_play;
 pub mod text_manipulation;
 pub mod user_interface;

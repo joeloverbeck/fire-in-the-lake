@@ -6,6 +6,7 @@ use players::domain::decision::Decision;
 use players::domain::forces_mutation::ForcesMutation;
 use players::domain::mutation_types::MutationTypes;
 use user_interface::controllers::user_interface_controller::UserInterfaceController;
+use user_interface::domain::input_violation_types::InputViolationTypes;
 
 pub fn request_forces_movement_from_human(
     forces: Forces,
@@ -22,11 +23,13 @@ pub fn request_forces_movement_from_human(
             break;
         }
 
-        let user_typed_space = user_interface_controller.request_player_input(
-            "Where do you want to move your troops from? (or else write 'done'): ",
-        )?;
+        let (user_typed_space, wants_out) = user_interface_controller
+            .request_player_input_configurable(
+                "Where do you want to move your troops from? (or else write 'done'): ",
+                Some("done"),
+            )?;
 
-        if user_typed_space == "done" {
+        if wants_out {
             break;
         }
 
@@ -37,46 +40,60 @@ pub fn request_forces_movement_from_human(
         let number_of_those_forces_in_location =
             board.get_forces_in_space(forces, space_identifier)?;
 
-        let number = user_interface_controller.request_player_input(
-            format!(
-                "How many {} do you want to move from {}? (has {}): ",
-                forces, space_identifier, number_of_those_forces_in_location
-            )
-            .as_str(),
-        )?;
-
-        let parsed_number = number.parse::<u8>().unwrap();
+        let mut input_violations: Vec<(u8, InputViolationTypes, String)> = Vec::new();
 
         if let Some((special_space, special_limit)) = limit_for_particular_space {
-            if space_identifier == special_space && parsed_number > special_limit {
-                println!(
-                    " Can only move {:?} from {:?} for this case.",
-                    special_limit, space_identifier
-                );
-                continue;
+            if space_identifier == special_space {
+                input_violations.push((
+                    special_limit,
+                    InputViolationTypes::Bigger,
+                    format!(
+                        "Can only move {} from {} for this case",
+                        special_limit, space_identifier
+                    ),
+                ));
             }
         }
-        if parsed_number > limit_of_forces_to_move {
-            println!(
-                " Can only move {} more forces of that type!",
+
+        input_violations.push((
+            limit_of_forces_to_move,
+            InputViolationTypes::Bigger,
+            format!(
+                "Can only move {} more forces of that type!",
                 limit_of_forces_to_move
+            ),
+        ));
+
+        input_violations.push((
+            number_of_those_forces_in_location,
+            InputViolationTypes::Bigger,
+            "Can't get so many forces from the space!".to_string(),
+        ));
+
+        let numeric_request_result = user_interface_controller
+            .request_numeric_player_input_configurable(
+                format!(
+                    "How many {} do you want to move from {}? (has {}): ",
+                    forces, space_identifier, number_of_those_forces_in_location
+                )
+                .as_str(),
+                None,
+                Some(input_violations),
             );
+
+        if let Ok((number, _)) = numeric_request_result {
+            limit_of_forces_to_move -= number;
+
+            push_mutation_for_interpreted_case(
+                &forces,
+                number,
+                &space_identifier,
+                &destination,
+                &mut forces_mutations,
+            )?;
+        } else if numeric_request_result.is_err() {
             continue;
         }
-        if parsed_number > number_of_those_forces_in_location {
-            println!(" Can't get so many forces from the space!");
-            continue;
-        }
-
-        limit_of_forces_to_move -= parsed_number;
-
-        push_mutation_for_interpreted_case(
-            &forces,
-            parsed_number,
-            &space_identifier,
-            &destination,
-            &mut forces_mutations,
-        )?;
     }
 
     Ok(Decision::new(

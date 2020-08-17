@@ -32,7 +32,7 @@ impl Default for InstructionsComposer {
 impl<'a> InstructionsComposer {
     pub fn new() -> InstructionsComposer {
         InstructionsComposer {
-            instruction_tag: "  ==>".to_string(),
+            instruction_tag: "  [<>]".to_string(),
         }
     }
 

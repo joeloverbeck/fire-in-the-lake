@@ -14,3 +14,4 @@ path = "src/bin/main.rs"
 [dependencies]
 enum_dispatch = "0.3.2"
 termcolor = "1.1"
+lib_dice = "0.1.0"
