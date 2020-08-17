@@ -18,8 +18,8 @@ impl Default for SectionWriter {
 impl<'a> SectionWriter {
     pub fn new() -> SectionWriter {
         SectionWriter {
-            section_tag_start: " >>>".to_string(),
-            section_tag_end: "<<<".to_string(),
+            section_tag_start: " ///".to_string(),
+            section_tag_end: "///".to_string(),
         }
     }
 

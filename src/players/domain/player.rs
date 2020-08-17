@@ -10,6 +10,7 @@ extern crate enum_dispatch;
 use self::enum_dispatch::enum_dispatch;
 
 #[enum_dispatch]
+#[allow(clippy::too_many_arguments)]
 pub trait Player {
     fn decide(
         &self,

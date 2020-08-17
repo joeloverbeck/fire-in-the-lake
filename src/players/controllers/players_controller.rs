@@ -31,6 +31,7 @@ impl PlayersController {
         }
     }
 
+    #[allow(clippy::too_many_arguments)]
     pub fn decide(
         &mut self,
         faction: &Factions,

@@ -1,5 +1,6 @@
 use board::domain::board::Board;
 use flags::controllers::flags_controller::FlagsController;
+use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
 use players::domain::mutation_types::MutationTypes;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
@@ -21,13 +22,17 @@ impl MemoryPersistenceController {
         &self,
         decision: &Decision,
         board: &mut Board,
+        faction_order: [Factions; 4],
         sequence_of_play_controller: &mut SequenceOfPlayController,
         flags_controller: &mut FlagsController,
     ) -> Result<(), String> {
         // Goes through every mutation and manipulates either the board or the flags as necessary.
         for mutation in decision.get_sequence_of_play_mutations() {
-            sequence_of_play_controller
-                .register_pick(mutation.get_faction(), mutation.get_sequence_of_play_slot())?;
+            sequence_of_play_controller.register_pick(
+                mutation.get_faction(),
+                faction_order,
+                mutation.get_sequence_of_play_slot(),
+            )?;
         }
 
         for mutation in decision.get_faction_stats_mutations() {
@@ -102,6 +107,7 @@ mod tests {
         sut.persist_decision(
             &decision,
             &mut board,
+            [Factions::US, Factions::ARVN, Factions::VC, Factions::NVA],
             &mut sequence_of_play_controller,
             &mut flags_controller,
         )?;

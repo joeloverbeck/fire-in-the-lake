@@ -1,10 +1,14 @@
 use game_definitions::factions::Factions;
+use sequence_of_play::domain::movements::Movements;
+use sequence_of_play::domain::produce_sequence_of_play_movements::produce_sequence_of_play_movements;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 
 pub struct SequenceOfPlayController {
     first_eligible: Option<Factions>,
     second_eligible: Option<Factions>,
     first_faction_event: Option<Factions>,
+    passed: Vec<Factions>,
+    ineligible: Vec<Factions>,
 }
 
 impl Default for SequenceOfPlayController {
@@ -19,6 +23,8 @@ impl SequenceOfPlayController {
             first_eligible: None,
             second_eligible: None,
             first_faction_event: None,
+            passed: Vec::new(),
+            ineligible: Vec::new(),
         }
     }
 
@@ -29,12 +35,21 @@ impl SequenceOfPlayController {
         Ok(())
     }
 
-    pub fn get_first_eligible(&self) -> &Option<Factions> {
-        &self.first_eligible
+    pub fn get_first_eligible(&self) -> Result<Factions, String> {
+        // Sanity check
+        if self.first_eligible.is_none() {
+            panic!("Attempted to get the first eligible faction from the sequence of play, but it was none. You should first ask whether there is any.");
+        }
+
+        Ok(*self.first_eligible.as_ref().unwrap())
     }
 
-    pub fn get_second_eligible(&self) -> &Option<Factions> {
-        &self.second_eligible
+    pub fn get_second_eligible(&self) -> Result<Factions, String> {
+        if self.second_eligible.is_none() {
+            panic!("Attempted to get the second eligible faction from the sequence of play, but it was none. You should first ask whether there is any.");
+        }
+
+        Ok(*self.second_eligible.as_ref().unwrap())
     }
 
     pub fn get_current_elegible_faction(&self) -> &Option<Factions> {
@@ -48,20 +63,39 @@ impl SequenceOfPlayController {
     pub fn register_pick(
         &mut self,
         faction: &Factions,
+        faction_order: [Factions; 4],
         slot: &SequenceOfPlaySlots,
     ) -> Result<(), String> {
-        if slot == &SequenceOfPlaySlots::FirstFactionEvent {
-            // The faction was the first elegible, and played for the event.
-            if self.first_faction_event.is_some() {
-                panic!("Had attempted to register {:?} as having chosen to play the event being the first elegible faction, but there was a faction already in that position!: {:?}", faction, self.first_faction_event.as_ref().unwrap());
-            }
+        let movements = produce_sequence_of_play_movements(faction, faction_order, slot, &self)?;
 
-            self.first_faction_event = Some(*faction);
-        } else {
-            panic!("Registering a pick in the sequence of play wasn't handled for the following: {:?} and {:?}", faction, slot);
+        // Just go through all of them and persist them.
+        for movement in movements {
+            match *movement.get_movement() {
+                Movements::FirstEligible => self.first_eligible = Some(*movement.get_faction()),
+                Movements::FirstFactionEvent => {
+                    self.first_faction_event = Some(*movement.get_faction())
+                }
+                Movements::Passed => self.passed.push(*movement.get_faction()),
+                Movements::SecondEligible => self.second_eligible = Some(*movement.get_faction()),
+            }
         }
 
         Ok(())
+    }
+
+    pub fn is_faction_ineligible(&self, faction: &Factions) -> Result<bool, String> {
+        Ok(self
+            .ineligible
+            .iter()
+            .any(|ineligible_faction| *ineligible_faction == *faction))
+    }
+
+    pub fn get_faction_in_first_faction_event(&self) -> Result<Factions, String> {
+        Ok(*self.first_faction_event.as_ref().unwrap())
+    }
+
+    pub fn is_first_faction_event_taken(&self) -> Result<bool, String> {
+        Ok(self.first_faction_event.is_some())
     }
 
     pub fn get_possible_actions_for_current_elegible(&self) -> Result<Vec<String>, String> {
@@ -90,25 +124,12 @@ mod tests {
 
         sut.register_faction_order([Factions::US, Factions::ARVN, Factions::VC, Factions::NVA])?;
 
-        let possible_first_eligible = sut.get_first_eligible();
-        let possible_second_eligible = sut.get_second_eligible();
+        let first_eligible = sut.get_first_eligible()?;
+        let second_eligible = sut.get_second_eligible()?;
 
-        assert!(
-            !possible_first_eligible.is_none(),
-            "There should have been a first eligible faction."
-        );
-        assert!(
-            !possible_second_eligible.is_none(),
-            "There should have been a second eligible faction."
-        );
+        assert_eq!(first_eligible, Factions::US);
 
-        if let Some(first_eligible) = possible_first_eligible {
-            assert_eq!(first_eligible, &Factions::US);
-        }
-
-        if let Some(second_eligible) = possible_second_eligible {
-            assert_eq!(second_eligible, &Factions::ARVN);
-        }
+        assert_eq!(second_eligible, Factions::ARVN);
 
         Ok(())
     }

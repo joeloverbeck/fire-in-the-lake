@@ -168,6 +168,7 @@ impl GameStateController {
             memory_persistence_controller.persist_decision(
                 &decision,
                 self.board.as_mut().unwrap(),
+                *cards_controller.get_faction_order(cards_controller.get_active_card()?)?,
                 &mut sequence_of_play_controller,
                 &mut flags_controller,
             )?;
