@@ -1,8 +1,11 @@
 use board::domain::board::Board;
+use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
 use players::domain::events::unshaded::produce_decision_for_unshaded_event_when_us_human::produce_decision_for_unshaded_event_when_us_human;
+use players::domain::player::Player;
 use user_interface::controllers::user_interface_controller::UserInterfaceController;
 
+#[derive(Debug)]
 pub struct HumanUsPlayer {}
 
 impl Default for HumanUsPlayer {
@@ -11,15 +14,12 @@ impl Default for HumanUsPlayer {
     }
 }
 
-impl HumanUsPlayer {
-    pub fn new() -> HumanUsPlayer {
-        HumanUsPlayer {}
-    }
-
-    pub fn decide(
+impl Player for HumanUsPlayer {
+    fn decide(
         &self,
         active_card: u8,
         _preview_card: u8,
+        _current_elegible_faction: Factions,
         possible_actions: Vec<String>,
         board: &Board,
         user_interface_controller: &UserInterfaceController,
@@ -53,5 +53,11 @@ impl HumanUsPlayer {
         } else {
             todo!()
         }
+    }
+}
+
+impl HumanUsPlayer {
+    pub fn new() -> HumanUsPlayer {
+        HumanUsPlayer {}
     }
 }

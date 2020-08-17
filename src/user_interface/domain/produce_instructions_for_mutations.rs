@@ -21,6 +21,10 @@ pub fn produce_instructions_for_mutations(
                 "Move {} cylinder from Elegible to First Faction Event",
                 faction
             ));
+        } else if mutation.get_sequence_of_play_slot() == &SequenceOfPlaySlots::Pass
+            && mutation.get_slot_occupancy() == &SlotOccupancy::Occupied
+        {
+            instructions.push(format!("Move {} cylinder from Elegible to Pass", faction));
         } else {
             todo!()
         }

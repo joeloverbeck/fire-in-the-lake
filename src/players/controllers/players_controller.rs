@@ -1,11 +1,17 @@
 use board::domain::board::Board;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
+use players::domain::dummy_player::DummyPlayer;
 use players::domain::human_us_player::HumanUsPlayer;
+use players::domain::player::Player;
+use players::domain::player::Players;
 use user_interface::controllers::user_interface_controller::UserInterfaceController;
 
 pub struct PlayersController {
-    us_player: HumanUsPlayer,
+    us_player: Players,
+    arvn_player: Players,
+    nva_player: Players,
+    vc_player: Players,
 }
 
 impl Default for PlayersController {
@@ -17,7 +23,10 @@ impl Default for PlayersController {
 impl PlayersController {
     pub fn new() -> PlayersController {
         PlayersController {
-            us_player: HumanUsPlayer::new(),
+            us_player: HumanUsPlayer::new().into(),
+            arvn_player: DummyPlayer::new().into(),
+            nva_player: DummyPlayer::new().into(),
+            vc_player: DummyPlayer::new().into(),
         }
     }
 
@@ -36,6 +45,40 @@ impl PlayersController {
             let decide_result = self.us_player.decide(
                 active_card,
                 preview_card,
+                *faction,
+                possible_actions,
+                board,
+                user_interface_controller,
+            );
+
+            return Ok(decide_result?);
+        } else if faction == &Factions::ARVN {
+            let decide_result = self.arvn_player.decide(
+                active_card,
+                preview_card,
+                *faction,
+                possible_actions,
+                board,
+                user_interface_controller,
+            );
+
+            return Ok(decide_result?);
+        } else if faction == &Factions::NVA {
+            let decide_result = self.nva_player.decide(
+                active_card,
+                preview_card,
+                *faction,
+                possible_actions,
+                board,
+                user_interface_controller,
+            );
+
+            return Ok(decide_result?);
+        } else if faction == &Factions::VC {
+            let decide_result = self.vc_player.decide(
+                active_card,
+                preview_card,
+                *faction,
                 possible_actions,
                 board,
                 user_interface_controller,
