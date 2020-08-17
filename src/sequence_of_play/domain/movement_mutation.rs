@@ -1,6 +1,7 @@
 use game_definitions::factions::Factions;
 use sequence_of_play::domain::movements::Movements;
 
+#[derive(Debug)]
 pub struct MovementMutation {
     faction: Factions,
     movement: Movements,

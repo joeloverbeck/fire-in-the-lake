@@ -110,6 +110,10 @@ impl SequenceOfPlayController {
 
         Err("Was asked to figure out the possible operations for the current eligible faction, but couldn't find any. Probably the asking code failed to ask first whether there was any faction elegible.".to_string())
     }
+
+    pub fn is_there_a_next_eligible_faction(&self) -> Result<bool, String> {
+        Ok(self.first_eligible.is_some() || self.second_eligible.is_some())
+    }
 }
 
 #[cfg(test)]
