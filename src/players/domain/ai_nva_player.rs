@@ -22,8 +22,8 @@ impl Default for AiNvaPlayer {
 impl Player for AiNvaPlayer {
     fn decide(
         &self,
-        _active_card: &RegularCard,
-        _preview_card: &RegularCard,
+        active_card: &RegularCard,
+        preview_card: &RegularCard,
         _current_elegible_faction: Factions,
         _possible_actions: Vec<String>,
         board: &Board,
@@ -45,10 +45,27 @@ impl Player for AiNvaPlayer {
         {
             panic!("NVA bot detected it can ambush or attack to remove base or 1d6 enemies.");
         } else {
-            panic!("NVA bot detected it cannot ambush or attack to remove base or 1d6 enemies.");
+            if (active_card.has_any_faction_capability()?
+                && !(active_card.get_faction_capability()? == Factions::NVA))
+                && (preview_card.has_any_faction_capability()?
+                    && preview_card.get_faction_capability()? == Factions::NVA)
+            {
+                // The next faction has NVA capabilities.
 
-            // Is the next card NVA Capability but the current card is not?
+                if randomization_controller.roll_six_sided_die()?
+                    > board.get_number_of_arvn_leaders()?
+                {
+                    panic!(
+                        "Die throw was bigger than number of ARVN leaders in box. Not implemented."
+                    );
+                }
+                else{
+                    panic!("Not implemented.");
+                }
+            }
         }
+
+        todo!()
     }
 }
 

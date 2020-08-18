@@ -37,7 +37,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 4,
                 "Top Gun".to_string(),
                 [Factions::US, Factions::NVA, Factions::ARVN, Factions::VC],
-                None,
+                Some(Factions::US),
             ),
         ),
         (
@@ -73,7 +73,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 8,
                 "Arc Light".to_string(),
                 [Factions::US, Factions::NVA, Factions::VC, Factions::ARVN],
-                None,
+                Some(Factions::US),
             ),
         ),
         (
@@ -100,7 +100,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 11,
                 "Abrams".to_string(),
                 [Factions::US, Factions::ARVN, Factions::NVA, Factions::VC],
-                None,
+                Some(Factions::US),
             ),
         ),
         (
@@ -118,7 +118,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 13,
                 "Cobras".to_string(),
                 [Factions::US, Factions::ARVN, Factions::NVA, Factions::VC],
-                None,
+                Some(Factions::US),
             ),
         ),
         (
@@ -127,7 +127,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 14,
                 "M-48 Patton".to_string(),
                 [Factions::US, Factions::ARVN, Factions::NVA, Factions::VC],
-                None,
+                Some(Factions::US),
             ),
         ),
         (
@@ -163,7 +163,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 18,
                 "Combined Action Platoons".to_string(),
                 [Factions::US, Factions::ARVN, Factions::VC, Factions::NVA],
-                None,
+                Some(Factions::US),
             ),
         ),
         (
@@ -172,7 +172,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 19,
                 "CORDS".to_string(),
                 [Factions::US, Factions::ARVN, Factions::VC, Factions::NVA],
-                None,
+                Some(Factions::US),
             ),
         ),
         (
@@ -181,7 +181,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 20,
                 "Laser Guided Bombs".to_string(),
                 [Factions::US, Factions::ARVN, Factions::VC, Factions::NVA],
-                None,
+                Some(Factions::US),
             ),
         ),
         (
@@ -253,7 +253,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 28,
                 "Search and Destroy".to_string(),
                 [Factions::US, Factions::VC, Factions::ARVN, Factions::NVA],
-                None,
+                Some(Factions::US),
             ),
         ),
         (
@@ -280,7 +280,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 31,
                 "AAA".to_string(),
                 [Factions::NVA, Factions::US, Factions::ARVN, Factions::VC],
-                None,
+                Some(Factions::NVA),
             ),
         ),
         (
@@ -289,7 +289,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 32,
                 "Long Range Guns".to_string(),
                 [Factions::NVA, Factions::US, Factions::ARVN, Factions::VC],
-                None,
+                Some(Factions::NVA),
             ),
         ),
         (
@@ -298,7 +298,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 33,
                 "MiGs".to_string(),
                 [Factions::NVA, Factions::US, Factions::ARVN, Factions::VC],
-                None,
+                Some(Factions::NVA),
             ),
         ),
         (
@@ -307,7 +307,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 34,
                 "SA-2s".to_string(),
                 [Factions::NVA, Factions::US, Factions::ARVN, Factions::VC],
-                None,
+                Some(Factions::NVA),
             ),
         ),
         (
@@ -406,7 +406,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 45,
                 "PT-76".to_string(),
                 [Factions::NVA, Factions::ARVN, Factions::US, Factions::VC],
-                None,
+                Some(Factions::NVA),
             ),
         ),
         (
@@ -550,7 +550,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 61,
                 "Armored Cavalry".to_string(),
                 [Factions::ARVN, Factions::US, Factions::NVA, Factions::VC],
-                None,
+                Some(Factions::ARVN),
             ),
         ),
         (
@@ -775,7 +775,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 86,
                 "Mandate of Heaven".to_string(),
                 [Factions::ARVN, Factions::VC, Factions::NVA, Factions::US],
-                None,
+                Some(Factions::ARVN),
             ),
         ),
         (
@@ -910,7 +910,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 101,
                 "Booby Traps".to_string(),
                 [Factions::VC, Factions::NVA, Factions::US, Factions::ARVN],
-                None,
+                Some(Factions::VC),
             ),
         ),
         (
@@ -937,7 +937,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 104,
                 "Main Force Bns".to_string(),
                 [Factions::VC, Factions::NVA, Factions::US, Factions::ARVN],
-                None,
+                Some(Factions::VC),
             ),
         ),
         (
@@ -1045,7 +1045,7 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 116,
                 "Cadres".to_string(),
                 [Factions::VC, Factions::ARVN, Factions::NVA, Factions::US],
-                None,
+                Some(Factions::VC),
             ),
         ),
         (

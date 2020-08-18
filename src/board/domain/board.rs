@@ -1,5 +1,6 @@
 use board::domain::initialize_hashmap_of_forces::initialize_hashmap_of_forces;
 use board::domain::occupable_space::OccupableSpace;
+use game_definitions::arvn_leaders::ArvnLeaders;
 use game_definitions::control_types::ControlTypes;
 use game_definitions::faction_stats::FactionStats;
 use game_definitions::forces::Forces;
@@ -14,6 +15,7 @@ pub struct Board {
     out_of_play: HashMap<Forces, u8>,
     available: HashMap<Forces, u8>,
     occupable_spaces: HashMap<SpaceIdentifiers, OccupableSpace>,
+    arvn_leaders: Vec<ArvnLeaders>,
 }
 
 impl Default for Board {
@@ -74,6 +76,7 @@ impl Board {
             .iter()
             .cloned()
             .collect(),
+            arvn_leaders: vec![ArvnLeaders::DuongVanMinh],
         }
     }
 
@@ -81,6 +84,10 @@ impl Board {
         &self,
     ) -> Result<&HashMap<SpaceIdentifiers, OccupableSpace>, String> {
         Ok(&self.occupable_spaces)
+    }
+
+    pub fn get_number_of_arvn_leaders(&self) -> Result<u8, String> {
+        Ok(self.arvn_leaders.len() as u8)
     }
 
     pub fn get_occupable_space(
