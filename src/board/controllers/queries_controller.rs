@@ -5,6 +5,7 @@ use board::domain::calculate_number_of_vc_guerrillas_in_space::calculate_number_
 use board::domain::can_attack_remove_base_in_space::can_attack_remove_base_in_space;
 use game_definitions::factions::Factions;
 
+#[derive(Debug)]
 pub struct QueriesController {}
 
 impl Default for QueriesController {

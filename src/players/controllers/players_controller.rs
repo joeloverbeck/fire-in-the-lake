@@ -1,4 +1,5 @@
 use board::domain::board::Board;
+use cards::domain::regular_card::RegularCard;
 use game_definitions::factions::Factions;
 use players::domain::ai_nva_player::AiNvaPlayer;
 use players::domain::decision::Decision;
@@ -6,6 +7,7 @@ use players::domain::dummy_player::DummyPlayer;
 use players::domain::human_us_player::HumanUsPlayer;
 use players::domain::player::Player;
 use players::domain::player::Players;
+use randomization::controllers::randomization_controller::RandomizationController;
 use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
@@ -14,6 +16,7 @@ pub struct PlayersController {
     arvn_player: Players,
     nva_player: Players,
     vc_player: Players,
+    randomization_controller: RandomizationController,
 }
 
 impl Default for PlayersController {
@@ -29,6 +32,7 @@ impl PlayersController {
             arvn_player: DummyPlayer::new().into(),
             nva_player: AiNvaPlayer::new().into(),
             vc_player: DummyPlayer::new().into(),
+            randomization_controller: RandomizationController::new(),
         }
     }
 
@@ -36,8 +40,8 @@ impl PlayersController {
     pub fn decide(
         &mut self,
         faction: &Factions,
-        active_card: u8,
-        preview_card: u8,
+        active_card: &RegularCard,
+        preview_card: &RegularCard,
         possible_actions: Vec<String>,
         board: &Board,
         keyboard_input_controller: &KeyboardInputController,
@@ -52,6 +56,7 @@ impl PlayersController {
                 *faction,
                 possible_actions,
                 board,
+                &self.randomization_controller,
                 keyboard_input_controller,
                 display_controller,
             );
@@ -64,6 +69,7 @@ impl PlayersController {
                 *faction,
                 possible_actions,
                 board,
+                &self.randomization_controller,
                 keyboard_input_controller,
                 display_controller,
             );
@@ -76,6 +82,7 @@ impl PlayersController {
                 *faction,
                 possible_actions,
                 board,
+                &self.randomization_controller,
                 keyboard_input_controller,
                 display_controller,
             );
@@ -88,6 +95,7 @@ impl PlayersController {
                 *faction,
                 possible_actions,
                 board,
+                &self.randomization_controller,
                 keyboard_input_controller,
                 display_controller,
             );

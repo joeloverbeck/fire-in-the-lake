@@ -70,7 +70,8 @@ impl PlayerActionPhasesLooper {
                 self.memory_persistence_controller.persist_decision(
                     &decision,
                     board,
-                    cards_controller.get_faction_order(cards_controller.get_active_card()?)?,
+                    cards_controller
+                        .get_faction_order(cards_controller.get_active_card_number()?)?,
                     sequence_of_play_controller,
                     &mut self.flags_controller,
                 )?;

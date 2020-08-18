@@ -1,4 +1,5 @@
 use board::domain::board::Board;
+use cards::domain::regular_card::RegularCard;
 use game_definitions::faction_stats::FactionStats;
 use game_definitions::factions::Factions;
 use game_definitions::flags::Flags;
@@ -16,7 +17,7 @@ use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
 pub fn produce_decision_for_unshaded_event_when_us_human(
-    active_card: u8,
+    active_card: &RegularCard,
     board: &Board,
     keyboard_input_controller: &KeyboardInputController,
     display_controller: &DisplayController,
@@ -28,7 +29,7 @@ pub fn produce_decision_for_unshaded_event_when_us_human(
         Factions::US,
     ));
 
-    if active_card == 16 {
+    if active_card.get_number()? == 16 {
         // Aid +10. This Support phase, Pacify costs 1 Resource per step or Terror. MOMENTUM.
         let mut faction_stat_mutations: Vec<FactionStatsMutation> = Vec::new();
         faction_stat_mutations.push(FactionStatsMutation::new(
@@ -47,7 +48,7 @@ pub fn produce_decision_for_unshaded_event_when_us_human(
             Vec::new(),
             flag_mutations,
         ))
-    } else if active_card == 22 {
+    } else if active_card.get_number()? == 22 {
         // US places up to 6 Troops in Da Nang, up to 3 from out of play.
 
         // Unfortunately in this case we require user input

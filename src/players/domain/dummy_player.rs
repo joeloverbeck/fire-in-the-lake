@@ -1,10 +1,12 @@
 use board::domain::board::Board;
+use cards::domain::regular_card::RegularCard;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
 use players::domain::faction_stats_mutation::FactionStatsMutation;
 use players::domain::passing::produce_faction_stats_mutations_for_passing::produce_faction_stats_mutations_for_passing;
 use players::domain::player::Player;
 use players::domain::sequence_of_play_mutation::SequenceOfPlayMutation;
+use randomization::controllers::randomization_controller::RandomizationController;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 use sequence_of_play::domain::slot_occupancy::SlotOccupancy;
 use user_interface::controllers::display_controller::DisplayController;
@@ -22,11 +24,12 @@ impl Default for DummyPlayer {
 impl Player for DummyPlayer {
     fn decide(
         &self,
-        _active_card: u8,
-        _preview_card: u8,
+        _active_card: &RegularCard,
+        _preview_card: &RegularCard,
         current_elegible_faction: Factions,
         _possible_actions: Vec<String>,
         board: &Board,
+        _randomization_controller: &RandomizationController,
         _keyboard_input_controller: &KeyboardInputController,
         _display_controller: &DisplayController,
     ) -> Result<Decision, String> {

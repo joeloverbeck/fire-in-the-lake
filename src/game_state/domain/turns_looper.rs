@@ -37,7 +37,7 @@ impl TurnsLooper {
         loop {
             let active_card_name = cards_controller.get_active_card_name()?;
             let faction_order =
-                cards_controller.get_faction_order(cards_controller.get_active_card()?)?;
+                cards_controller.get_faction_order(cards_controller.get_active_card_number()?)?;
 
             display_controller.write_announcement(
                 format!(
@@ -53,7 +53,7 @@ impl TurnsLooper {
             )?;
 
             self.sequence_of_play_controller.register_faction_order(
-                cards_controller.get_faction_order(cards_controller.get_active_card()?)?,
+                cards_controller.get_faction_order(cards_controller.get_active_card_number()?)?,
             )?;
 
             self.player_action_phases_looper.run(
