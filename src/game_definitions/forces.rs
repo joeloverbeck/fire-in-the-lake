@@ -19,6 +19,7 @@ pub enum Forces {
     ActiveVcGuerrilla,
     UndergroundNvaGuerrilla,
     ActiveNvaGuerrilla,
+    NvaTroop,
 }
 
 impl fmt::Display for Forces {
@@ -41,6 +42,7 @@ impl fmt::Display for Forces {
             Forces::ActiveVcGuerrilla => write!(f, "[ActiveVcGuerrilla]"),
             Forces::UndergroundNvaGuerrilla => write!(f, "[UndergroundNvaGuerrilla]"),
             Forces::ActiveNvaGuerrilla => write!(f, "[ActiveNvaGuerrilla]"),
+            Forces::NvaTroop => write!(f, "[NvaTroop]"),
         }
     }
 }

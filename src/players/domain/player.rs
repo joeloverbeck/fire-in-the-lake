@@ -1,5 +1,6 @@
 use board::domain::board::Board;
 use game_definitions::factions::Factions;
+use players::domain::ai_nva_player::AiNvaPlayer;
 use players::domain::decision::Decision;
 use players::domain::dummy_player::DummyPlayer;
 use players::domain::human_us_player::HumanUsPlayer;
@@ -27,6 +28,7 @@ pub trait Player {
 #[enum_dispatch(Player)]
 #[derive(Debug)]
 pub enum Players {
+    AiNvaPlayer,
     HumanUsPlayer,
     DummyPlayer,
 }

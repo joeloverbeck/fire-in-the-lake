@@ -3,6 +3,7 @@ use game_state::domain::run_pre_game::run_pre_game;
 use game_state::domain::turns_looper::TurnsLooper;
 use scenario_building::controllers::scenario_building_controller::ScenarioBuildingController;
 use user_interface::controllers::display_controller::DisplayController;
+use user_interface::controllers::display_controller_trait::DisplayControllerTrait;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
 extern crate termcolor;

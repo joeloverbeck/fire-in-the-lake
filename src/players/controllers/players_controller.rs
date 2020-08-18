@@ -1,5 +1,6 @@
 use board::domain::board::Board;
 use game_definitions::factions::Factions;
+use players::domain::ai_nva_player::AiNvaPlayer;
 use players::domain::decision::Decision;
 use players::domain::dummy_player::DummyPlayer;
 use players::domain::human_us_player::HumanUsPlayer;
@@ -26,7 +27,7 @@ impl PlayersController {
         PlayersController {
             us_player: HumanUsPlayer::new().into(),
             arvn_player: DummyPlayer::new().into(),
-            nva_player: DummyPlayer::new().into(),
+            nva_player: AiNvaPlayer::new().into(),
             vc_player: DummyPlayer::new().into(),
         }
     }

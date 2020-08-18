@@ -11,6 +11,7 @@ pub fn initialize_hashmap_of_forces() -> HashMap<Forces, u8> {
         (Forces::ArvnBase, 0),
         (Forces::ArvnPolice, 0),
         (Forces::ArvnTroop, 0),
+        (Forces::NvaTroop, 0),
         (Forces::NvaBase, 0),
         (Forces::TunneledNvaBase, 0),
         (Forces::TunneledVcBase, 0),

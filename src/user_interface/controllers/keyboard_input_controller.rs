@@ -1,6 +1,7 @@
 extern crate termcolor;
 use self::termcolor::BufferWriter;
 use user_interface::controllers::display_controller::DisplayController;
+use user_interface::controllers::display_controller_trait::DisplayControllerTrait;
 use user_interface::domain::input_violation_types::InputViolationTypes;
 use user_interface::domain::player_input_requester::PlayerInputRequester;
 

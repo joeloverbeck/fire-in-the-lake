@@ -1,7 +1,7 @@
 use board::controllers::setup_controller::SetupController;
 use board::domain::board::Board;
 use game_definitions::factions::Factions;
-use user_interface::controllers::display_controller::DisplayController;
+use user_interface::controllers::display_controller_trait::DisplayControllerTrait;
 
 pub struct ScenarioBuildingController {}
 
@@ -16,9 +16,9 @@ impl ScenarioBuildingController {
         ScenarioBuildingController {}
     }
 
-    pub fn build_full_scenario(
+    pub fn build_full_scenario<T: DisplayControllerTrait>(
         &mut self,
-        display_controller: &DisplayController,
+        display_controller: &T,
     ) -> Result<Board, String> {
         display_controller.write_announcement("Full scenario setup")?;
 

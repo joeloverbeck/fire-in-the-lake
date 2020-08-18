@@ -6,6 +6,7 @@ use persistence::controllers::memory_persistence_controller::MemoryPersistenceCo
 use players::controllers::players_controller::PlayersController;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
 use user_interface::controllers::display_controller::DisplayController;
+use user_interface::controllers::display_controller_trait::DisplayControllerTrait;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
 pub struct PlayerActionPhasesLooper {
@@ -62,6 +63,7 @@ impl PlayerActionPhasesLooper {
                 )?;
 
                 // The decision should have contained all the decisions.
+                display_controller.write_information_for_decision(&decision, faction)?;
                 display_controller.write_instructions_for_decision(&decision, faction)?;
 
                 // Delegate persisting the changes.

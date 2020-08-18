@@ -77,6 +77,23 @@ impl Board {
         }
     }
 
+    pub fn get_occupable_spaces(
+        &self,
+    ) -> Result<&HashMap<SpaceIdentifiers, OccupableSpace>, String> {
+        Ok(&self.occupable_spaces)
+    }
+
+    pub fn get_occupable_space(
+        &self,
+        space_identifier: &SpaceIdentifiers,
+    ) -> Result<&OccupableSpace, String> {
+        Ok(self
+            .occupable_spaces
+            .get(space_identifier)
+            .as_ref()
+            .unwrap())
+    }
+
     pub fn set_faction_stat(
         &mut self,
         faction_stat: FactionStats,

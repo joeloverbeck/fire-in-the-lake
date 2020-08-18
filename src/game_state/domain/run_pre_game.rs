@@ -1,6 +1,7 @@
 use cards::controllers::cards_controller::CardsController;
 use game_state::domain::reveal_and_get_preview_card::reveal_and_get_preview_card;
 use user_interface::controllers::display_controller::DisplayController;
+use user_interface::controllers::display_controller_trait::DisplayControllerTrait;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
 pub fn run_pre_game(

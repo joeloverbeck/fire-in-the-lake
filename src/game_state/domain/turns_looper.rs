@@ -3,6 +3,7 @@ use cards::controllers::cards_controller::CardsController;
 use game_state::domain::player_action_phases_looper::PlayerActionPhasesLooper;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
 use user_interface::controllers::display_controller::DisplayController;
+use user_interface::controllers::display_controller_trait::DisplayControllerTrait;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
 pub struct TurnsLooper {

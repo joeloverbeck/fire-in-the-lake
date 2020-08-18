@@ -1,3 +1,4 @@
+pub mod ai_nva_player;
 pub mod decision;
 pub mod dummy_player;
 pub mod events;
