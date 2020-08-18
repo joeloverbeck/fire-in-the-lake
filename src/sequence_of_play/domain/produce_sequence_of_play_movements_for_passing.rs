@@ -21,13 +21,13 @@ pub fn produce_sequence_of_play_movements_for_passing(
     }
 
     // The faction we received is indeed one that can pass.
-    movement_mutations.push(MovementMutation::new(*faction, Movements::Passed));
+    movement_mutations.push(MovementMutation::new(Some(*faction), Movements::Passed));
 
     // Now we have to remove it from whatever main eligible positions it was in, and move the remainder in the faction order to the left.
     if sequence_of_play_controller.get_first_eligible()? == *faction {
         // It was the first eligible. Now the second eligible becomes the first one, and the next in the faction order becomes the second.
         movement_mutations.push(MovementMutation::new(
-            sequence_of_play_controller.get_second_eligible()?,
+            Some(sequence_of_play_controller.get_second_eligible()?),
             Movements::FirstEligible,
         ));
 

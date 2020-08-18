@@ -15,14 +15,20 @@ pub fn produce_sequence_of_play_movements(
 
     if slot == &SequenceOfPlaySlots::FirstFactionEvent {
         // The faction was the first elegible, and played for the event.
+        if !(sequence_of_play_controller.get_first_eligible()? == *faction) {
+            panic!("Had attempted to register {:?} as having chosen to play the event being the first elegible faction, but that faction wasn't the first eligible! First eligibile: {:?}", faction, sequence_of_play_controller.get_first_eligible()?);
+        }
         if sequence_of_play_controller.is_first_faction_event_taken()? {
             panic!("Had attempted to register {:?} as having chosen to play the event being the first elegible faction, but there was a faction already in that position!: {:?}", faction, sequence_of_play_controller.get_faction_in_first_faction_event()?);
         }
 
         movement_mutations.push(MovementMutation::new(
-            *faction,
+            Some(*faction),
             Movements::FirstFactionEvent,
         ));
+
+        // We also need to nullify the position of the first eligible.
+        movement_mutations.push(MovementMutation::new(None, Movements::FirstEligible));
     } else if slot == &SequenceOfPlaySlots::Pass {
         movement_mutations.append(&mut produce_sequence_of_play_movements_for_passing(
             faction,
@@ -85,8 +91,6 @@ mod tests {
             &sequence_of_play_controller,
         )?;
 
-        println!("{:?}", mutations);
-
         assert_eq!(
             *mutations[0].get_faction(),
             Factions::ARVN,
@@ -108,6 +112,33 @@ mod tests {
             Movements::SecondEligible,
             "VC should have been marked as Second Eligible."
         );
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_when_the_first_faction_chooses_event_this_process_produces_a_mutation_to_remove_it_from_first_eligible_and_putting_it_in_first_faction_event(
+    ) -> Result<(), String> {
+        let mut sequence_of_play_controller = SequenceOfPlayController::new();
+
+        let faction_order = [Factions::NVA, Factions::ARVN, Factions::VC, Factions::US];
+
+        sequence_of_play_controller.register_faction_order(faction_order)?;
+
+        let mutations = produce_sequence_of_play_movements(
+            &Factions::NVA,
+            faction_order,
+            &SequenceOfPlaySlots::FirstFactionEvent,
+            &sequence_of_play_controller,
+        )?;
+
+        assert_eq!(mutations.len(), 2);
+
+        assert_eq!(*mutations[0].get_faction(), Factions::NVA);
+        assert_eq!(*mutations[0].get_movement(), Movements::FirstFactionEvent);
+
+        assert_eq!(mutations[1].does_it_contain_a_faction(), false);
+        assert_eq!(*mutations[1].get_movement(), Movements::FirstEligible);
 
         Ok(())
     }

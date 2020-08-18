@@ -71,12 +71,31 @@ impl SequenceOfPlayController {
         // Just go through all of them and persist them.
         for movement in movements {
             match *movement.get_movement() {
-                Movements::FirstEligible => self.first_eligible = Some(*movement.get_faction()),
+                Movements::FirstEligible => {
+                    // Note that the "faction" present in the mutation might be None.
+                    if movement.does_it_contain_a_faction() {
+                        self.first_eligible = Some(*movement.get_faction());
+                    } else {
+                        self.first_eligible = None;
+                    }
+                }
                 Movements::FirstFactionEvent => {
-                    self.first_faction_event = Some(*movement.get_faction())
+                    // Note that the "faction" present in the mutation might be None.
+                    if movement.does_it_contain_a_faction() {
+                        self.first_faction_event = Some(*movement.get_faction());
+                    } else {
+                        self.first_faction_event = None;
+                    }
                 }
                 Movements::Passed => self.passed.push(*movement.get_faction()),
-                Movements::SecondEligible => self.second_eligible = Some(*movement.get_faction()),
+                Movements::SecondEligible => {
+                    // Note that the "faction" present in the mutation might be None.
+                    if movement.does_it_contain_a_faction() {
+                        self.second_eligible = Some(*movement.get_faction());
+                    } else {
+                        self.second_eligible = None;
+                    }
+                }
             }
         }
 

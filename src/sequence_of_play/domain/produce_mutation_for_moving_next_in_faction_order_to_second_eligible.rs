@@ -23,7 +23,7 @@ pub fn produce_mutation_for_moving_next_in_faction_order_to_second_eligible(
             }
 
             return Ok(MovementMutation::new(
-                faction_order[index_of_replacement],
+                Some(faction_order[index_of_replacement]),
                 Movements::SecondEligible,
             ));
         }
