@@ -29,5 +29,7 @@ pub fn produce_mutation_for_moving_next_in_faction_order_to_second_eligible(
         }
     }
 
-    Err("Failed to find a next eligible faction for the second eligible!".to_string())
+    // Note that if it has gotten here, then there must be no next eligible for the second eligible.
+    // That's normal, we just send back a mutation to nullify that.
+    Ok(MovementMutation::new(None, Movements::SecondEligible))
 }

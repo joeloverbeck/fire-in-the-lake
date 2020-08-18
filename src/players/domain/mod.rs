@@ -6,5 +6,6 @@ pub mod flags_mutation;
 pub mod forces_mutation;
 pub mod human_us_player;
 pub mod mutation_types;
+pub mod passing;
 pub mod player;
 pub mod sequence_of_play_mutation;

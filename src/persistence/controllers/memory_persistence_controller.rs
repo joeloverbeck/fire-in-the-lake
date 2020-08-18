@@ -39,7 +39,6 @@ impl MemoryPersistenceController {
             if mutation.get_mutation_type() == &MutationTypes::Increase {
                 board.increase_faction_stat(mutation.get_faction_stat(), mutation.get_value())?;
             } else if mutation.get_mutation_type() == &MutationTypes::Reduce {
-                println!("Detected reduce mutation: {:?}", mutation);
                 board.reduce_faction_stat(mutation.get_faction_stat(), mutation.get_value())?;
             } else {
                 panic!("Case not handled for faction stats mutation {:?}", mutation);

@@ -15,9 +15,10 @@ pub fn produce_sequence_of_play_movements_for_passing(
 
     // First we have to make sure that the faction we are going to put into Pass has been one of the main eligible.
     if !(sequence_of_play_controller.get_first_eligible()? == *faction
-        || sequence_of_play_controller.get_second_eligible()? == *faction)
+        || (sequence_of_play_controller.is_there_a_second_eligible_faction()?
+            && sequence_of_play_controller.get_second_eligible()? == *faction))
     {
-        panic!("Was going to mark the faction {:?} as having passed, but  it wasn't either of the main elegibles! {:?} and {:?}", faction, sequence_of_play_controller.get_first_eligible(), sequence_of_play_controller.get_second_eligible());
+        panic!("Was going to mark the faction {:?} as having passed, but it wasn't either of the main elegibles! {:?} and {:?}", faction, sequence_of_play_controller.get_first_eligible(), sequence_of_play_controller.get_second_eligible());
     }
 
     // The faction we received is indeed one that can pass.
@@ -26,6 +27,14 @@ pub fn produce_sequence_of_play_movements_for_passing(
     // Now we have to remove it from whatever main eligible positions it was in, and move the remainder in the faction order to the left.
     if sequence_of_play_controller.get_first_eligible()? == *faction {
         // It was the first eligible. Now the second eligible becomes the first one, and the next in the faction order becomes the second.
+        // However, we only do this if there IS a second eligible. If there isn't, then the turn has ended, but we need to register that the first eligible becomes empty.
+        if !sequence_of_play_controller.is_there_a_second_eligible_faction()? {
+            // Note that there should be no first eligible then, because the first one has passed and there was no second one.
+            movement_mutations.push(MovementMutation::new(None, Movements::FirstEligible));
+
+            return Ok(movement_mutations);
+        }
+
         movement_mutations.push(MovementMutation::new(
             Some(sequence_of_play_controller.get_second_eligible()?),
             Movements::FirstEligible,

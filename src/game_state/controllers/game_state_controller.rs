@@ -3,6 +3,7 @@ use board::domain::board::Board;
 use cards::controllers::cards_controller::CardsController;
 use game_definitions::factions::Factions;
 use game_state::domain::player_action_phases_looper::PlayerActionPhasesLooper;
+use game_state::domain::reveal_and_get_preview_card::reveal_and_get_preview_card;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
 use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
@@ -96,6 +97,8 @@ impl GameStateController {
 
         display_controller.write_announcement("Game start")?;
 
+        let mut cards_controller = CardsController::new();
+
         display_controller.write_instruction(
             "Reveal the top card of the draw deck and place it onto a played cards pile.",
         )?;
@@ -103,27 +106,23 @@ impl GameStateController {
         let active_card_in_text = keyboard_input_controller
             .request_player_input("What is the number of the card on the played card stack?: ")?;
 
-        let mut cards_controller = CardsController::new();
-
         cards_controller.set_active_card(active_card_in_text.parse::<u8>().unwrap())?;
 
-        display_controller.write_instruction("Reveal the next card on top of the draw deck.")?;
-
-        let preview_card_in_text = keyboard_input_controller
-            .request_player_input("What is the number of the card on top of the draw deck?: ")?;
-
-        cards_controller.set_preview_card(preview_card_in_text.parse::<u8>().unwrap())?;
+        cards_controller.set_preview_card(reveal_and_get_preview_card(
+            &display_controller,
+            &keyboard_input_controller,
+        )?)?;
 
         // We have all we need to start the game.
-        let active_card_name = cards_controller.get_active_card_name()?;
-        let faction_order =
-            cards_controller.get_faction_order(active_card_in_text.parse::<u8>().unwrap())?;
-
         let mut sequence_of_play_controller = SequenceOfPlayController::new();
 
         let mut turn = 1;
 
         loop {
+            let active_card_name = cards_controller.get_active_card_name()?;
+            let faction_order =
+                cards_controller.get_faction_order(cards_controller.get_active_card()?)?;
+
             display_controller.write_announcement(
                 format!(
                     "Turn {}: '{}'  {} {} {} {}  ",
@@ -138,12 +137,12 @@ impl GameStateController {
             )?;
 
             sequence_of_play_controller.register_faction_order(
-                *cards_controller.get_faction_order(cards_controller.get_active_card()?)?,
+                cards_controller.get_faction_order(cards_controller.get_active_card()?)?,
             )?;
 
             self.player_action_phases_looper.run(
                 self.board.as_mut().unwrap(),
-                &cards_controller,
+                &mut cards_controller,
                 &mut sequence_of_play_controller,
                 &keyboard_input_controller,
                 &display_controller,

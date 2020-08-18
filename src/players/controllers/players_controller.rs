@@ -97,9 +97,3 @@ impl PlayersController {
         panic!("Shouldn't have gotten here!");
     }
 }
-
-#[cfg(test)]
-mod tests {
-    // Note this useful idiom: importing names from outer (for mod tests) scope.
-    use super::*;
-}

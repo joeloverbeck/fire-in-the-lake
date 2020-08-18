@@ -130,8 +130,20 @@ impl SequenceOfPlayController {
         Err("Was asked to figure out the possible operations for the current eligible faction, but couldn't find any. Probably the asking code failed to ask first whether there was any faction elegible.".to_string())
     }
 
+    pub fn is_there_a_first_eligible_faction(&self) -> Result<bool, String> {
+        Ok(self.first_eligible.is_some())
+    }
+
+    pub fn is_there_a_second_eligible_faction(&self) -> Result<bool, String> {
+        Ok(self.second_eligible.is_some())
+    }
+
     pub fn is_there_a_next_eligible_faction(&self) -> Result<bool, String> {
         Ok(self.first_eligible.is_some() || self.second_eligible.is_some())
+    }
+
+    pub fn perform_end_of_turn(&self) -> Result<(), String> {
+        Ok(())
     }
 }
 
@@ -186,6 +198,63 @@ mod tests {
         assert_eq!(possible_operations_for_current_elegible[0], "operation");
         assert_eq!(possible_operations_for_current_elegible[1], "pass");
         assert_eq!(possible_operations_for_current_elegible[2], "event");
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_if_all_four_factions_pass_after_the_last_pass_there_are_no_eligible_factions(
+    ) -> Result<(), String> {
+        let mut sut = SequenceOfPlayController::new();
+
+        let faction_order = [Factions::ARVN, Factions::VC, Factions::NVA, Factions::US];
+
+        sut.register_faction_order(faction_order)?;
+
+        sut.register_pick(&Factions::ARVN, faction_order, &SequenceOfPlaySlots::Pass)?;
+        sut.register_pick(&Factions::VC, faction_order, &SequenceOfPlaySlots::Pass)?;
+        sut.register_pick(&Factions::NVA, faction_order, &SequenceOfPlaySlots::Pass)?;
+        sut.register_pick(&Factions::US, faction_order, &SequenceOfPlaySlots::Pass)?;
+
+        assert_eq!(
+            sut.is_there_a_first_eligible_faction()?,
+            false,
+            "After all factions having passed, there should be no first eligible faction."
+        );
+        assert_eq!(
+            sut.is_there_a_second_eligible_faction()?,
+            false,
+            "After all factions having passed, there should be no second eligible faction."
+        );
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_after_performing_end_of_turn_when_all_factions_have_passed_the_next_turn_all_faction_should_be_eligible_in_faction_order(
+    ) -> Result<(), String> {
+        let mut sut = SequenceOfPlayController::new();
+
+        let faction_order = [Factions::ARVN, Factions::VC, Factions::NVA, Factions::US];
+
+        sut.register_faction_order(faction_order)?;
+
+        sut.register_pick(&Factions::ARVN, faction_order, &SequenceOfPlaySlots::Pass)?;
+        sut.register_pick(&Factions::VC, faction_order, &SequenceOfPlaySlots::Pass)?;
+        sut.register_pick(&Factions::NVA, faction_order, &SequenceOfPlaySlots::Pass)?;
+        sut.register_pick(&Factions::US, faction_order, &SequenceOfPlaySlots::Pass)?;
+
+        sut.perform_end_of_turn()?;
+
+        let new_faction_order = [Factions::VC, Factions::US, Factions::ARVN, Factions::NVA];
+
+        sut.register_faction_order(new_faction_order)?;
+
+        assert!(sut.is_there_a_first_eligible_faction()?);
+        assert!(sut.is_there_a_second_eligible_faction()?);
+
+        assert_eq!(sut.get_first_eligible()?, Factions::VC);
+        assert_eq!(sut.get_second_eligible()?, Factions::US);
 
         Ok(())
     }

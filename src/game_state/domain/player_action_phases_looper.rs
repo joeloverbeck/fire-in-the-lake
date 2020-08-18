@@ -1,6 +1,7 @@
 use board::domain::board::Board;
 use cards::controllers::cards_controller::CardsController;
 use flags::controllers::flags_controller::FlagsController;
+use game_state::domain::reveal_and_get_preview_card::reveal_and_get_preview_card;
 use persistence::controllers::memory_persistence_controller::MemoryPersistenceController;
 use players::controllers::players_controller::PlayersController;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
@@ -31,7 +32,7 @@ impl PlayerActionPhasesLooper {
     pub fn run(
         &mut self,
         board: &mut Board,
-        cards_controller: &CardsController,
+        cards_controller: &mut CardsController,
         sequence_of_play_controller: &mut SequenceOfPlayController,
         keyboard_input_controller: &KeyboardInputController,
         display_controller: &DisplayController,
@@ -67,7 +68,7 @@ impl PlayerActionPhasesLooper {
                 self.memory_persistence_controller.persist_decision(
                     &decision,
                     board,
-                    *cards_controller.get_faction_order(cards_controller.get_active_card()?)?,
+                    cards_controller.get_faction_order(cards_controller.get_active_card()?)?,
                     sequence_of_play_controller,
                     &mut self.flags_controller,
                 )?;
@@ -75,6 +76,16 @@ impl PlayerActionPhasesLooper {
                 break;
             }
         }
+
+        display_controller.write_announcement("End of turn")?;
+
+        sequence_of_play_controller.perform_end_of_turn()?;
+        cards_controller.move_preview_card_to_active()?;
+
+        cards_controller.set_preview_card(reveal_and_get_preview_card(
+            &display_controller,
+            &keyboard_input_controller,
+        )?)?;
 
         Ok(())
     }

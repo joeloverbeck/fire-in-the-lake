@@ -43,13 +43,13 @@ impl CardsController {
         Ok(self.preview_card)
     }
 
-    pub fn get_active_card_name(&self) -> Result<&String, String> {
+    pub fn get_active_card_name(&self) -> Result<String, String> {
         let (name, _) = self.regular_cards.get(&self.active_card).unwrap();
 
-        Ok(name)
+        Ok(name.to_string())
     }
 
-    pub fn get_faction_order(&self, number: u8) -> Result<&[Factions; 4], String> {
+    pub fn get_faction_order(&self, number: u8) -> Result<[Factions; 4], String> {
         // Sanity check
         if !self.regular_cards.contains_key(&number) {
             return Err(format!("Attempted to get the faction order for the card with the number {:?}, but couldn't find it in the registry of cards! Contents: {:?}", number, self.regular_cards));
@@ -57,7 +57,20 @@ impl CardsController {
 
         let (_, faction_order) = self.regular_cards.get(&number).unwrap();
 
-        Ok(faction_order)
+        Ok(*faction_order)
+    }
+
+    pub fn move_preview_card_to_active(&mut self) -> Result<(), String> {
+        // Sanity check
+        if self.preview_card == 0 {
+            panic!("Attempted to move the preview card to active, but the preview card hadn't been set!");
+        }
+
+        self.active_card = self.preview_card;
+
+        self.preview_card = 0;
+
+        Ok(())
     }
 }
 
