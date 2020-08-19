@@ -78,6 +78,7 @@ impl Player for AiNvaPlayer {
             &PlayerType::Ai,
             &Factions::NVA,
             EventType::Shaded,
+            board,
         )? {
             panic!("Was going to play the card for the event.");
         }
