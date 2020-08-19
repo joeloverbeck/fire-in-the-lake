@@ -2,14 +2,12 @@ use cards::domain::card::Card;
 use game_definitions::factions::Factions;
 
 #[derive(Debug, Clone)]
-pub struct RegularCard {
+pub struct CoupCard {
     number: u8,
     name: String,
-    faction_order: [Factions; 4],
-    faction_capability: Option<Factions>,
 }
 
-impl Card for RegularCard {
+impl Card for CoupCard {
     fn get_number(&self) -> Result<u8, String> {
         Ok(self.number)
     }
@@ -19,19 +17,19 @@ impl Card for RegularCard {
     }
 
     fn get_faction_order(&self) -> Result<[Factions; 4], String> {
-        Ok(self.faction_order)
+        panic!("Asked a coup card for its faction order. They never have any.");
     }
 
     fn has_any_faction_capability(&self) -> Result<bool, String> {
-        Ok(self.faction_capability.is_some())
+        Ok(false)
     }
 
     fn get_faction_capability(&self) -> Result<Factions, String> {
-        Ok(*self.faction_capability.as_ref().unwrap())
+        panic!("Asked a coup card for its action capability. They never have any.");
     }
 
     fn is_coup_card(&self) -> Result<bool, String> {
-        Ok(false)
+        Ok(true)
     }
 
     fn is_pivotal_event_card(&self) -> Result<bool, String> {
@@ -39,18 +37,8 @@ impl Card for RegularCard {
     }
 }
 
-impl RegularCard {
-    pub fn new(
-        number: u8,
-        name: String,
-        faction_order: [Factions; 4],
-        faction_capability: Option<Factions>,
-    ) -> RegularCard {
-        RegularCard {
-            number,
-            name,
-            faction_order,
-            faction_capability,
-        }
+impl CoupCard {
+    pub fn new(number: u8, name: String) -> CoupCard {
+        CoupCard { number, name }
     }
 }

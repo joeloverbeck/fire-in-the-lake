@@ -1,5 +1,5 @@
 use board::domain::board::Board;
-use cards::domain::regular_card::RegularCard;
+use cards::domain::card::Cards;
 use game_definitions::factions::Factions;
 use players::domain::ai_nva_player::AiNvaPlayer;
 use players::domain::decision::Decision;
@@ -40,8 +40,8 @@ impl PlayersController {
     pub fn decide(
         &mut self,
         faction: &Factions,
-        active_card: &RegularCard,
-        preview_card: &RegularCard,
+        active_card: &Cards,
+        preview_card: &Cards,
         possible_actions: Vec<String>,
         board: &Board,
         keyboard_input_controller: &KeyboardInputController,

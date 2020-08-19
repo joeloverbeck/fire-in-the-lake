@@ -40,7 +40,7 @@ impl<'a> InformationComposer {
 
         if let Err(error) = buffer.set_color(
             ColorSpec::new()
-                .set_fg(Some(Color::Cyan))
+                .set_fg(Some(Color::Blue))
                 .set_bg(Some(Color::Black)),
         ) {
             return Err(error.to_string());
@@ -73,7 +73,7 @@ impl<'a> InformationComposer {
             } else {
                 if let Err(error) = buffer.set_color(
                     ColorSpec::new()
-                        .set_fg(Some(Color::Blue))
+                        .set_fg(Some(Color::Cyan))
                         .set_bg(Some(Color::Black)),
                 ) {
                     return Err(error.to_string());

@@ -1,10 +1,11 @@
 use board::domain::board::Board;
-use cards::domain::regular_card::RegularCard;
+use cards::domain::card::Cards;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
 use players::domain::faction_stats_mutation::FactionStatsMutation;
 use players::domain::passing::produce_faction_stats_mutations_for_passing::produce_faction_stats_mutations_for_passing;
 use players::domain::player::Player;
+use players::domain::player_type::PlayerType;
 use players::domain::sequence_of_play_mutation::SequenceOfPlayMutation;
 use randomization::controllers::randomization_controller::RandomizationController;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
@@ -24,8 +25,8 @@ impl Default for DummyPlayer {
 impl Player for DummyPlayer {
     fn decide(
         &self,
-        _active_card: &RegularCard,
-        _preview_card: &RegularCard,
+        _active_card: &Cards,
+        _preview_card: &Cards,
         current_elegible_faction: Factions,
         _possible_actions: Vec<String>,
         board: &Board,
@@ -55,6 +56,10 @@ impl Player for DummyPlayer {
             Vec::new(),
             Vec::new(),
         ))
+    }
+
+    fn get_player_type(&self) -> Result<PlayerType, String> {
+        Ok(PlayerType::Ai)
     }
 }
 

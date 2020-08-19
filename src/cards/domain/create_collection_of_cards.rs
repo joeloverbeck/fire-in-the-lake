@@ -1,8 +1,11 @@
+use cards::domain::card::Cards;
+use cards::domain::coup_card::CoupCard;
+use cards::domain::pivotal_event_card::PivotalEventCard;
 use cards::domain::regular_card::RegularCard;
 use game_definitions::factions::Factions;
 use std::collections::HashMap;
 
-pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
+pub fn create_collection_of_cards() -> HashMap<u8, Cards> {
     [
         (
             1,
@@ -11,7 +14,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Gulf of Tonkin".to_string(),
                 [Factions::US, Factions::NVA, Factions::ARVN, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             2,
@@ -20,7 +24,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Kissinger".to_string(),
                 [Factions::US, Factions::NVA, Factions::ARVN, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             3,
@@ -29,7 +34,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Peace Talks".to_string(),
                 [Factions::US, Factions::NVA, Factions::ARVN, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             4,
@@ -38,7 +44,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Top Gun".to_string(),
                 [Factions::US, Factions::NVA, Factions::ARVN, Factions::VC],
                 Some(Factions::US),
-            ),
+            )
+            .into(),
         ),
         (
             5,
@@ -47,7 +54,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Wild Weasels".to_string(),
                 [Factions::US, Factions::NVA, Factions::ARVN, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             6,
@@ -56,7 +64,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Aces".to_string(),
                 [Factions::US, Factions::NVA, Factions::VC, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             7,
@@ -65,7 +74,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "ADSID".to_string(),
                 [Factions::US, Factions::NVA, Factions::VC, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             8,
@@ -74,7 +84,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Arc Light".to_string(),
                 [Factions::US, Factions::NVA, Factions::VC, Factions::ARVN],
                 Some(Factions::US),
-            ),
+            )
+            .into(),
         ),
         (
             9,
@@ -83,7 +94,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Psychedelic Cookie".to_string(),
                 [Factions::US, Factions::NVA, Factions::VC, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             10,
@@ -92,7 +104,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Rolling Thunder".to_string(),
                 [Factions::US, Factions::NVA, Factions::VC, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             11,
@@ -101,7 +114,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Abrams".to_string(),
                 [Factions::US, Factions::ARVN, Factions::NVA, Factions::VC],
                 Some(Factions::US),
-            ),
+            )
+            .into(),
         ),
         (
             12,
@@ -110,7 +124,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Capt Buck Adams".to_string(),
                 [Factions::US, Factions::ARVN, Factions::NVA, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             13,
@@ -119,7 +134,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Cobras".to_string(),
                 [Factions::US, Factions::ARVN, Factions::NVA, Factions::VC],
                 Some(Factions::US),
-            ),
+            )
+            .into(),
         ),
         (
             14,
@@ -128,7 +144,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "M-48 Patton".to_string(),
                 [Factions::US, Factions::ARVN, Factions::NVA, Factions::VC],
                 Some(Factions::US),
-            ),
+            )
+            .into(),
         ),
         (
             15,
@@ -137,7 +154,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Medevac".to_string(),
                 [Factions::US, Factions::ARVN, Factions::NVA, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             16,
@@ -146,7 +164,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Blowtorch Komer".to_string(),
                 [Factions::US, Factions::ARVN, Factions::VC, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             17,
@@ -155,7 +174,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Claymores".to_string(),
                 [Factions::US, Factions::ARVN, Factions::VC, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             18,
@@ -164,7 +184,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Combined Action Platoons".to_string(),
                 [Factions::US, Factions::ARVN, Factions::VC, Factions::NVA],
                 Some(Factions::US),
-            ),
+            )
+            .into(),
         ),
         (
             19,
@@ -173,7 +194,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "CORDS".to_string(),
                 [Factions::US, Factions::ARVN, Factions::VC, Factions::NVA],
                 Some(Factions::US),
-            ),
+            )
+            .into(),
         ),
         (
             20,
@@ -182,7 +204,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Laser Guided Bombs".to_string(),
                 [Factions::US, Factions::ARVN, Factions::VC, Factions::NVA],
                 Some(Factions::US),
-            ),
+            )
+            .into(),
         ),
         (
             21,
@@ -191,7 +214,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Americal".to_string(),
                 [Factions::US, Factions::VC, Factions::NVA, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             22,
@@ -200,7 +224,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Da Nang".to_string(),
                 [Factions::US, Factions::VC, Factions::NVA, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             23,
@@ -209,7 +234,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Operation Attleboro".to_string(),
                 [Factions::US, Factions::VC, Factions::NVA, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             24,
@@ -218,7 +244,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Operation Starlite".to_string(),
                 [Factions::US, Factions::VC, Factions::NVA, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             25,
@@ -227,7 +254,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "TF-116 Riverines".to_string(),
                 [Factions::US, Factions::VC, Factions::NVA, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             26,
@@ -236,7 +264,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "LRRP".to_string(),
                 [Factions::US, Factions::VC, Factions::ARVN, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             27,
@@ -245,7 +274,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Phoenix Program".to_string(),
                 [Factions::US, Factions::VC, Factions::ARVN, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             28,
@@ -254,7 +284,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Search and Destroy".to_string(),
                 [Factions::US, Factions::VC, Factions::ARVN, Factions::NVA],
                 Some(Factions::US),
-            ),
+            )
+            .into(),
         ),
         (
             29,
@@ -263,7 +294,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Tribesmen".to_string(),
                 [Factions::US, Factions::VC, Factions::ARVN, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             30,
@@ -272,7 +304,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "USS New Jersey".to_string(),
                 [Factions::US, Factions::VC, Factions::ARVN, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             31,
@@ -281,7 +314,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "AAA".to_string(),
                 [Factions::NVA, Factions::US, Factions::ARVN, Factions::VC],
                 Some(Factions::NVA),
-            ),
+            )
+            .into(),
         ),
         (
             32,
@@ -290,7 +324,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Long Range Guns".to_string(),
                 [Factions::NVA, Factions::US, Factions::ARVN, Factions::VC],
                 Some(Factions::NVA),
-            ),
+            )
+            .into(),
         ),
         (
             33,
@@ -299,7 +334,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "MiGs".to_string(),
                 [Factions::NVA, Factions::US, Factions::ARVN, Factions::VC],
                 Some(Factions::NVA),
-            ),
+            )
+            .into(),
         ),
         (
             34,
@@ -308,7 +344,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "SA-2s".to_string(),
                 [Factions::NVA, Factions::US, Factions::ARVN, Factions::VC],
                 Some(Factions::NVA),
-            ),
+            )
+            .into(),
         ),
         (
             35,
@@ -317,7 +354,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Thanh Hoa".to_string(),
                 [Factions::NVA, Factions::US, Factions::ARVN, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             36,
@@ -326,7 +364,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Hamburger Hill".to_string(),
                 [Factions::NVA, Factions::US, Factions::VC, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             37,
@@ -335,7 +374,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Khe Sanh".to_string(),
                 [Factions::NVA, Factions::US, Factions::VC, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             38,
@@ -344,7 +384,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "McNamara Line".to_string(),
                 [Factions::NVA, Factions::US, Factions::VC, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             39,
@@ -353,7 +394,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Oriskany".to_string(),
                 [Factions::NVA, Factions::US, Factions::VC, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             40,
@@ -362,7 +404,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "PoWs".to_string(),
                 [Factions::NVA, Factions::US, Factions::VC, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             41,
@@ -371,7 +414,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Bombing Pause".to_string(),
                 [Factions::NVA, Factions::ARVN, Factions::US, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             42,
@@ -380,7 +424,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Chou En Lai".to_string(),
                 [Factions::NVA, Factions::ARVN, Factions::US, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             43,
@@ -389,7 +434,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Economic Aid".to_string(),
                 [Factions::NVA, Factions::ARVN, Factions::US, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             44,
@@ -398,7 +444,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Ia Drang".to_string(),
                 [Factions::NVA, Factions::ARVN, Factions::US, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             45,
@@ -407,7 +454,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "PT-76".to_string(),
                 [Factions::NVA, Factions::ARVN, Factions::US, Factions::VC],
                 Some(Factions::NVA),
-            ),
+            )
+            .into(),
         ),
         (
             46,
@@ -416,7 +464,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "559th Transport Grp".to_string(),
                 [Factions::NVA, Factions::ARVN, Factions::VC, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             47,
@@ -425,7 +474,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Chu Luc".to_string(),
                 [Factions::NVA, Factions::ARVN, Factions::VC, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             48,
@@ -434,7 +484,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Nam Dong".to_string(),
                 [Factions::NVA, Factions::ARVN, Factions::VC, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             49,
@@ -443,7 +494,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Russian Arms".to_string(),
                 [Factions::NVA, Factions::ARVN, Factions::VC, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             50,
@@ -452,7 +504,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Uncle Ho".to_string(),
                 [Factions::NVA, Factions::ARVN, Factions::VC, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             51,
@@ -461,7 +514,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "301st Supply Bn".to_string(),
                 [Factions::NVA, Factions::VC, Factions::US, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             52,
@@ -470,7 +524,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "RAND".to_string(),
                 [Factions::NVA, Factions::VC, Factions::US, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             53,
@@ -479,7 +534,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Sappers".to_string(),
                 [Factions::NVA, Factions::VC, Factions::US, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             54,
@@ -488,7 +544,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Son Tay".to_string(),
                 [Factions::NVA, Factions::VC, Factions::US, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             55,
@@ -497,7 +554,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Trucks".to_string(),
                 [Factions::NVA, Factions::VC, Factions::US, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             56,
@@ -506,7 +564,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Vo Nguyen Giap".to_string(),
                 [Factions::NVA, Factions::VC, Factions::ARVN, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             57,
@@ -515,7 +574,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "International Unrest".to_string(),
                 [Factions::NVA, Factions::VC, Factions::ARVN, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             58,
@@ -524,7 +584,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Pathet Lao".to_string(),
                 [Factions::NVA, Factions::VC, Factions::ARVN, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             59,
@@ -533,7 +594,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Plei Mei".to_string(),
                 [Factions::NVA, Factions::VC, Factions::ARVN, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             60,
@@ -542,7 +604,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "War Photographer".to_string(),
                 [Factions::NVA, Factions::VC, Factions::ARVN, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             61,
@@ -551,7 +614,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Armored Cavalry".to_string(),
                 [Factions::ARVN, Factions::US, Factions::NVA, Factions::VC],
                 Some(Factions::ARVN),
-            ),
+            )
+            .into(),
         ),
         (
             62,
@@ -560,7 +624,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Cambodian Civil War".to_string(),
                 [Factions::ARVN, Factions::US, Factions::NVA, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             63,
@@ -569,7 +634,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Fact Finding".to_string(),
                 [Factions::ARVN, Factions::US, Factions::NVA, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             64,
@@ -578,7 +644,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Honolulu Conference".to_string(),
                 [Factions::ARVN, Factions::US, Factions::NVA, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             65,
@@ -587,7 +654,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "International Forces".to_string(),
                 [Factions::ARVN, Factions::US, Factions::NVA, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             66,
@@ -596,7 +664,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Ambassador Taylor".to_string(),
                 [Factions::ARVN, Factions::US, Factions::VC, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             67,
@@ -605,7 +674,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Amphib Landing".to_string(),
                 [Factions::ARVN, Factions::US, Factions::VC, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             68,
@@ -614,7 +684,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Green Berets".to_string(),
                 [Factions::ARVN, Factions::US, Factions::VC, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             69,
@@ -623,7 +694,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "MACV".to_string(),
                 [Factions::ARVN, Factions::US, Factions::VC, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             70,
@@ -632,7 +704,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "ROKs".to_string(),
                 [Factions::ARVN, Factions::US, Factions::VC, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             71,
@@ -641,7 +714,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "An Loc".to_string(),
                 [Factions::ARVN, Factions::NVA, Factions::US, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             72,
@@ -650,7 +724,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Body Count".to_string(),
                 [Factions::ARVN, Factions::NVA, Factions::US, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             73,
@@ -659,7 +734,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Great Society".to_string(),
                 [Factions::ARVN, Factions::NVA, Factions::US, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             74,
@@ -668,7 +744,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Lam Son 719".to_string(),
                 [Factions::ARVN, Factions::NVA, Factions::US, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             75,
@@ -677,7 +754,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Sihanouk".to_string(),
                 [Factions::ARVN, Factions::NVA, Factions::US, Factions::VC],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             76,
@@ -686,7 +764,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Annam".to_string(),
                 [Factions::ARVN, Factions::NVA, Factions::VC, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             77,
@@ -695,7 +774,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Détente".to_string(),
                 [Factions::ARVN, Factions::NVA, Factions::VC, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             78,
@@ -704,7 +784,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "General Lansdale".to_string(),
                 [Factions::ARVN, Factions::NVA, Factions::VC, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             79,
@@ -713,7 +794,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Henry Cabot Lodge".to_string(),
                 [Factions::ARVN, Factions::NVA, Factions::VC, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             80,
@@ -722,7 +804,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Light at the End of the Tunnel".to_string(),
                 [Factions::ARVN, Factions::NVA, Factions::VC, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             81,
@@ -731,7 +814,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "CIDG".to_string(),
                 [Factions::ARVN, Factions::VC, Factions::US, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             82,
@@ -740,7 +824,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Domino Theory".to_string(),
                 [Factions::ARVN, Factions::VC, Factions::US, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             83,
@@ -749,7 +834,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Election".to_string(),
                 [Factions::ARVN, Factions::VC, Factions::US, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             84,
@@ -758,7 +844,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "To Quoc".to_string(),
                 [Factions::ARVN, Factions::VC, Factions::US, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             85,
@@ -767,7 +854,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "USAID".to_string(),
                 [Factions::ARVN, Factions::VC, Factions::US, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             86,
@@ -776,7 +864,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Mandate of Heaven".to_string(),
                 [Factions::ARVN, Factions::VC, Factions::NVA, Factions::US],
                 Some(Factions::ARVN),
-            ),
+            )
+            .into(),
         ),
         (
             87,
@@ -785,7 +874,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Nguyen Chanh Thi".to_string(),
                 [Factions::ARVN, Factions::VC, Factions::NVA, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             88,
@@ -794,7 +884,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Phan Quang Dan".to_string(),
                 [Factions::ARVN, Factions::VC, Factions::NVA, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             89,
@@ -803,7 +894,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Tam Chau".to_string(),
                 [Factions::ARVN, Factions::VC, Factions::NVA, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             90,
@@ -812,7 +904,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Walt Rostow".to_string(),
                 [Factions::ARVN, Factions::VC, Factions::NVA, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             91,
@@ -821,7 +914,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Bob Hope".to_string(),
                 [Factions::VC, Factions::US, Factions::NVA, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             92,
@@ -830,7 +924,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "SEALORDS".to_string(),
                 [Factions::VC, Factions::US, Factions::NVA, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             93,
@@ -839,7 +934,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Senator Fulbright".to_string(),
                 [Factions::VC, Factions::US, Factions::NVA, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             94,
@@ -848,7 +944,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Tunnel Rats".to_string(),
                 [Factions::VC, Factions::US, Factions::NVA, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             95,
@@ -857,7 +954,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Westmoreland".to_string(),
                 [Factions::VC, Factions::US, Factions::NVA, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             96,
@@ -866,7 +964,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "APC".to_string(),
                 [Factions::VC, Factions::US, Factions::ARVN, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             97,
@@ -875,7 +974,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Brinks Hotel".to_string(),
                 [Factions::VC, Factions::US, Factions::ARVN, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             98,
@@ -884,7 +984,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Long Tan".to_string(),
                 [Factions::VC, Factions::US, Factions::ARVN, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             99,
@@ -893,7 +994,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Masher/White Wing".to_string(),
                 [Factions::VC, Factions::US, Factions::ARVN, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             100,
@@ -902,7 +1004,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Rach Ba Rai".to_string(),
                 [Factions::VC, Factions::US, Factions::ARVN, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             101,
@@ -911,7 +1014,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Booby Traps".to_string(),
                 [Factions::VC, Factions::NVA, Factions::US, Factions::ARVN],
                 Some(Factions::VC),
-            ),
+            )
+            .into(),
         ),
         (
             102,
@@ -920,7 +1024,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Cu Chi".to_string(),
                 [Factions::VC, Factions::NVA, Factions::US, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             103,
@@ -929,7 +1034,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Kent State".to_string(),
                 [Factions::VC, Factions::NVA, Factions::US, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             104,
@@ -938,7 +1044,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Main Force Bns".to_string(),
                 [Factions::VC, Factions::NVA, Factions::US, Factions::ARVN],
                 Some(Factions::VC),
-            ),
+            )
+            .into(),
         ),
         (
             105,
@@ -947,7 +1054,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Rural Pressure".to_string(),
                 [Factions::VC, Factions::NVA, Factions::US, Factions::ARVN],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             106,
@@ -956,7 +1064,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Binh Duong".to_string(),
                 [Factions::VC, Factions::NVA, Factions::ARVN, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             107,
@@ -965,7 +1074,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Burning Bonze".to_string(),
                 [Factions::VC, Factions::NVA, Factions::ARVN, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             108,
@@ -974,7 +1084,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Draft Dodgers".to_string(),
                 [Factions::VC, Factions::NVA, Factions::ARVN, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             109,
@@ -983,7 +1094,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Nguyen Huu Tho".to_string(),
                 [Factions::VC, Factions::NVA, Factions::ARVN, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             110,
@@ -992,7 +1104,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "No Contact".to_string(),
                 [Factions::VC, Factions::NVA, Factions::ARVN, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             111,
@@ -1001,7 +1114,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Agent Orange".to_string(),
                 [Factions::VC, Factions::ARVN, Factions::US, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             112,
@@ -1010,7 +1124,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Colonel Chau".to_string(),
                 [Factions::VC, Factions::ARVN, Factions::US, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             113,
@@ -1019,7 +1134,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Ruff Puff".to_string(),
                 [Factions::VC, Factions::ARVN, Factions::US, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             114,
@@ -1028,7 +1144,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Tri Quang".to_string(),
                 [Factions::VC, Factions::ARVN, Factions::US, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             115,
@@ -1037,7 +1154,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Typhoon Kate".to_string(),
                 [Factions::VC, Factions::ARVN, Factions::US, Factions::NVA],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             116,
@@ -1046,7 +1164,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Cadres".to_string(),
                 [Factions::VC, Factions::ARVN, Factions::NVA, Factions::US],
                 Some(Factions::VC),
-            ),
+            )
+            .into(),
         ),
         (
             117,
@@ -1055,7 +1174,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Corps Commanders".to_string(),
                 [Factions::VC, Factions::ARVN, Factions::NVA, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             118,
@@ -1064,7 +1184,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "Korean War Arms".to_string(),
                 [Factions::VC, Factions::ARVN, Factions::NVA, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             119,
@@ -1073,7 +1194,8 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "My Lai".to_string(),
                 [Factions::VC, Factions::ARVN, Factions::NVA, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             120,
@@ -1082,44 +1204,54 @@ pub fn create_collection_of_regular_cards() -> HashMap<u8, RegularCard> {
                 "US Press Corps".to_string(),
                 [Factions::VC, Factions::ARVN, Factions::NVA, Factions::US],
                 None,
-            ),
+            )
+            .into(),
         ),
         (
             121,
-            RegularCard::new(
+            PivotalEventCard::new(
                 121,
                 "Linebacker II".to_string(),
                 [Factions::US, Factions::ARVN, Factions::VC, Factions::NVA],
-                None,
-            ),
+            )
+            .into(),
         ),
         (
             122,
-            RegularCard::new(
+            PivotalEventCard::new(
                 122,
                 "Easter Offensive".to_string(),
                 [Factions::NVA, Factions::VC, Factions::ARVN, Factions::US],
-                None,
-            ),
+            )
+            .into(),
         ),
         (
             123,
-            RegularCard::new(
+            PivotalEventCard::new(
                 123,
                 "Vietnamization".to_string(),
                 [Factions::ARVN, Factions::US, Factions::NVA, Factions::VC],
-                None,
-            ),
+            )
+            .into(),
         ),
         (
             124,
-            RegularCard::new(
+            PivotalEventCard::new(
                 124,
                 "Tet Offensive".to_string(),
                 [Factions::VC, Factions::NVA, Factions::US, Factions::ARVN],
-                None,
-            ),
+            )
+            .into(),
         ),
+        (125, CoupCard::new(125, "Nguyen Khanh".to_string()).into()),
+        (126, CoupCard::new(126, "Young Turks".to_string()).into()),
+        (127, CoupCard::new(127, "Nguyen Cao Ky".to_string()).into()),
+        (
+            128,
+            CoupCard::new(128, "Nguyen Van Thieu".to_string()).into(),
+        ),
+        (129, CoupCard::new(129, "Failed Attempt".to_string()).into()),
+        (130, CoupCard::new(130, "Failed Attempt".to_string()).into()),
     ]
     .iter()
     .cloned()

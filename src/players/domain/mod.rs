@@ -1,5 +1,8 @@
 pub mod ai_nva_player;
 pub mod decision;
+pub mod does_card_have_a_factions_capability;
+pub mod does_card_have_a_factions_capability_and_of_a_specific_one;
+pub mod does_card_have_a_factions_capability_but_not_of_a_specific_one;
 pub mod dummy_player;
 pub mod events;
 pub mod faction_stats_mutation;
@@ -9,4 +12,5 @@ pub mod human_us_player;
 pub mod mutation_types;
 pub mod passing;
 pub mod player;
+pub mod player_type;
 pub mod sequence_of_play_mutation;

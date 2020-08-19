@@ -1,5 +1,6 @@
 use board::domain::board::Board;
-use cards::domain::regular_card::RegularCard;
+use cards::domain::card::Card;
+use cards::domain::card::Cards;
 use game_definitions::faction_stats::FactionStats;
 use game_definitions::factions::Factions;
 use game_definitions::flags::Flags;
@@ -17,7 +18,7 @@ use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
 pub fn produce_decision_for_unshaded_event_when_us_human(
-    active_card: &RegularCard,
+    active_card: &Cards,
     board: &Board,
     keyboard_input_controller: &KeyboardInputController,
     display_controller: &DisplayController,

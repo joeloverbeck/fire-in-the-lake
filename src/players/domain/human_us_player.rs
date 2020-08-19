@@ -1,5 +1,5 @@
 use board::domain::board::Board;
-use cards::domain::regular_card::RegularCard;
+use cards::domain::card::Cards;
 use game_definitions::faction_stats::FactionStats;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
@@ -7,6 +7,7 @@ use players::domain::events::unshaded::produce_decision_for_unshaded_event_when_
 use players::domain::faction_stats_mutation::FactionStatsMutation;
 use players::domain::mutation_types::MutationTypes;
 use players::domain::player::Player;
+use players::domain::player_type::PlayerType;
 use players::domain::sequence_of_play_mutation::SequenceOfPlayMutation;
 use randomization::controllers::randomization_controller::RandomizationController;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
@@ -26,8 +27,8 @@ impl Default for HumanUsPlayer {
 impl Player for HumanUsPlayer {
     fn decide(
         &self,
-        active_card: &RegularCard,
-        _preview_card: &RegularCard,
+        active_card: &Cards,
+        _preview_card: &Cards,
         _current_elegible_faction: Factions,
         possible_actions: Vec<String>,
         board: &Board,
@@ -88,6 +89,10 @@ impl Player for HumanUsPlayer {
         } else {
             todo!()
         }
+    }
+
+    fn get_player_type(&self) -> Result<PlayerType, String> {
+        Ok(PlayerType::Human)
     }
 }
 

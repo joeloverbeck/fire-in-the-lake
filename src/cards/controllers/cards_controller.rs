@@ -1,10 +1,11 @@
-use cards::domain::create_collection_of_regular_cards::create_collection_of_regular_cards;
-use cards::domain::regular_card::RegularCard;
+use cards::domain::card::Card;
+use cards::domain::card::Cards;
+use cards::domain::create_collection_of_cards::create_collection_of_cards;
 use game_definitions::factions::Factions;
 use std::collections::HashMap;
 
 pub struct CardsController {
-    regular_cards: HashMap<u8, RegularCard>,
+    cards: HashMap<u8, Cards>,
     active_card_number: u8,
     preview_card_number: u8,
 }
@@ -18,7 +19,7 @@ impl Default for CardsController {
 impl CardsController {
     pub fn new() -> CardsController {
         CardsController {
-            regular_cards: create_collection_of_regular_cards(),
+            cards: create_collection_of_cards(),
             active_card_number: 0,
             preview_card_number: 0,
         }
@@ -30,12 +31,8 @@ impl CardsController {
         Ok(())
     }
 
-    pub fn get_active_card(&self) -> Result<&RegularCard, String> {
-        Ok(self
-            .regular_cards
-            .get(&self.active_card_number)
-            .as_ref()
-            .unwrap())
+    pub fn get_active_card(&self) -> Result<&Cards, String> {
+        Ok(self.cards.get(&self.active_card_number).as_ref().unwrap())
     }
 
     pub fn get_active_card_number(&self) -> Result<u8, String> {
@@ -48,29 +45,25 @@ impl CardsController {
         Ok(())
     }
 
-    pub fn get_preview_card(&self) -> Result<&RegularCard, String> {
-        Ok(self
-            .regular_cards
-            .get(&self.preview_card_number)
-            .as_ref()
-            .unwrap())
+    pub fn get_preview_card(&self) -> Result<&Cards, String> {
+        Ok(self.cards.get(&self.preview_card_number).as_ref().unwrap())
     }
 
     pub fn get_active_card_name(&self) -> Result<String, String> {
-        let regular_card = self.regular_cards.get(&self.active_card_number).unwrap();
+        let card = self.cards.get(&self.active_card_number).unwrap();
 
-        Ok(regular_card.get_name()?)
+        Ok(card.get_name()?)
     }
 
     pub fn get_faction_order(&self, number: u8) -> Result<[Factions; 4], String> {
         // Sanity check
-        if !self.regular_cards.contains_key(&number) {
-            return Err(format!("Attempted to get the faction order for the card with the number {:?}, but couldn't find it in the registry of cards! Contents: {:?}", number, self.regular_cards));
+        if !self.cards.contains_key(&number) {
+            return Err(format!("Attempted to get the faction order for the card with the number {:?}, but couldn't find it in the registry of cards! Contents: {:?}", number, self.cards));
         }
 
-        let regular_card = self.regular_cards.get(&number).unwrap();
+        let card = self.cards.get(&number).unwrap();
 
-        Ok(regular_card.get_faction_order()?)
+        Ok(card.get_faction_order()?)
     }
 
     pub fn move_preview_card_to_active(&mut self) -> Result<(), String> {
