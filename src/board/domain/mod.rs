@@ -3,6 +3,7 @@ pub mod are_there_any_vc_guerrillas_in_space;
 pub mod are_there_coin_bases_in_space;
 pub mod board;
 pub mod calculate_number_of_coin_bases;
+pub mod calculate_number_of_coin_cubes_in_space;
 pub mod calculate_number_of_coin_pieces_minus_bases_in_space;
 pub mod calculate_number_of_nva_guerrillas_in_space;
 pub mod calculate_number_of_vc_guerrillas_in_space;
