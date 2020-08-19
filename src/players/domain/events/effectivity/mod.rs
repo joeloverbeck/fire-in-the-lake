@@ -21,6 +21,7 @@ pub mod check_event_effectivity_for_card_30;
 pub mod check_event_effectivity_for_card_38;
 pub mod check_event_effectivity_for_card_41;
 pub mod check_event_effectivity_for_card_46;
+pub mod check_event_effectivity_for_card_48;
 pub mod check_event_effectivity_for_card_63;
 pub mod check_event_effectivity_for_card_67;
 pub mod check_event_effectivity_for_card_69;

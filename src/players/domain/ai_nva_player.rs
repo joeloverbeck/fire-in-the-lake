@@ -11,6 +11,7 @@ use players::domain::events::is_current_non_capability_event_effective::is_curre
 use players::domain::player::Player;
 use players::domain::player_type::PlayerType;
 use randomization::controllers::randomization_controller::RandomizationController;
+use std::collections::HashMap;
 use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
@@ -31,6 +32,7 @@ impl Player for AiNvaPlayer {
         active_card: &Cards,
         preview_card: &Cards,
         _current_elegible_faction: Factions,
+        player_types: HashMap<Factions, PlayerType>,
         _possible_actions: Vec<String>,
         board: &Board,
         randomization_controller: &RandomizationController,
@@ -75,7 +77,7 @@ impl Player for AiNvaPlayer {
         } else if is_current_non_capability_event_effective(
             &active_card,
             &preview_card,
-            &PlayerType::Ai,
+            player_types,
             &Factions::NVA,
             EventType::Shaded,
             board,

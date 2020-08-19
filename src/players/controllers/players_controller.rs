@@ -7,7 +7,9 @@ use players::domain::dummy_player::DummyPlayer;
 use players::domain::human_us_player::HumanUsPlayer;
 use players::domain::player::Player;
 use players::domain::player::Players;
+use players::domain::player_type::PlayerType;
 use randomization::controllers::randomization_controller::RandomizationController;
+use std::collections::HashMap;
 use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
@@ -49,11 +51,22 @@ impl PlayersController {
     ) -> Result<Decision, String> {
         // Depending on the faction that has to decide and is passed as an argument,
         // this delegates asking the appropriate stored player.
+        let player_types: HashMap<Factions, PlayerType> = [
+            (Factions::ARVN, self.arvn_player.get_player_type()?),
+            (Factions::NVA, self.nva_player.get_player_type()?),
+            (Factions::US, self.us_player.get_player_type()?),
+            (Factions::VC, self.vc_player.get_player_type()?),
+        ]
+        .iter()
+        .cloned()
+        .collect();
+
         if faction == &Factions::US {
             let decide_result = self.us_player.decide(
                 active_card,
                 preview_card,
                 *faction,
+                player_types,
                 possible_actions,
                 board,
                 &self.randomization_controller,
@@ -67,6 +80,7 @@ impl PlayersController {
                 active_card,
                 preview_card,
                 *faction,
+                player_types,
                 possible_actions,
                 board,
                 &self.randomization_controller,
@@ -80,6 +94,7 @@ impl PlayersController {
                 active_card,
                 preview_card,
                 *faction,
+                player_types,
                 possible_actions,
                 board,
                 &self.randomization_controller,
@@ -93,6 +108,7 @@ impl PlayersController {
                 active_card,
                 preview_card,
                 *faction,
+                player_types,
                 possible_actions,
                 board,
                 &self.randomization_controller,

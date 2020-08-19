@@ -7,6 +7,7 @@ use players::domain::dummy_player::DummyPlayer;
 use players::domain::human_us_player::HumanUsPlayer;
 use players::domain::player_type::PlayerType;
 use randomization::controllers::randomization_controller::RandomizationController;
+use std::collections::HashMap;
 use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
@@ -21,6 +22,7 @@ pub trait Player {
         active_card: &Cards,
         preview_card: &Cards,
         current_elegible_faction: Factions,
+        player_types: HashMap<Factions, PlayerType>,
         possible_actions: Vec<String>,
         board: &Board,
         randomization_controller: &RandomizationController,

@@ -10,6 +10,7 @@ use players::domain::sequence_of_play_mutation::SequenceOfPlayMutation;
 use randomization::controllers::randomization_controller::RandomizationController;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 use sequence_of_play::domain::slot_occupancy::SlotOccupancy;
+use std::collections::HashMap;
 use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
@@ -28,6 +29,7 @@ impl Player for DummyPlayer {
         _active_card: &Cards,
         _preview_card: &Cards,
         current_elegible_faction: Factions,
+        _player_types: HashMap<Factions, PlayerType>,
         _possible_actions: Vec<String>,
         board: &Board,
         _randomization_controller: &RandomizationController,
