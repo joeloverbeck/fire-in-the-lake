@@ -1,8 +1,6 @@
-use board::domain::occupable_space::OccupableSpace;
 use board::domain::queries::calculate_number_of_vc_guerrillas_in_space::calculate_number_of_vc_guerrillas_in_space;
+use board::domain::space::Spaces;
 
-pub fn are_there_any_vc_guerrillas_in_space(
-    occupable_space: &OccupableSpace,
-) -> Result<bool, String> {
+pub fn are_there_any_vc_guerrillas_in_space(occupable_space: &Spaces) -> Result<bool, String> {
     Ok(calculate_number_of_vc_guerrillas_in_space(occupable_space)? > 0)
 }

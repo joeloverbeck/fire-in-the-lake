@@ -32,6 +32,7 @@ pub enum SpaceIdentifiers {
     CamRanh,
     OutOfPlay,
     Available,
+    MekongNorth,
 }
 
 impl fmt::Display for SpaceIdentifiers {
@@ -65,6 +66,7 @@ impl fmt::Display for SpaceIdentifiers {
             SpaceIdentifiers::Kontum => write!(f, "[Kontum]"),
             SpaceIdentifiers::DaNang => write!(f, "[DaNang]"),
             SpaceIdentifiers::CamRanh => write!(f, "[CamRanh]"),
+            SpaceIdentifiers::MekongNorth => write!(f, "[MekongNorth]"),
             SpaceIdentifiers::OutOfPlay => write!(f, "Out of Play"),
             SpaceIdentifiers::Available => write!(f, "Available"),
         }

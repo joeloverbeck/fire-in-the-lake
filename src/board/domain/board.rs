@@ -1,5 +1,9 @@
+use board::domain::city::City;
 use board::domain::initialize_hashmap_of_forces::initialize_hashmap_of_forces;
-use board::domain::occupable_space::OccupableSpace;
+use board::domain::loc::LoC;
+use board::domain::province::Province;
+use board::domain::space::Space;
+use board::domain::space::Spaces;
 use game_definitions::arvn_leaders::ArvnLeaders;
 use game_definitions::control_types::ControlTypes;
 use game_definitions::faction_stats::FactionStats;
@@ -15,7 +19,7 @@ pub struct Board {
     faction_stats: HashMap<FactionStats, u8>,
     out_of_play: HashMap<Forces, u8>,
     available: HashMap<Forces, u8>,
-    occupable_spaces: HashMap<SpaceIdentifiers, OccupableSpace>,
+    occupable_spaces: HashMap<SpaceIdentifiers, Spaces>,
     arvn_leaders: Vec<ArvnLeaders>,
 }
 
@@ -49,107 +53,111 @@ impl Board {
             occupable_spaces: [
                 (
                     SpaceIdentifiers::Saigon,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    City::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::Hue,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    City::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::AnLoc,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    City::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::KienGiangAnXuyen,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::BaXuyen,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::QuangNam,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::BinhDinh,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::CanTho,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    City::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::KienPhong,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::QuangTriThuaThien,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::NorthVietnam,
-                    OccupableSpace::new(GeographicArea::NorthVietnam),
+                    Province::new(GeographicArea::NorthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::TheParrotsBeak,
-                    OccupableSpace::new(GeographicArea::NorthVietnam),
+                    Province::new(GeographicArea::Cambodia).into(),
                 ),
                 (
                     SpaceIdentifiers::QuangTinQuangNgai,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::QuangDucLongKhanh,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::BinhTuyBinhThuan,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::PleikuDarlac,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::CentralLaos,
-                    OccupableSpace::new(GeographicArea::Laos),
+                    Province::new(GeographicArea::Laos).into(),
                 ),
                 (
                     SpaceIdentifiers::SouthernLaos,
-                    OccupableSpace::new(GeographicArea::Laos),
+                    Province::new(GeographicArea::Laos).into(),
                 ),
                 (
                     SpaceIdentifiers::QuiNhon,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    City::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::KhanhHoa,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::KienHoaVinhBinh,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::PhuBonPhuYen,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::TayNinh,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    Province::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::Kontum,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    City::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::DaNang,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    City::new(GeographicArea::SouthVietnam).into(),
                 ),
                 (
                     SpaceIdentifiers::CamRanh,
-                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                    City::new(GeographicArea::SouthVietnam).into(),
+                ),
+                (
+                    SpaceIdentifiers::MekongNorth,
+                    LoC::new(GeographicArea::SouthVietnam).into(),
                 ),
             ]
             .iter()
@@ -159,9 +167,7 @@ impl Board {
         }
     }
 
-    pub fn get_occupable_spaces(
-        &self,
-    ) -> Result<&HashMap<SpaceIdentifiers, OccupableSpace>, String> {
+    pub fn get_occupable_spaces(&self) -> Result<&HashMap<SpaceIdentifiers, Spaces>, String> {
         Ok(&self.occupable_spaces)
     }
 
@@ -172,7 +178,7 @@ impl Board {
     pub fn get_occupable_space(
         &self,
         space_identifier: &SpaceIdentifiers,
-    ) -> Result<&OccupableSpace, String> {
+    ) -> Result<&Spaces, String> {
         Ok(self
             .occupable_spaces
             .get(space_identifier)
@@ -292,7 +298,7 @@ impl Board {
         Ok(())
     }
 
-    fn get_space_mut(&mut self, space: SpaceIdentifiers) -> Result<&mut OccupableSpace, String> {
+    fn get_space_mut(&mut self, space: SpaceIdentifiers) -> Result<&mut Spaces, String> {
         let possible_space = self.occupable_spaces.get_mut(&space);
 
         if let Some(occupable_space) = possible_space {
@@ -302,7 +308,7 @@ impl Board {
         }
     }
 
-    fn get_space(&self, space: SpaceIdentifiers) -> Result<&OccupableSpace, String> {
+    fn get_space(&self, space: SpaceIdentifiers) -> Result<&Spaces, String> {
         let possible_space = self.occupable_spaces.get(&space);
 
         if possible_space.is_none() {

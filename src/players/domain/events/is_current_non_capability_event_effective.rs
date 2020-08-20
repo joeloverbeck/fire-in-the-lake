@@ -28,6 +28,9 @@ use players::domain::events::effectivity::check_event_effectivity_for_card_39::c
 use players::domain::events::effectivity::check_event_effectivity_for_card_41::check_event_effectivity_for_card_41;
 use players::domain::events::effectivity::check_event_effectivity_for_card_46::check_event_effectivity_for_card_46;
 use players::domain::events::effectivity::check_event_effectivity_for_card_48::check_event_effectivity_for_card_48;
+use players::domain::events::effectivity::check_event_effectivity_for_card_51::check_event_effectivity_for_card_51;
+use players::domain::events::effectivity::check_event_effectivity_for_card_53::check_event_effectivity_for_card_53;
+use players::domain::events::effectivity::check_event_effectivity_for_card_59::check_event_effectivity_for_card_59;
 use players::domain::events::effectivity::check_event_effectivity_for_card_63::check_event_effectivity_for_card_63;
 use players::domain::events::effectivity::check_event_effectivity_for_card_65::check_event_effectivity_for_card_65;
 use players::domain::events::effectivity::check_event_effectivity_for_card_67::check_event_effectivity_for_card_67;
@@ -173,6 +176,30 @@ pub fn is_current_non_capability_event_effective(
             board,
         )?),
         48 => Ok(check_event_effectivity_for_card_48(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        51 => Ok(check_event_effectivity_for_card_51(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        53 => Ok(check_event_effectivity_for_card_53(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        59 => Ok(check_event_effectivity_for_card_59(
             active_card,
             preview_card,
             player_types,

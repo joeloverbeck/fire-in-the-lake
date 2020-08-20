@@ -5,6 +5,7 @@ use board::domain::queries::calculate_number_of_coin_pieces_minus_bases_in_space
 use board::domain::queries::calculate_number_of_nva_guerrillas_in_space::calculate_number_of_nva_guerrillas_in_space;
 use board::domain::queries::calculate_number_of_vc_guerrillas_in_space::calculate_number_of_vc_guerrillas_in_space;
 use board::domain::queries::can_attack_remove_base_in_space::can_attack_remove_base_in_space;
+use board::domain::space::Space;
 use game_definitions::control_types::ControlTypes;
 use game_definitions::faction_groups::FactionGroups;
 use game_definitions::factions::Factions;
@@ -322,7 +323,7 @@ mod tests {
         assert_eq!(
             sut.is_any_space_at_a_specific_control_type_in_a_geographic_region(
                 &ControlTypes::Nva,
-                &GeographicArea::NorthVietnam,
+                &GeographicArea::Cambodia,
                 &board
             )?,
             true
