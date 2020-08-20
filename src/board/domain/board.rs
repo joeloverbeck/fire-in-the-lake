@@ -53,111 +53,182 @@ impl Board {
             occupable_spaces: [
                 (
                     SpaceIdentifiers::Saigon,
-                    City::new(GeographicArea::SouthVietnam).into(),
+                    City::new(
+                        GeographicArea::SouthVietnam,
+                        vec![
+                            SpaceIdentifiers::KienHoaVinhBinh,
+                            SpaceIdentifiers::Route4MekongEast,
+                            SpaceIdentifiers::KienPhong,
+                            SpaceIdentifiers::TayNinh,
+                            SpaceIdentifiers::Route13,
+                            SpaceIdentifiers::Route14South,
+                            SpaceIdentifiers::QuangDucLongKhanh,
+                            SpaceIdentifiers::BinhTuyBinhThuan,
+                            SpaceIdentifiers::Route20,
+                            SpaceIdentifiers::Route1South,
+                        ],
+                    )
+                    .into(),
                 ),
                 (
                     SpaceIdentifiers::Hue,
-                    City::new(GeographicArea::SouthVietnam).into(),
+                    City::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::AnLoc,
-                    City::new(GeographicArea::SouthVietnam).into(),
+                    City::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::KienGiangAnXuyen,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(
+                        GeographicArea::SouthVietnam,
+                        vec![
+                            SpaceIdentifiers::Route4West,
+                            SpaceIdentifiers::BaXuyen,
+                            SpaceIdentifiers::CanTho,
+                            SpaceIdentifiers::Sihanoukville,
+                            SpaceIdentifiers::TheParrotsBeak,
+                            SpaceIdentifiers::KienPhong,
+                            SpaceIdentifiers::MekongNorth,
+                        ],
+                    )
+                    .into(),
                 ),
                 (
                     SpaceIdentifiers::BaXuyen,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(
+                        GeographicArea::SouthVietnam,
+                        vec![
+                            SpaceIdentifiers::KienGiangAnXuyen,
+                            SpaceIdentifiers::Route4West,
+                            SpaceIdentifiers::CanTho,
+                            SpaceIdentifiers::MekongSouth,
+                            SpaceIdentifiers::KienHoaVinhBinh,
+                        ],
+                    )
+                    .into(),
                 ),
                 (
                     SpaceIdentifiers::QuangNam,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::BinhDinh,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::CanTho,
-                    City::new(GeographicArea::SouthVietnam).into(),
+                    City::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::KienPhong,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::QuangTriThuaThien,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::NorthVietnam,
-                    Province::new(GeographicArea::NorthVietnam).into(),
+                    Province::new(GeographicArea::NorthVietnam, Vec::new()).into(),
+                ),
+                (
+                    SpaceIdentifiers::Sihanoukville,
+                    Province::new(
+                        GeographicArea::Cambodia,
+                        vec![
+                            SpaceIdentifiers::TheParrotsBeak,
+                            SpaceIdentifiers::KienGiangAnXuyen,
+                        ],
+                    )
+                    .into(),
                 ),
                 (
                     SpaceIdentifiers::TheParrotsBeak,
-                    Province::new(GeographicArea::Cambodia).into(),
+                    Province::new(
+                        GeographicArea::Cambodia,
+                        vec![
+                            SpaceIdentifiers::Sihanoukville,
+                            SpaceIdentifiers::KienGiangAnXuyen,
+                            SpaceIdentifiers::MekongNorth,
+                            SpaceIdentifiers::TheFishhook,
+                            SpaceIdentifiers::TayNinh,
+                            SpaceIdentifiers::KienPhong,
+                        ],
+                    )
+                    .into(),
                 ),
                 (
                     SpaceIdentifiers::QuangTinQuangNgai,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::QuangDucLongKhanh,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::BinhTuyBinhThuan,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::PleikuDarlac,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::CentralLaos,
-                    Province::new(GeographicArea::Laos).into(),
+                    Province::new(GeographicArea::Laos, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::SouthernLaos,
-                    Province::new(GeographicArea::Laos).into(),
+                    Province::new(GeographicArea::Laos, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::QuiNhon,
-                    City::new(GeographicArea::SouthVietnam).into(),
+                    City::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::KhanhHoa,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::KienHoaVinhBinh,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::PhuBonPhuYen,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::TayNinh,
-                    Province::new(GeographicArea::SouthVietnam).into(),
+                    Province::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::Kontum,
-                    City::new(GeographicArea::SouthVietnam).into(),
+                    City::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::DaNang,
-                    City::new(GeographicArea::SouthVietnam).into(),
+                    City::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::CamRanh,
-                    City::new(GeographicArea::SouthVietnam).into(),
+                    City::new(GeographicArea::SouthVietnam, Vec::new()).into(),
                 ),
                 (
                     SpaceIdentifiers::MekongNorth,
-                    LoC::new(GeographicArea::SouthVietnam).into(),
+                    LoC::new(GeographicArea::SouthVietnam, Vec::new()).into(),
+                ),
+                (
+                    SpaceIdentifiers::Route4West,
+                    LoC::new(
+                        GeographicArea::SouthVietnam,
+                        vec![
+                            SpaceIdentifiers::KienGiangAnXuyen,
+                            SpaceIdentifiers::BaXuyen,
+                            SpaceIdentifiers::CanTho,
+                        ],
+                    )
+                    .into(),
                 ),
             ]
             .iter()
@@ -451,6 +522,105 @@ impl Board {
         let occupable_space = self.get_space_mut(space)?;
 
         occupable_space.set_control_type(control_type)?;
+
+        Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    // Note this useful idiom: importing names from outer (for mod tests) scope.
+    use super::*;
+
+    #[test]
+    fn test_kien_giang_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::KienGiangAnXuyen)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route4West)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::MekongNorth)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BaXuyen)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Sihanoukville)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TheParrotsBeak)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienPhong)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::CanTho)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_route_4_west_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::Route4West)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienGiangAnXuyen)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BaXuyen)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::CanTho)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_ba_xuyen_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::BaXuyen)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route4West)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienGiangAnXuyen)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::MekongSouth)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienHoaVinhBinh)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::CanTho)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_sihanoukville_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::Sihanoukville)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TheParrotsBeak)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienGiangAnXuyen)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_the_parrots_beak_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::TheParrotsBeak)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Sihanoukville)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TheFishhook)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TayNinh)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::MekongNorth)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienPhong)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienGiangAnXuyen)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_saigon_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::Saigon)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienHoaVinhBinh)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route4MekongEast)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienPhong)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TayNinh)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route13)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14South)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuangDucLongKhanh)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BinhTuyBinhThuan)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route20)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route1South)?);
 
         Ok(())
     }

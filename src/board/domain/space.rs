@@ -6,6 +6,7 @@ use board::domain::province::Province;
 use game_definitions::control_types::ControlTypes;
 use game_definitions::forces::Forces;
 use game_definitions::geographic_area::GeographicArea;
+use game_definitions::space_identifiers::SpaceIdentifiers;
 use game_definitions::support_levels::SupportLevels;
 
 #[enum_dispatch]
@@ -21,6 +22,7 @@ pub trait Space {
     fn get_control_type(&self) -> Result<&ControlTypes, String>;
     fn set_geographic_area(&mut self, geographic_area: GeographicArea) -> Result<(), String>;
     fn get_geographic_area(&self) -> Result<&GeographicArea, String>;
+    fn is_adjacent_to_space(&self, space_identifier: SpaceIdentifiers) -> Result<bool, String>;
 }
 
 #[enum_dispatch(Space)]

@@ -3,6 +3,7 @@ use board::domain::space::Space;
 use game_definitions::control_types::ControlTypes;
 use game_definitions::forces::Forces;
 use game_definitions::geographic_area::GeographicArea;
+use game_definitions::space_identifiers::SpaceIdentifiers;
 use game_definitions::support_levels::SupportLevels;
 use std::collections::HashMap;
 
@@ -12,6 +13,7 @@ pub struct Province {
     control_type: ControlTypes,
     support_level: SupportLevels,
     geographic_area: GeographicArea,
+    adjacent_spaces: Vec<SpaceIdentifiers>,
 }
 
 impl Space for Province {
@@ -66,15 +68,26 @@ impl Space for Province {
     fn get_geographic_area(&self) -> Result<&GeographicArea, String> {
         Ok(&self.geographic_area)
     }
+
+    fn is_adjacent_to_space(&self, space_identifier: SpaceIdentifiers) -> Result<bool, String> {
+        Ok(self
+            .adjacent_spaces
+            .iter()
+            .any(|adjacent_space| adjacent_space == &space_identifier))
+    }
 }
 
 impl Province {
-    pub fn new(geographic_area: GeographicArea) -> Province {
+    pub fn new(
+        geographic_area: GeographicArea,
+        adjacent_spaces: Vec<SpaceIdentifiers>,
+    ) -> Province {
         Province {
             forces: initialize_hashmap_of_forces(),
             control_type: ControlTypes::Uncontrolled,
             support_level: SupportLevels::Neutral,
             geographic_area,
+            adjacent_spaces,
         }
     }
 }
