@@ -1,11 +1,10 @@
-
 use board::domain::board::Board;
 use cards::domain::card::Cards;
 use game_definitions::event_type::EventType;
 use game_definitions::factions::Factions;
+use game_definitions::forces::Forces;
 use players::domain::player_type::PlayerType;
 use std::collections::HashMap;
-use game_definitions::forces::Forces;
 
 pub fn check_event_effectivity_for_card_39(
     _active_card: &Cards,
@@ -20,11 +19,11 @@ pub fn check_event_effectivity_for_card_39(
         return Ok(false);
     }
 
-    if faction == &Factions::NVA{
+    if faction == &Factions::NVA {
         // Shaded: 1 Available US Troop to out of play.
         // So it will be playable if there are available Us Troops.
         // Shouldn't need a query for this one.
-        return Ok(board.get_forces_available(Forces::UsTroop)? >0);
+        return Ok(board.get_forces_available(Forces::UsTroop)? > 0);
     }
 
     panic!("Card 39 only implemented for NVA and VC AIs.");

@@ -4,10 +4,10 @@ use cards::domain::card::Cards;
 use game_definitions::control_types::ControlTypes;
 use game_definitions::event_type::EventType;
 use game_definitions::factions::Factions;
+use game_definitions::forces::Forces;
 use game_definitions::geographic_area::GeographicArea;
 use players::domain::player_type::PlayerType;
 use std::collections::HashMap;
-use game_definitions::forces::Forces;
 
 pub fn check_event_effectivity_for_card_12(
     _active_card: &Cards,

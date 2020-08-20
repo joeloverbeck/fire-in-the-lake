@@ -1,5 +1,3 @@
-use players::domain::events::effectivity::check_event_effectivity_for_card_39::check_event_effectivity_for_card_39;
-use players::domain::events::effectivity::check_event_effectivity_for_card_65::check_event_effectivity_for_card_65;
 use board::domain::board::Board;
 use cards::domain::card::Card;
 use cards::domain::card::Cards;
@@ -26,10 +24,12 @@ use players::domain::events::effectivity::check_event_effectivity_for_card_25::c
 use players::domain::events::effectivity::check_event_effectivity_for_card_27::check_event_effectivity_for_card_27;
 use players::domain::events::effectivity::check_event_effectivity_for_card_30::check_event_effectivity_for_card_30;
 use players::domain::events::effectivity::check_event_effectivity_for_card_38::check_event_effectivity_for_card_38;
+use players::domain::events::effectivity::check_event_effectivity_for_card_39::check_event_effectivity_for_card_39;
 use players::domain::events::effectivity::check_event_effectivity_for_card_41::check_event_effectivity_for_card_41;
 use players::domain::events::effectivity::check_event_effectivity_for_card_46::check_event_effectivity_for_card_46;
 use players::domain::events::effectivity::check_event_effectivity_for_card_48::check_event_effectivity_for_card_48;
 use players::domain::events::effectivity::check_event_effectivity_for_card_63::check_event_effectivity_for_card_63;
+use players::domain::events::effectivity::check_event_effectivity_for_card_65::check_event_effectivity_for_card_65;
 use players::domain::events::effectivity::check_event_effectivity_for_card_67::check_event_effectivity_for_card_67;
 use players::domain::events::effectivity::check_event_effectivity_for_card_69::check_event_effectivity_for_card_69;
 use players::domain::events::effectivity::check_event_effectivity_for_card_70::check_event_effectivity_for_card_70;

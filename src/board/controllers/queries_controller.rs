@@ -140,26 +140,34 @@ impl QueriesController {
             .get_occupable_spaces()?
             .iter()
             .any(|(_, occupable_space)| {
-                if occupable_space.get_geographic_area().unwrap() == geographic_area
+                occupable_space.get_geographic_area().unwrap() == geographic_area
                     && occupable_space.get_control_type().unwrap() == control_type
-                {
-                    true
-                } else {
-                    false
-                }
             }))
     }
 
-    pub fn are_there_any_forces_of_a_faction_anywhere(&self, faction: Factions, board: &Board) -> Result<bool, String>{
-        if faction == Factions::US{
-            let sum: u8 = board.get_occupable_spaces()?.iter().map(|(_, occupable_space)| { 
-                occupable_space.get_forces(Forces::UsTroop).unwrap() + occupable_space.get_forces(Forces::ActiveUsIrregular).unwrap() + occupable_space.get_forces(Forces::UndergroundUsIrregular).unwrap() + occupable_space.get_forces(Forces::UsBase).unwrap()
-
-            }).sum();
+    pub fn are_there_any_forces_of_a_faction_anywhere(
+        &self,
+        faction: Factions,
+        board: &Board,
+    ) -> Result<bool, String> {
+        if faction == Factions::US {
+            let sum: u8 = board
+                .get_occupable_spaces()?
+                .iter()
+                .map(|(_, occupable_space)| {
+                    occupable_space.get_forces(Forces::UsTroop).unwrap()
+                        + occupable_space
+                            .get_forces(Forces::ActiveUsIrregular)
+                            .unwrap()
+                        + occupable_space
+                            .get_forces(Forces::UndergroundUsIrregular)
+                            .unwrap()
+                        + occupable_space.get_forces(Forces::UsBase).unwrap()
+                })
+                .sum();
 
             Ok(sum > 0)
-        }
-        else{
+        } else {
             panic!("Not implemented for faction {:?}", faction);
         }
     }
@@ -378,7 +386,10 @@ mod tests {
 
         let sut = QueriesController::new();
 
-        assert_eq!(sut.are_there_any_forces_of_a_faction_anywhere(Factions::US, &board)?, false);
+        assert_eq!(
+            sut.are_there_any_forces_of_a_faction_anywhere(Factions::US, &board)?,
+            false
+        );
 
         Ok(())
     }
