@@ -6,5 +6,6 @@ pub mod faction_stats;
 pub mod factions;
 pub mod flags;
 pub mod forces;
+pub mod geographic_area;
 pub mod space_identifiers;
 pub mod support_levels;

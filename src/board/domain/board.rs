@@ -4,6 +4,7 @@ use game_definitions::arvn_leaders::ArvnLeaders;
 use game_definitions::control_types::ControlTypes;
 use game_definitions::faction_stats::FactionStats;
 use game_definitions::forces::Forces;
+use game_definitions::geographic_area::GeographicArea;
 use game_definitions::space_identifiers::SpaceIdentifiers;
 use game_definitions::support_levels::SupportLevels;
 
@@ -46,32 +47,110 @@ impl Board {
             out_of_play: initialize_hashmap_of_forces(),
             available: initialize_hashmap_of_forces(),
             occupable_spaces: [
-                (SpaceIdentifiers::Saigon, OccupableSpace::new()),
-                (SpaceIdentifiers::Hue, OccupableSpace::new()),
-                (SpaceIdentifiers::AnLoc, OccupableSpace::new()),
-                (SpaceIdentifiers::KienGiangAnXuyen, OccupableSpace::new()),
-                (SpaceIdentifiers::BaXuyen, OccupableSpace::new()),
-                (SpaceIdentifiers::QuangNam, OccupableSpace::new()),
-                (SpaceIdentifiers::BinhDinh, OccupableSpace::new()),
-                (SpaceIdentifiers::CanTho, OccupableSpace::new()),
-                (SpaceIdentifiers::KienPhong, OccupableSpace::new()),
-                (SpaceIdentifiers::QuangTriThuaThien, OccupableSpace::new()),
-                (SpaceIdentifiers::NorthVietnam, OccupableSpace::new()),
-                (SpaceIdentifiers::TheParrotsBeak, OccupableSpace::new()),
-                (SpaceIdentifiers::QuangTinQuangNgai, OccupableSpace::new()),
-                (SpaceIdentifiers::QuangDucLongKhanh, OccupableSpace::new()),
-                (SpaceIdentifiers::BinhTuyBinhThuan, OccupableSpace::new()),
-                (SpaceIdentifiers::PleikuDarlac, OccupableSpace::new()),
-                (SpaceIdentifiers::CentralLaos, OccupableSpace::new()),
-                (SpaceIdentifiers::SouthernLaos, OccupableSpace::new()),
-                (SpaceIdentifiers::QuiNhon, OccupableSpace::new()),
-                (SpaceIdentifiers::KhanhHoa, OccupableSpace::new()),
-                (SpaceIdentifiers::KienHoaVinhBinh, OccupableSpace::new()),
-                (SpaceIdentifiers::PhuBonPhuYen, OccupableSpace::new()),
-                (SpaceIdentifiers::TayNinh, OccupableSpace::new()),
-                (SpaceIdentifiers::Kontum, OccupableSpace::new()),
-                (SpaceIdentifiers::DaNang, OccupableSpace::new()),
-                (SpaceIdentifiers::CamRanh, OccupableSpace::new()),
+                (
+                    SpaceIdentifiers::Saigon,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::Hue,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::AnLoc,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::KienGiangAnXuyen,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::BaXuyen,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::QuangNam,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::BinhDinh,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::CanTho,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::KienPhong,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::QuangTriThuaThien,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::NorthVietnam,
+                    OccupableSpace::new(GeographicArea::NorthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::TheParrotsBeak,
+                    OccupableSpace::new(GeographicArea::NorthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::QuangTinQuangNgai,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::QuangDucLongKhanh,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::BinhTuyBinhThuan,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::PleikuDarlac,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::CentralLaos,
+                    OccupableSpace::new(GeographicArea::Laos),
+                ),
+                (
+                    SpaceIdentifiers::SouthernLaos,
+                    OccupableSpace::new(GeographicArea::Laos),
+                ),
+                (
+                    SpaceIdentifiers::QuiNhon,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::KhanhHoa,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::KienHoaVinhBinh,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::PhuBonPhuYen,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::TayNinh,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::Kontum,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::DaNang,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
+                (
+                    SpaceIdentifiers::CamRanh,
+                    OccupableSpace::new(GeographicArea::SouthVietnam),
+                ),
             ]
             .iter()
             .cloned()
@@ -128,6 +207,19 @@ impl Board {
         } else {
             Err(format!("Attempted to get the faction stat {:?} from the board, but it wasn't found there! Stored faction stats: {:?}", faction_stat, self.faction_stats))
         }
+    }
+
+    pub fn get_forces_available(&self, forces: Forces) -> Result<u8, String> {
+        // Sanity checks
+        if self.available.is_empty() {
+            return Err(format!("Attempted to get the number of {:?} available, but the available container was empty! The setup for this scenario wasn't done correctly.", forces));
+        }
+
+        if !self.available.contains_key(&forces) {
+            return Err(format!("Attempted to get the number of {:?} available, but there wasn't an entry for that type! Stored Available: {:?}", forces, self.available));
+        }
+
+        Ok(*self.available.get(&forces).unwrap())
     }
 
     pub fn get_forces_in_out_of_play(&self, forces: Forces) -> Result<u8, String> {
@@ -321,7 +413,7 @@ impl Board {
     ) -> Result<SupportLevels, String> {
         let occupable_space = self.get_space(space)?;
 
-        Ok(occupable_space.get_support_level()?)
+        Ok(*occupable_space.get_support_level()?)
     }
 
     pub fn set_support_level_of_space(
@@ -342,7 +434,7 @@ impl Board {
     ) -> Result<ControlTypes, String> {
         let occupable_space = self.get_space(space)?;
 
-        Ok(occupable_space.get_control_type()?)
+        Ok(*occupable_space.get_control_type()?)
     }
 
     pub fn set_control_type_of_space(

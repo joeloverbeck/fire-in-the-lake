@@ -1,9 +1,9 @@
-use board::domain::are_there_any_nva_guerrillas_in_space::are_there_any_nva_guerrillas_in_space;
-use board::domain::are_there_any_vc_guerrillas_in_space::are_there_any_vc_guerrillas_in_space;
-use board::domain::are_there_coin_bases_in_space::are_there_coin_bases_in_space;
-use board::domain::calculate_number_of_coin_pieces_minus_bases_in_space::calculate_number_of_coin_pieces_minus_bases_in_space;
-use board::domain::can_nva_troops_obliterate_present_coin_forces_to_attack_bases::can_nva_troops_obliterate_present_coin_forces_to_attack_bases;
 use board::domain::occupable_space::OccupableSpace;
+use board::domain::queries::are_there_any_nva_guerrillas_in_space::are_there_any_nva_guerrillas_in_space;
+use board::domain::queries::are_there_any_vc_guerrillas_in_space::are_there_any_vc_guerrillas_in_space;
+use board::domain::queries::are_there_coin_bases_in_space::are_there_coin_bases_in_space;
+use board::domain::queries::calculate_number_of_coin_pieces_minus_bases_in_space::calculate_number_of_coin_pieces_minus_bases_in_space;
+use board::domain::queries::can_nva_troops_obliterate_present_coin_forces_to_attack_bases::can_nva_troops_obliterate_present_coin_forces_to_attack_bases;
 use game_definitions::factions::Factions;
 
 pub fn can_attack_remove_base_in_space(

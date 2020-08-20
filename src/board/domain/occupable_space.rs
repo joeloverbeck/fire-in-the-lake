@@ -1,6 +1,7 @@
 use board::domain::initialize_hashmap_of_forces::initialize_hashmap_of_forces;
 use game_definitions::control_types::ControlTypes;
 use game_definitions::forces::Forces;
+use game_definitions::geographic_area::GeographicArea;
 use game_definitions::support_levels::SupportLevels;
 use std::collections::HashMap;
 
@@ -9,20 +10,16 @@ pub struct OccupableSpace {
     forces: HashMap<Forces, u8>,
     control_type: ControlTypes,
     support_level: SupportLevels,
-}
-
-impl Default for OccupableSpace {
-    fn default() -> Self {
-        Self::new()
-    }
+    geographic_area: GeographicArea,
 }
 
 impl OccupableSpace {
-    pub fn new() -> OccupableSpace {
+    pub fn new(geographic_area: GeographicArea) -> OccupableSpace {
         OccupableSpace {
             forces: initialize_hashmap_of_forces(),
             control_type: ControlTypes::Uncontrolled,
             support_level: SupportLevels::Neutral,
+            geographic_area,
         }
     }
 
@@ -36,8 +33,8 @@ impl OccupableSpace {
         Ok(*self.forces.get(&forces).unwrap())
     }
 
-    pub fn get_support_level(&self) -> Result<SupportLevels, String> {
-        Ok(self.support_level)
+    pub fn get_support_level(&self) -> Result<&SupportLevels, String> {
+        Ok(&self.support_level)
     }
 
     pub fn set_support_level(&mut self, support_level: SupportLevels) -> Result<(), String> {
@@ -64,7 +61,17 @@ impl OccupableSpace {
         Ok(())
     }
 
-    pub fn get_control_type(&self) -> Result<ControlTypes, String> {
-        Ok(self.control_type)
+    pub fn get_control_type(&self) -> Result<&ControlTypes, String> {
+        Ok(&self.control_type)
+    }
+
+    pub fn set_geographic_area(&mut self, geographic_area: GeographicArea) -> Result<(), String> {
+        self.geographic_area = geographic_area;
+
+        Ok(())
+    }
+
+    pub fn get_geographic_area(&self) -> Result<&GeographicArea, String> {
+        Ok(&self.geographic_area)
     }
 }
