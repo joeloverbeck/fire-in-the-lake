@@ -1,5 +1,5 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum GeographicArea {
+pub enum GeographicAreas {
     SouthVietnam,
     NorthVietnam,
     Cambodia,

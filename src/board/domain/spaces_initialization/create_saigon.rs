@@ -1,13 +1,13 @@
 use board::domain::city::City;
 use board::domain::space::Spaces;
-use game_definitions::geographic_area::GeographicArea;
+use game_definitions::geographic_areas::GeographicAreas;
 use game_definitions::space_identifiers::SpaceIdentifiers;
 
 pub fn create_saigon() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::Saigon,
         City::new(
-            GeographicArea::SouthVietnam,
+            GeographicAreas::SouthVietnam,
             vec![
                 SpaceIdentifiers::KienHoaVinhBinh,
                 SpaceIdentifiers::Route4MekongEast,

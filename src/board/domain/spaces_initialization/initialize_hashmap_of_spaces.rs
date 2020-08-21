@@ -5,7 +5,8 @@ use board::domain::space::Spaces;
 use board::domain::spaces_initialization::create_an_loc::create_an_loc;
 use board::domain::spaces_initialization::create_hue::create_hue;
 use board::domain::spaces_initialization::create_saigon::create_saigon;
-use game_definitions::geographic_area::GeographicArea;
+use board::domain::spaces_initialization::create_the_fishhook::create_the_fishhook;
+use game_definitions::geographic_areas::GeographicAreas;
 use game_definitions::space_identifiers::SpaceIdentifiers;
 use std::collections::HashMap;
 
@@ -17,7 +18,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::KienGiangAnXuyen,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::Route4West,
                     SpaceIdentifiers::BaXuyen,
@@ -33,7 +34,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::BaXuyen,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::KienGiangAnXuyen,
                     SpaceIdentifiers::Route4West,
@@ -47,7 +48,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::QuangNam,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::DaNang,
                     SpaceIdentifiers::Route14North,
@@ -63,7 +64,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::BinhDinh,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::QuiNhon,
                     SpaceIdentifiers::Route1NorthEast,
@@ -82,7 +83,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::CanTho,
             City::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::Route4MekongEast,
                     SpaceIdentifiers::MekongSouth,
@@ -99,7 +100,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::KienPhong,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::TheParrotsBeak,
                     SpaceIdentifiers::TayNinh,
@@ -116,7 +117,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::QuangTriThuaThien,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::Hue,
                     SpaceIdentifiers::Route1North,
@@ -130,7 +131,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::NorthVietnam,
             Province::new(
-                GeographicArea::NorthVietnam,
+                GeographicAreas::NorthVietnam,
                 vec![
                     SpaceIdentifiers::Route1North,
                     SpaceIdentifiers::CentralLaos,
@@ -142,7 +143,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::Sihanoukville,
             Province::new(
-                GeographicArea::Cambodia,
+                GeographicAreas::Cambodia,
                 vec![
                     SpaceIdentifiers::TheParrotsBeak,
                     SpaceIdentifiers::KienGiangAnXuyen,
@@ -153,7 +154,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::TheParrotsBeak,
             Province::new(
-                GeographicArea::Cambodia,
+                GeographicAreas::Cambodia,
                 vec![
                     SpaceIdentifiers::Sihanoukville,
                     SpaceIdentifiers::KienGiangAnXuyen,
@@ -165,10 +166,11 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
             )
             .into(),
         ),
+        create_the_fishhook(),
         (
             SpaceIdentifiers::QuangTinQuangNgai,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::DaNang,
                     SpaceIdentifiers::Route1NorthEast,
@@ -183,7 +185,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::QuangDucLongKhanh,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::Route21,
                     SpaceIdentifiers::KhanhHoa,
@@ -204,7 +206,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::BinhTuyBinhThuan,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::Route20,
                     SpaceIdentifiers::Route21,
@@ -221,7 +223,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::PleikuDarlac,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::Route14South,
                     SpaceIdentifiers::Route21,
@@ -243,7 +245,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::CentralLaos,
             Province::new(
-                GeographicArea::Laos,
+                GeographicAreas::Laos,
                 vec![
                     SpaceIdentifiers::Route1North,
                     SpaceIdentifiers::SouthernLaos,
@@ -257,7 +259,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::SouthernLaos,
             Province::new(
-                GeographicArea::Laos,
+                GeographicAreas::Laos,
                 vec![
                     SpaceIdentifiers::Route14CentralNorth,
                     SpaceIdentifiers::Route14North,
@@ -274,7 +276,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::QuiNhon,
             City::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::Route19,
                     SpaceIdentifiers::Route1SouthEast,
@@ -288,7 +290,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::KhanhHoa,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::Route1SouthEast,
                     SpaceIdentifiers::Route11,
@@ -308,7 +310,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::KienHoaVinhBinh,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::MekongSouth,
                     SpaceIdentifiers::Route4MekongEast,
@@ -323,7 +325,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::PhuBonPhuYen,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::Route19,
                     SpaceIdentifiers::Route1SouthEast,
@@ -340,7 +342,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::TayNinh,
             Province::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::Route13,
                     SpaceIdentifiers::Route14South,
@@ -358,7 +360,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::Kontum,
             City::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::Route19,
                     SpaceIdentifiers::Route14Central,
@@ -373,7 +375,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::DaNang,
             City::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::Route1NorthEast,
                     SpaceIdentifiers::Route14North,
@@ -387,7 +389,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::CamRanh,
             City::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::Route1South,
                     SpaceIdentifiers::Route1SouthEast,
@@ -401,7 +403,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::MekongNorth,
             LoC::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::CanTho,
                     SpaceIdentifiers::KienGiangAnXuyen,
@@ -414,7 +416,7 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         (
             SpaceIdentifiers::Route4West,
             LoC::new(
-                GeographicArea::SouthVietnam,
+                GeographicAreas::SouthVietnam,
                 vec![
                     SpaceIdentifiers::KienGiangAnXuyen,
                     SpaceIdentifiers::BaXuyen,

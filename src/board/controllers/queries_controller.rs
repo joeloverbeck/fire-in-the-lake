@@ -11,7 +11,7 @@ use game_definitions::control_types::ControlTypes;
 use game_definitions::faction_groups::FactionGroups;
 use game_definitions::factions::Factions;
 use game_definitions::forces::Forces;
-use game_definitions::geographic_area::GeographicArea;
+use game_definitions::geographic_areas::GeographicAreas;
 use game_definitions::space_identifiers::SpaceIdentifiers;
 
 #[derive(Debug)]
@@ -145,10 +145,27 @@ impl<'a> QueriesController {
             .any(|(_, occupable_space)| occupable_space.get_forces(force).unwrap() > 0))
     }
 
-    pub fn is_any_space_at_a_specific_control_type_in_a_geographic_region(
+    pub fn is_there_any_number_of_a_particular_force_in_a_geographic_area(
+        &self,
+        force: Forces,
+        geographic_area: &GeographicAreas,
+        board: &Board,
+    ) -> Result<bool, String> {
+        // We go through all the stored spaces, and if any of them are in the geographic area, there just needs to hold
+        // one of the passed force
+        Ok(board
+            .get_occupable_spaces()?
+            .iter()
+            .filter(|(_, occupable_space)| {
+                occupable_space.get_geographic_area().unwrap() == geographic_area
+            })
+            .any(|(_, occupable_space)| occupable_space.get_forces(force).unwrap() > 0))
+    }
+
+    pub fn is_any_space_at_a_specific_control_type_in_a_geographic_area(
         &self,
         control_type: &ControlTypes,
-        geographic_area: &GeographicArea,
+        geographic_area: &GeographicAreas,
         board: &Board,
     ) -> Result<bool, String> {
         Ok(board
@@ -258,7 +275,7 @@ mod tests {
     use game_definitions::control_types::ControlTypes;
     use game_definitions::factions::Factions;
     use game_definitions::forces::Forces;
-    use game_definitions::geographic_area::GeographicArea;
+    use game_definitions::geographic_areas::GeographicAreas;
     use game_definitions::space_identifiers::SpaceIdentifiers;
     use players::domain::decision::Decision;
     use scenario_building::controllers::scenario_building_controller::ScenarioBuildingController;
@@ -398,9 +415,9 @@ mod tests {
         let sut = QueriesController::new();
 
         assert_eq!(
-            sut.is_any_space_at_a_specific_control_type_in_a_geographic_region(
+            sut.is_any_space_at_a_specific_control_type_in_a_geographic_area(
                 &ControlTypes::Nva,
-                &GeographicArea::Cambodia,
+                &GeographicAreas::Cambodia,
                 &board
             )?,
             true
@@ -417,9 +434,9 @@ mod tests {
         let sut = QueriesController::new();
 
         assert_eq!(
-            sut.is_any_space_at_a_specific_control_type_in_a_geographic_region(
+            sut.is_any_space_at_a_specific_control_type_in_a_geographic_area(
                 &ControlTypes::Nva,
-                &GeographicArea::NorthVietnam,
+                &GeographicAreas::NorthVietnam,
                 &board
             )?,
             false
@@ -534,6 +551,59 @@ mod tests {
             sut.would_marching_a_particular_force_into_space_identifiers_turn_any_into_nva_control(
                 Forces::NvaTroop,
                 vec![&SpaceIdentifiers::Saigon],
+                &board
+            )?,
+            false
+        );
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_can_figure_out_if_there_are_any_of_a_particular_force_in_a_geographic_area(
+    ) -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(Forces::NvaTroop, 3, SpaceIdentifiers::TheFishhook)?;
+        board.set_forces_in_space(Forces::UsBase, 1, SpaceIdentifiers::TheParrotsBeak)?;
+        board.set_forces_in_space(
+            Forces::UndergroundUsIrregular,
+            1,
+            SpaceIdentifiers::CentralLaos,
+        )?;
+
+        let sut = QueriesController::new();
+
+        assert!(
+            sut.is_there_any_number_of_a_particular_force_in_a_geographic_area(
+                Forces::UndergroundUsIrregular,
+                &GeographicAreas::Laos,
+                &board
+            )?
+        );
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_can_figure_out_if_there_isnt_any_of_a_particular_force_in_a_geographic_area(
+    ) -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(Forces::NvaTroop, 3, SpaceIdentifiers::TheFishhook)?;
+        board.set_forces_in_space(Forces::UsBase, 1, SpaceIdentifiers::TheParrotsBeak)?;
+        board.set_forces_in_space(
+            Forces::UndergroundUsIrregular,
+            1,
+            SpaceIdentifiers::CentralLaos,
+        )?;
+
+        let sut = QueriesController::new();
+
+        assert_eq!(
+            sut.is_there_any_number_of_a_particular_force_in_a_geographic_area(
+                Forces::UndergroundUsIrregular,
+                &GeographicAreas::NorthVietnam,
                 &board
             )?,
             false

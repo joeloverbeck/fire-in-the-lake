@@ -5,7 +5,7 @@ use game_definitions::control_types::ControlTypes;
 use game_definitions::event_type::EventType;
 use game_definitions::factions::Factions;
 use game_definitions::forces::Forces;
-use game_definitions::geographic_area::GeographicArea;
+use game_definitions::geographic_areas::GeographicAreas;
 use players::domain::player_type::PlayerType;
 use std::collections::HashMap;
 
@@ -27,23 +27,20 @@ pub fn check_event_effectivity_for_card_12(
     if faction == &Factions::NVA {
         // NVA has no special instructions for AI.
         // Unshaded: Place 1 NVA Base at NVA Control outside the South and flip any 3 NVA Guerrillas Underground.
-        if (queries_controller.is_any_space_at_a_specific_control_type_in_a_geographic_region(
+        if (queries_controller.is_any_space_at_a_specific_control_type_in_a_geographic_area(
             &ControlTypes::Nva,
-            &GeographicArea::NorthVietnam,
+            &GeographicAreas::NorthVietnam,
             &board,
-        )? || queries_controller
-            .is_any_space_at_a_specific_control_type_in_a_geographic_region(
-                &ControlTypes::Nva,
-                &GeographicArea::Cambodia,
-                &board,
-            )?
-            || queries_controller.is_any_space_at_a_specific_control_type_in_a_geographic_region(
-                &ControlTypes::Nva,
-                &GeographicArea::Laos,
-                &board,
-            )?)
-            || queries_controller
-                .is_there_a_specific_force_anywhere(Forces::ActiveNvaGuerrilla, &board)?
+        )? || queries_controller.is_any_space_at_a_specific_control_type_in_a_geographic_area(
+            &ControlTypes::Nva,
+            &GeographicAreas::Cambodia,
+            &board,
+        )? || queries_controller.is_any_space_at_a_specific_control_type_in_a_geographic_area(
+            &ControlTypes::Nva,
+            &GeographicAreas::Laos,
+            &board,
+        )?) || queries_controller
+            .is_there_a_specific_force_anywhere(Forces::ActiveNvaGuerrilla, &board)?
         {
             return Ok(true);
         }

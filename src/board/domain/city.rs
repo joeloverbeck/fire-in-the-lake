@@ -2,7 +2,7 @@ use board::domain::initialize_hashmap_of_forces::initialize_hashmap_of_forces;
 use board::domain::space::Space;
 use game_definitions::control_types::ControlTypes;
 use game_definitions::forces::Forces;
-use game_definitions::geographic_area::GeographicArea;
+use game_definitions::geographic_areas::GeographicAreas;
 use game_definitions::space_identifiers::SpaceIdentifiers;
 use game_definitions::support_levels::SupportLevels;
 use std::collections::HashMap;
@@ -12,7 +12,7 @@ pub struct City {
     forces: HashMap<Forces, u8>,
     control_type: ControlTypes,
     support_level: SupportLevels,
-    geographic_area: GeographicArea,
+    geographic_area: GeographicAreas,
     adjacent_spaces: Vec<SpaceIdentifiers>,
 }
 
@@ -59,13 +59,13 @@ impl Space for City {
         Ok(&self.control_type)
     }
 
-    fn set_geographic_area(&mut self, geographic_area: GeographicArea) -> Result<(), String> {
+    fn set_geographic_area(&mut self, geographic_area: GeographicAreas) -> Result<(), String> {
         self.geographic_area = geographic_area;
 
         Ok(())
     }
 
-    fn get_geographic_area(&self) -> Result<&GeographicArea, String> {
+    fn get_geographic_area(&self) -> Result<&GeographicAreas, String> {
         Ok(&self.geographic_area)
     }
 
@@ -78,7 +78,7 @@ impl Space for City {
 }
 
 impl City {
-    pub fn new(geographic_area: GeographicArea, adjacent_spaces: Vec<SpaceIdentifiers>) -> City {
+    pub fn new(geographic_area: GeographicAreas, adjacent_spaces: Vec<SpaceIdentifiers>) -> City {
         City {
             forces: initialize_hashmap_of_forces(),
             control_type: ControlTypes::Uncontrolled,
