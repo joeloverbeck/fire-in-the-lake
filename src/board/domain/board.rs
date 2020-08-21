@@ -60,17 +60,6 @@ impl Board {
         Ok(self.arvn_leaders.len() as u8)
     }
 
-    pub fn get_occupable_space(
-        &self,
-        space_identifier: &SpaceIdentifiers,
-    ) -> Result<&Spaces, String> {
-        Ok(self
-            .occupable_spaces
-            .get(space_identifier)
-            .as_ref()
-            .unwrap())
-    }
-
     pub fn set_faction_stat(
         &mut self,
         faction_stat: FactionStats,
@@ -183,7 +172,7 @@ impl Board {
         Ok(())
     }
 
-    fn get_space_mut(&mut self, space: SpaceIdentifiers) -> Result<&mut Spaces, String> {
+    pub fn get_space_mut(&mut self, space: SpaceIdentifiers) -> Result<&mut Spaces, String> {
         let possible_space = self.occupable_spaces.get_mut(&space);
 
         if let Some(occupable_space) = possible_space {
@@ -193,7 +182,7 @@ impl Board {
         }
     }
 
-    fn get_space(&self, space: SpaceIdentifiers) -> Result<&Spaces, String> {
+    pub fn get_space(&self, space: SpaceIdentifiers) -> Result<&Spaces, String> {
         let possible_space = self.occupable_spaces.get(&space);
 
         if possible_space.is_none() {

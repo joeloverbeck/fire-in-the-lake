@@ -1,10 +1,10 @@
-use board::domain::queries::are_there_any_nva_guerrillas_in_space::are_there_any_nva_guerrillas_in_space;
-use board::domain::queries::are_there_any_vc_guerrillas_in_space::are_there_any_vc_guerrillas_in_space;
+use board::domain::queries::are_there_any_of_a_particular_force_in_space::are_there_any_of_a_particular_force_in_space;
 use board::domain::queries::are_there_coin_bases_in_space::are_there_coin_bases_in_space;
 use board::domain::queries::calculate_number_of_coin_pieces_minus_bases_in_space::calculate_number_of_coin_pieces_minus_bases_in_space;
 use board::domain::queries::can_nva_troops_obliterate_present_coin_forces_to_attack_bases::can_nva_troops_obliterate_present_coin_forces_to_attack_bases;
 use board::domain::space::Spaces;
 use game_definitions::factions::Factions;
+use game_definitions::forces::Forces;
 
 pub fn can_attack_remove_base_in_space(
     occupable_space: &Spaces,
@@ -30,12 +30,28 @@ pub fn can_attack_remove_base_in_space(
     // faction Guerrillas there (active or not), remove UP TO 2 enemy pieces of the executing faction's choice.
 
     // There must be at least a guerrilla present, and they must be of the executing faction.
-    if faction == &Factions::NVA && are_there_any_nva_guerrillas_in_space(&occupable_space)? {
+    if faction == &Factions::NVA
+        && (are_there_any_of_a_particular_force_in_space(
+            Forces::ActiveNvaGuerrilla,
+            &occupable_space,
+        )? || are_there_any_of_a_particular_force_in_space(
+            Forces::UndergroundNvaGuerrilla,
+            &occupable_space,
+        )?)
+    {
         // Could only remove up to 2 enemy pieces in a successful roll, so the number of enemy pieces that aren't bases shouldn't be superior to 1.
         if calculate_number_of_coin_pieces_minus_bases_in_space(&occupable_space)? < 2 {
             can_attack_remove_base = true;
         }
-    } else if faction == &Factions::VC && are_there_any_vc_guerrillas_in_space(&occupable_space)? {
+    } else if faction == &Factions::VC
+        && (are_there_any_of_a_particular_force_in_space(
+            Forces::ActiveVcGuerrilla,
+            &occupable_space,
+        )? || are_there_any_of_a_particular_force_in_space(
+            Forces::UndergroundVcGuerrilla,
+            &occupable_space,
+        )?)
+    {
         panic!("Not handled for VC!");
     }
 
@@ -62,7 +78,7 @@ mod tests {
 
         assert_eq!(
             can_attack_remove_base_in_space(
-                board.get_occupable_space(&SpaceIdentifiers::Saigon)?,
+                board.get_space(SpaceIdentifiers::Saigon)?,
                 &Factions::NVA
             )?,
             true
@@ -80,7 +96,7 @@ mod tests {
 
         assert_eq!(
             can_attack_remove_base_in_space(
-                board.get_occupable_space(&SpaceIdentifiers::Saigon)?,
+                board.get_space(SpaceIdentifiers::Saigon)?,
                 &Factions::NVA
             )?,
             false
@@ -100,7 +116,7 @@ mod tests {
 
         assert_eq!(
             can_attack_remove_base_in_space(
-                board.get_occupable_space(&SpaceIdentifiers::Saigon)?,
+                board.get_space(SpaceIdentifiers::Saigon)?,
                 &Factions::NVA
             )?,
             false
@@ -120,7 +136,7 @@ mod tests {
 
         assert_eq!(
             can_attack_remove_base_in_space(
-                board.get_occupable_space(&SpaceIdentifiers::Saigon)?,
+                board.get_space(SpaceIdentifiers::Saigon)?,
                 &Factions::NVA
             )?,
             false
@@ -140,7 +156,7 @@ mod tests {
 
         assert_eq!(
             can_attack_remove_base_in_space(
-                board.get_occupable_space(&SpaceIdentifiers::Saigon)?,
+                board.get_space(SpaceIdentifiers::Saigon)?,
                 &Factions::NVA
             )?,
             true

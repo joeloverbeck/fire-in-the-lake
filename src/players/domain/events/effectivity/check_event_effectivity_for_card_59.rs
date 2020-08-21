@@ -1,7 +1,9 @@
+use board::controllers::queries_controller::QueriesController;
 use board::domain::board::Board;
 use cards::domain::card::Cards;
 use game_definitions::event_type::EventType;
 use game_definitions::factions::Factions;
+use game_definitions::forces::Forces;
 use players::domain::player_type::PlayerType;
 use std::collections::HashMap;
 
@@ -11,7 +13,7 @@ pub fn check_event_effectivity_for_card_59(
     player_types: HashMap<Factions, PlayerType>,
     faction: &Factions,
     _preferible_event_type: EventType,
-    _board: &Board,
+    board: &Board,
 ) -> Result<bool, String> {
     // All four factions have special instructions for this one.
     if player_types.get(faction).unwrap() == &PlayerType::Ai && faction == &Factions::NVA {
@@ -19,7 +21,24 @@ pub fn check_event_effectivity_for_card_59(
         // First March most Troops possible to a US Base. If Event would add 0 total NVA Control, choose
         // Op & Special Activity instead.
         // Rules: The NVA alone Control a Province or City if NVA pieces exceed all other pieces (including VC).
-        todo!()
+
+        // Obviously, there needs to be a US Base in the map.
+        let queries_controller = QueriesController::new();
+
+        if !queries_controller.is_there_a_specific_force_anywhere(Forces::UsBase, &board)? {
+            return Ok(false);
+        }
+
+        // We need to see if moving Nva forces (troops apparently) to a province with Us Base would change it to Nva Control.
+        let space_identifiers_with_us_bases = queries_controller
+            .get_space_identifiers_with_a_particular_force(Forces::UsBase, &board)?;
+
+        return Ok(queries_controller
+            .would_marching_a_particular_force_into_space_identifiers_turn_any_into_nva_control(
+                Forces::NvaTroop,
+                space_identifiers_with_us_bases,
+                &board,
+            )?);
     }
 
     panic!("Card 59 only implemented for NVA AI.");
