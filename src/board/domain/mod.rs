@@ -1,6 +1,7 @@
 pub mod board;
 pub mod city;
 pub mod initialize_hashmap_of_forces;
+pub mod initialize_hashmap_of_spaces;
 pub mod loc;
 pub mod province;
 pub mod queries;
