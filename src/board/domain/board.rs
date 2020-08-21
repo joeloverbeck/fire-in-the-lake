@@ -1,7 +1,7 @@
 use board::domain::initialize_hashmap_of_forces::initialize_hashmap_of_forces;
-use board::domain::initialize_hashmap_of_spaces::initialize_hashmap_of_spaces;
 use board::domain::space::Space;
 use board::domain::space::Spaces;
+use board::domain::spaces_initialization::initialize_hashmap_of_spaces::initialize_hashmap_of_spaces;
 use game_definitions::arvn_leaders::ArvnLeaders;
 use game_definitions::control_types::ControlTypes;
 use game_definitions::faction_stats::FactionStats;
@@ -578,6 +578,250 @@ mod tests {
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuangNam)?);
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::SouthernLaos)?);
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BinhDinh)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_quang_duc_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::QuangDucLongKhanh)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14South)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::PhuocLong)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Saigon)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::PleikuDarlac)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TayNinh)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route20)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route21)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KhanhHoa)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route11)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BinhTuyBinhThuan)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14Central)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TheFishhook)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_binh_tuy_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::BinhTuyBinhThuan)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route20)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route21)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route11)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route1South)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Saigon)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuangDucLongKhanh)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KhanhHoa)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::CamRanh)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_pleiku_darlac_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::PleikuDarlac)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14South)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14Central)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14CentralNorth)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14North)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route21)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuangDucLongKhanh)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KhanhHoa)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TheFishhook)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::PhuBonPhuYen)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::NortheastCambodia)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::SouthernLaos)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Kontum)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BinhDinh)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_central_laos_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::CentralLaos)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::SouthernLaos)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route1North)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::NorthVietnam)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuangTriThuaThien)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuangNam)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_southern_laos_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::SouthernLaos)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14CentralNorth)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14North)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::NortheastCambodia)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::PleikuDarlac)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BinhDinh)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuangTinQuangNgai)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuangNam)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::CentralLaos)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_qui_nhon_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::QuiNhon)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route1East)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route19)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route1SouthEast)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::PhuBonPhuYen)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BinhDinh)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_khanh_hoa_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::KhanhHoa)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route1SouthEast)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route11)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route20)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route21)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14South)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14Central)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::PhuBonPhuYen)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::CamRanh)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BinhTuyBinhThuan)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuangDucLongKhanh)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::PleikuDarlac)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_kien_hoa_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::KienHoaVinhBinh)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::MekongSouth)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route4MekongEast)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BaXuyen)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::CanTho)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienPhong)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Saigon)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_phu_bon_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::PhuBonPhuYen)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route19)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route1SouthEast)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14Central)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuiNhon)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KhanhHoa)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::PleikuDarlac)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Kontum)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BinhDinh)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_tay_ninh_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::TayNinh)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route13)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Saigon)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienPhong)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TheParrotsBeak)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TheFishhook)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::AnLoc)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::PhuocLong)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuangDucLongKhanh)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_kontum_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::Kontum)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route19)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14Central)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14CentralNorth)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::PhuBonPhuYen)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::PleikuDarlac)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BinhDinh)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_da_nang_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::DaNang)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route1NorthEast)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14North)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route1North)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuangTinQuangNgai)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuangNam)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_cam_ranh_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::CamRanh)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route1South)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route11)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route1SouthEast)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BinhTuyBinhThuan)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KhanhHoa)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_mekong_north_is_adjacent_to_expected_spaces() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = board.get_space(SpaceIdentifiers::MekongNorth)?;
+
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::CanTho)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienGiangAnXuyen)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienPhong)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TheParrotsBeak)?);
 
         Ok(())
     }
