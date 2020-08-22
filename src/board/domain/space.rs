@@ -8,6 +8,7 @@ use game_definitions::forces::Forces;
 use game_definitions::geographic_areas::GeographicAreas;
 use game_definitions::space_identifiers::SpaceIdentifiers;
 use game_definitions::support_levels::SupportLevels;
+use game_definitions::terrain_types::TerrainTypes;
 
 #[enum_dispatch]
 #[allow(clippy::too_many_arguments)]
@@ -23,6 +24,7 @@ pub trait Space {
     fn set_geographic_area(&mut self, geographic_area: GeographicAreas) -> Result<(), String>;
     fn get_geographic_area(&self) -> Result<&GeographicAreas, String>;
     fn is_adjacent_to_space(&self, space_identifier: SpaceIdentifiers) -> Result<bool, String>;
+    fn get_terrain_type(&self) -> Result<&TerrainTypes, String>;
 }
 
 #[enum_dispatch(Space)]

@@ -5,7 +5,7 @@ use game_definitions::factions::Factions;
 use players::domain::player_type::PlayerType;
 use std::collections::HashMap;
 
-pub fn check_event_effectivity_for_card_2(
+pub fn check_event_effectivity_for_card_50(
     _active_card: &Cards,
     _preview_card: &Cards,
     _player_types: HashMap<Factions, PlayerType>,
@@ -13,13 +13,13 @@ pub fn check_event_effectivity_for_card_2(
     _preferible_event_type: EventTypes,
     _board: &Board,
 ) -> Result<bool, String> {
-    // All factions but NVA have special instructions
+    // ARVN and US have special instructions
 
-    // Shaded: NVA places 2 pieces in Cambodia. US moves any 2 US Troops to out of play. Aid -6.
-    if faction == &Factions::NVA {
-        // This is always effective.
+    // Shaded: VC then NVA each execute any 3 free Limited Operations.
+    if faction == &Factions::NVA || faction == &Factions::VC {
+        // This is always effective
         return Ok(true);
     }
 
-    panic!("Not implemented for US, ARVN and VC");
+    panic!("Only implemented for NVA and VC");
 }

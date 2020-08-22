@@ -1,11 +1,12 @@
+use board::domain::queries::calculate_number_of_forces_of_a_particular_faction_in_space::calculate_number_of_forces_of_a_particular_faction_in_space;
+use board::domain::queries::space_level_queries::can_attack_remove_a_number_of_enemies_in_space::can_attack_remove_a_number_of_enemies_in_space;
+use board::domain::queries::board_level_queries::would_marching_a_particular_force_into_a_space_turn_it_into_nva_control::would_marching_a_particular_force_into_a_space_turn_it_into_nva_control;
+use board::domain::queries::space_level_queries::does_space_have_support::does_space_have_support;
 use board::domain::board::Board;
 use board::domain::queries::are_there_any_of_a_particular_force_in_space::are_there_any_of_a_particular_force_in_space;
-use board::domain::queries::calculate_number_of_a_particular_force_in_space::calculate_number_of_a_particular_force_in_space;
 use board::domain::queries::calculate_number_of_coin_bases::calculate_number_of_coin_bases;
 use board::domain::queries::calculate_number_of_coin_cubes_in_space::calculate_number_of_coin_cubes_in_space;
-use board::domain::queries::calculate_number_of_coin_pieces_minus_bases_in_space::calculate_number_of_coin_pieces_minus_bases_in_space;
 use board::domain::queries::can_attack_remove_base_in_space::can_attack_remove_base_in_space;
-use board::domain::queries::will_moving_in_number_of_nva_forces_turn_space_into_nva_control::will_moving_in_number_of_nva_forces_turn_space_into_nva_control;
 use board::domain::space::Space;
 use game_definitions::control_types::ControlTypes;
 use game_definitions::faction_groups::FactionGroups;
@@ -43,40 +44,18 @@ impl<'a> QueriesController {
             return Ok(false);
         }
 
-        let can_attack_remove_minimum_number_of_enemies = false;
+        let mut can_attack_remove_minimum_number_of_enemies = false;
 
         for (_, occupable_space) in board.get_occupable_spaces()?.iter() {
-            if faction == &Factions::NVA
-                && (calculate_number_of_a_particular_force_in_space(
-                    Forces::ActiveNvaGuerrilla,
-                    &occupable_space,
-                )? + calculate_number_of_a_particular_force_in_space(
-                    Forces::UndergroundNvaGuerrilla,
-                    &occupable_space,
-                )?) == 0
-            {
-                // Can't kill anybody here with any dice throw.
-                continue;
-            }
+            can_attack_remove_minimum_number_of_enemies =
+                can_attack_remove_a_number_of_enemies_in_space(
+                    faction,
+                    occupable_space,
+                    minimum_number_of_enemies_to_remove,
+                )?;
 
-            if faction == &Factions::VC
-                && (calculate_number_of_a_particular_force_in_space(
-                    Forces::ActiveVcGuerrilla,
-                    &occupable_space,
-                )? + calculate_number_of_a_particular_force_in_space(
-                    Forces::UndergroundVcGuerrilla,
-                    &occupable_space,
-                )?) == 0
-            {
-                // Can't kill anybody here with any dice throw.
-                continue;
-            }
-
-            // We know that it could kill up to 2 in a successful throw, but there must be enemy pieces here.
-            if calculate_number_of_coin_pieces_minus_bases_in_space(&occupable_space)?
-                >= minimum_number_of_enemies_to_remove
-            {
-                return Ok(true);
+            if can_attack_remove_minimum_number_of_enemies {
+                break;
             }
         }
 
@@ -182,26 +161,19 @@ impl<'a> QueriesController {
         faction: Factions,
         board: &Board,
     ) -> Result<bool, String> {
-        if faction == Factions::US {
-            let sum: u8 = board
-                .get_occupable_spaces()?
-                .iter()
-                .map(|(_, occupable_space)| {
-                    occupable_space.get_forces(Forces::UsTroop).unwrap()
-                        + occupable_space
-                            .get_forces(Forces::ActiveUsIrregular)
-                            .unwrap()
-                        + occupable_space
-                            .get_forces(Forces::UndergroundUsIrregular)
-                            .unwrap()
-                        + occupable_space.get_forces(Forces::UsBase).unwrap()
-                })
-                .sum();
+        let sum: u8 = board
+            .get_occupable_spaces()?
+            .iter()
+            .map(|(_, occupable_space)| {
+                calculate_number_of_forces_of_a_particular_faction_in_space(
+                    faction,
+                    occupable_space,
+                )
+                .unwrap()
+            })
+            .sum();
 
-            Ok(sum > 0)
-        } else {
-            panic!("Not implemented for faction {:?}", faction);
-        }
+        Ok(sum > 0)
     }
 
     pub fn get_space_identifiers_with_a_particular_force(
@@ -219,6 +191,41 @@ impl<'a> QueriesController {
             .collect::<Vec<&SpaceIdentifiers>>())
     }
 
+    pub fn are_there_any_us_irregulars_on_laos_or_cambodia(
+        &self,
+        board: &Board,
+    ) -> Result<bool, String> {
+        Ok(
+            (self.is_there_any_number_of_a_particular_force_in_a_geographic_area(
+                Forces::UndergroundUsIrregular,
+                &GeographicAreas::Laos,
+                board,
+            )? || self.is_there_any_number_of_a_particular_force_in_a_geographic_area(
+                Forces::ActiveUsIrregular,
+                &GeographicAreas::Laos,
+                board,
+            )?) || (self.is_there_any_number_of_a_particular_force_in_a_geographic_area(
+                Forces::UndergroundUsIrregular,
+                &GeographicAreas::Cambodia,
+                board,
+            )? || self.is_there_any_number_of_a_particular_force_in_a_geographic_area(
+                Forces::ActiveUsIrregular,
+                &GeographicAreas::Cambodia,
+                board,
+            )?),
+        )
+    }
+
+    pub fn does_space_identifier_have_support(
+        &self,
+        space_identifier: SpaceIdentifiers,
+        board: &Board,
+    ) -> Result<bool, String> {
+        let corresponding_space = board.get_space(space_identifier)?;
+
+        Ok(does_space_have_support(&corresponding_space)?)
+    }
+
     pub fn would_marching_a_particular_force_into_space_identifiers_turn_any_into_nva_control(
         &self,
         force: Forces,
@@ -231,36 +238,16 @@ impl<'a> QueriesController {
         // as adjacent. Then, in the checked space, must see how many of the passed force they have. Then we need to check if
         // adding those to the space corresponding to the space identifier would turn it into NvaControl.
         for (_, occupable_space) in board.get_occupable_spaces()?.iter() {
-            for &space_identifier in &space_identifiers {
-                if !occupable_space.is_adjacent_to_space(*space_identifier)? {
-                    continue;
-                }
+            would_marching_turn_space_into_nva_control =
+                would_marching_a_particular_force_into_a_space_turn_it_into_nva_control(
+                    force,
+                    occupable_space,
+                    &space_identifiers,
+                    board,
+                )?;
 
-                // The passed space_identifier is adjacent to the current occupable space
-                // we are looking at in the board. We need to check if there are forces of the
-                // needed type to march into the passed space_identifier.
-                if !are_there_any_of_a_particular_force_in_space(force, &occupable_space)? {
-                    continue;
-                }
-
-                let number_of_particular_force_in_space = occupable_space.get_forces(force)?;
-
-                // There are forces of the needed type. We need another check, though: if the space_identifier
-                // is already NvaControl, it would obviously not change to NvaControl
-                let corresponding_destination_space = board.get_space(*space_identifier)?;
-
-                if corresponding_destination_space.get_control_type()? == &ControlTypes::Nva {
-                    continue;
-                }
-
-                // Final check:
-                if will_moving_in_number_of_nva_forces_turn_space_into_nva_control(
-                    number_of_particular_force_in_space,
-                    corresponding_destination_space,
-                )? {
-                    would_marching_turn_space_into_nva_control = true;
-                    break;
-                }
+            if would_marching_turn_space_into_nva_control {
+                break;
             }
         }
 

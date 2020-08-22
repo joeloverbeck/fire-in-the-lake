@@ -9,4 +9,5 @@ pub mod forces;
 pub mod geographic_areas;
 pub mod space_identifiers;
 pub mod support_levels;
+pub mod terrain_types;
 pub mod us_capabilities;

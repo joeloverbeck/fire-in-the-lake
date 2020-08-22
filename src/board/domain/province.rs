@@ -5,6 +5,7 @@ use game_definitions::forces::Forces;
 use game_definitions::geographic_areas::GeographicAreas;
 use game_definitions::space_identifiers::SpaceIdentifiers;
 use game_definitions::support_levels::SupportLevels;
+use game_definitions::terrain_types::TerrainTypes;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
@@ -13,6 +14,7 @@ pub struct Province {
     control_type: ControlTypes,
     support_level: SupportLevels,
     geographic_area: GeographicAreas,
+    terrain_type: TerrainTypes,
     adjacent_spaces: Vec<SpaceIdentifiers>,
 }
 
@@ -75,11 +77,16 @@ impl Space for Province {
             .iter()
             .any(|adjacent_space| adjacent_space == &space_identifier))
     }
+
+    fn get_terrain_type(&self) -> Result<&TerrainTypes, String> {
+        Ok(&self.terrain_type)
+    }
 }
 
 impl Province {
     pub fn new(
         geographic_area: GeographicAreas,
+        terrain_type: TerrainTypes,
         adjacent_spaces: Vec<SpaceIdentifiers>,
     ) -> Province {
         Province {
@@ -87,6 +94,7 @@ impl Province {
             control_type: ControlTypes::Uncontrolled,
             support_level: SupportLevels::Neutral,
             geographic_area,
+            terrain_type,
             adjacent_spaces,
         }
     }

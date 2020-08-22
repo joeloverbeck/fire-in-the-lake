@@ -4,20 +4,21 @@ use game_definitions::geographic_areas::GeographicAreas;
 use game_definitions::space_identifiers::SpaceIdentifiers;
 use game_definitions::terrain_types::TerrainTypes;
 
-pub fn create_the_fishhook() -> (SpaceIdentifiers, Spaces) {
+pub fn create_southern_laos() -> (SpaceIdentifiers, Spaces) {
     (
-        SpaceIdentifiers::TheFishhook,
+        SpaceIdentifiers::SouthernLaos,
         Province::new(
-            GeographicAreas::Cambodia,
+            GeographicAreas::Laos,
             TerrainTypes::Jungle,
             vec![
+                SpaceIdentifiers::Route14CentralNorth,
+                SpaceIdentifiers::Route14North,
                 SpaceIdentifiers::NortheastCambodia,
                 SpaceIdentifiers::PleikuDarlac,
-                SpaceIdentifiers::QuangDucLongKhanh,
-                SpaceIdentifiers::PhuocLong,
-                SpaceIdentifiers::AnLoc,
-                SpaceIdentifiers::TayNinh,
-                SpaceIdentifiers::TheParrotsBeak,
+                SpaceIdentifiers::BinhDinh,
+                SpaceIdentifiers::QuangTinQuangNgai,
+                SpaceIdentifiers::QuangNam,
+                SpaceIdentifiers::CentralLaos,
             ],
         )
         .into(),

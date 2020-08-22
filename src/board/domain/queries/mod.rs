@@ -1,5 +1,6 @@
 pub mod are_there_any_of_a_particular_force_in_space;
 pub mod are_there_coin_bases_in_space;
+pub mod board_level_queries;
 pub mod calculate_number_of_a_particular_force_in_space;
 pub mod calculate_number_of_coin_bases;
 pub mod calculate_number_of_coin_cubes_in_space;
@@ -8,4 +9,5 @@ pub mod calculate_number_of_forces_of_a_particular_faction_in_space;
 pub mod calculate_nva_troops_hit_power_for_attack;
 pub mod can_attack_remove_base_in_space;
 pub mod can_nva_troops_obliterate_present_coin_forces_to_attack_bases;
+pub mod space_level_queries;
 pub mod will_moving_in_number_of_nva_forces_turn_space_into_nva_control;

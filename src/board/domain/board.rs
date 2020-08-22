@@ -16,6 +16,7 @@ pub struct Board {
     faction_stats: HashMap<FactionStats, u8>,
     out_of_play: HashMap<Forces, u8>,
     available: HashMap<Forces, u8>,
+    casualties: HashMap<Forces, u8>,
     occupable_spaces: HashMap<SpaceIdentifiers, Spaces>,
     arvn_leaders: Vec<ArvnLeaders>,
 }
@@ -47,6 +48,7 @@ impl Board {
             .collect(),
             out_of_play: initialize_hashmap_of_forces(),
             available: initialize_hashmap_of_forces(),
+            casualties: initialize_hashmap_of_forces(),
             occupable_spaces: initialize_hashmap_of_spaces().unwrap(),
             arvn_leaders: vec![ArvnLeaders::DuongVanMinh],
         }
@@ -87,6 +89,19 @@ impl Board {
         } else {
             Err(format!("Attempted to get the faction stat {:?} from the board, but it wasn't found there! Stored faction stats: {:?}", faction_stat, self.faction_stats))
         }
+    }
+
+    pub fn get_forces_in_casualties(&self, force: Forces) -> Result<u8, String> {
+        // Sanity checks
+        if self.casualties.is_empty() {
+            return Err(format!("Attempted to get the number of {:?} in casualties, but the casualties container was empty! The setup for this scenario wasn't done correctly.", force));
+        }
+
+        if !self.casualties.contains_key(&force) {
+            return Err(format!("Attempted to get the number of {:?} in casualties, but there wasn't an entry for that type! Stored Casualties: {:?}", force, self.casualties));
+        }
+
+        Ok(*self.casualties.get(&force).unwrap())
     }
 
     pub fn get_forces_available(&self, forces: Forces) -> Result<u8, String> {

@@ -4,20 +4,15 @@ use game_definitions::geographic_areas::GeographicAreas;
 use game_definitions::space_identifiers::SpaceIdentifiers;
 use game_definitions::terrain_types::TerrainTypes;
 
-pub fn create_the_fishhook() -> (SpaceIdentifiers, Spaces) {
+pub fn create_sihanoukville() -> (SpaceIdentifiers, Spaces) {
     (
-        SpaceIdentifiers::TheFishhook,
+        SpaceIdentifiers::Sihanoukville,
         Province::new(
             GeographicAreas::Cambodia,
             TerrainTypes::Jungle,
             vec![
-                SpaceIdentifiers::NortheastCambodia,
-                SpaceIdentifiers::PleikuDarlac,
-                SpaceIdentifiers::QuangDucLongKhanh,
-                SpaceIdentifiers::PhuocLong,
-                SpaceIdentifiers::AnLoc,
-                SpaceIdentifiers::TayNinh,
                 SpaceIdentifiers::TheParrotsBeak,
+                SpaceIdentifiers::KienGiangAnXuyen,
             ],
         )
         .into(),
