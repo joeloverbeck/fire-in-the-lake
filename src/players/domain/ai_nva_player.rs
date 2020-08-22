@@ -1,7 +1,8 @@
 use board::controllers::queries_controller::QueriesController;
 use board::domain::board::Board;
 use cards::domain::card::Cards;
-use game_definitions::event_type::EventType;
+use flags::controllers::flags_controller::FlagsController;
+use game_definitions::event_types::EventTypes;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
 use players::domain::does_card_have_a_factions_capability::does_card_have_a_factions_capability;
@@ -35,6 +36,7 @@ impl Player for AiNvaPlayer {
         player_types: HashMap<Factions, PlayerType>,
         _possible_actions: Vec<String>,
         board: &Board,
+        flags_controller: &FlagsController,
         randomization_controller: &RandomizationController,
         _keyboard_input_controller: &KeyboardInputController,
         _display_controller: &DisplayController,
@@ -79,8 +81,9 @@ impl Player for AiNvaPlayer {
             &preview_card,
             player_types,
             &Factions::NVA,
-            EventType::Shaded,
+            EventTypes::Shaded,
             board,
+            flags_controller,
         )? {
             panic!("Was going to play the card for the event.");
         }

@@ -1,5 +1,6 @@
 use board::domain::board::Board;
 use cards::domain::card::Cards;
+use flags::controllers::flags_controller::FlagsController;
 use game_definitions::faction_stats::FactionStats;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
@@ -34,6 +35,7 @@ impl Player for HumanUsPlayer {
         _player_types: HashMap<Factions, PlayerType>,
         possible_actions: Vec<String>,
         board: &Board,
+        _flags_controller: &FlagsController,
         _randomization_controller: &RandomizationController,
         keyboard_input_controller: &KeyboardInputController,
         display_controller: &DisplayController,

@@ -58,6 +58,7 @@ impl PlayerActionPhasesLooper {
                         .get_possible_actions_for_current_elegible()
                         .unwrap(),
                     board,
+                    &self.flags_controller,
                     &keyboard_input_controller,
                     &display_controller,
                 )?;

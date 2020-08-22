@@ -1,5 +1,6 @@
 use board::domain::board::Board;
 use cards::domain::card::Cards;
+use flags::controllers::flags_controller::FlagsController;
 use game_definitions::factions::Factions;
 use players::domain::ai_nva_player::AiNvaPlayer;
 use players::domain::decision::Decision;
@@ -25,6 +26,7 @@ pub trait Player {
         player_types: HashMap<Factions, PlayerType>,
         possible_actions: Vec<String>,
         board: &Board,
+        flags_controller: &FlagsController,
         randomization_controller: &RandomizationController,
         keyboard_input_controller: &KeyboardInputController,
         display_controller: &DisplayController,

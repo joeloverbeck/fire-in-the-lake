@@ -1,7 +1,7 @@
 use board::controllers::queries_controller::QueriesController;
 use board::domain::board::Board;
 use cards::domain::card::Cards;
-use game_definitions::event_type::EventType;
+use game_definitions::event_types::EventTypes;
 use game_definitions::factions::Factions;
 use game_definitions::forces::Forces;
 use players::domain::player_type::PlayerType;
@@ -12,7 +12,7 @@ pub fn check_event_effectivity_for_card_53(
     _preview_card: &Cards,
     _player_types: HashMap<Factions, PlayerType>,
     faction: &Factions,
-    _preferible_event_type: EventType,
+    _preferible_event_type: EventTypes,
     board: &Board,
 ) -> Result<bool, String> {
     if faction == &Factions::NVA || faction == &Factions::VC {

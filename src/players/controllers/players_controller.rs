@@ -1,5 +1,6 @@
 use board::domain::board::Board;
 use cards::domain::card::Cards;
+use flags::controllers::flags_controller::FlagsController;
 use game_definitions::factions::Factions;
 use players::domain::ai_nva_player::AiNvaPlayer;
 use players::domain::decision::Decision;
@@ -46,6 +47,7 @@ impl PlayersController {
         preview_card: &Cards,
         possible_actions: Vec<String>,
         board: &Board,
+        flags_controller: &FlagsController,
         keyboard_input_controller: &KeyboardInputController,
         display_controller: &DisplayController,
     ) -> Result<Decision, String> {
@@ -69,6 +71,7 @@ impl PlayersController {
                 player_types,
                 possible_actions,
                 board,
+                flags_controller,
                 &self.randomization_controller,
                 keyboard_input_controller,
                 display_controller,
@@ -83,6 +86,7 @@ impl PlayersController {
                 player_types,
                 possible_actions,
                 board,
+                flags_controller,
                 &self.randomization_controller,
                 keyboard_input_controller,
                 display_controller,
@@ -97,6 +101,7 @@ impl PlayersController {
                 player_types,
                 possible_actions,
                 board,
+                flags_controller,
                 &self.randomization_controller,
                 keyboard_input_controller,
                 display_controller,
@@ -111,6 +116,7 @@ impl PlayersController {
                 player_types,
                 possible_actions,
                 board,
+                flags_controller,
                 &self.randomization_controller,
                 keyboard_input_controller,
                 display_controller,

@@ -1,5 +1,6 @@
 use board::domain::board::Board;
 use cards::domain::card::Cards;
+use flags::controllers::flags_controller::FlagsController;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
 use players::domain::faction_stats_mutation::FactionStatsMutation;
@@ -32,6 +33,7 @@ impl Player for DummyPlayer {
         _player_types: HashMap<Factions, PlayerType>,
         _possible_actions: Vec<String>,
         board: &Board,
+        _flags_controller: &FlagsController,
         _randomization_controller: &RandomizationController,
         _keyboard_input_controller: &KeyboardInputController,
         _display_controller: &DisplayController,

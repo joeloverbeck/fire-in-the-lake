@@ -1,7 +1,8 @@
 use board::domain::board::Board;
 use cards::domain::card::Card;
 use cards::domain::card::Cards;
-use game_definitions::event_type::EventType;
+use flags::controllers::flags_controller::FlagsController;
+use game_definitions::event_types::EventTypes;
 use game_definitions::factions::Factions;
 use players::domain::events::effectivity::check_event_effectivity_for_card_1::check_event_effectivity_for_card_1;
 use players::domain::events::effectivity::check_event_effectivity_for_card_100::check_event_effectivity_for_card_100;
@@ -23,6 +24,7 @@ use players::domain::events::effectivity::check_event_effectivity_for_card_24::c
 use players::domain::events::effectivity::check_event_effectivity_for_card_25::check_event_effectivity_for_card_25;
 use players::domain::events::effectivity::check_event_effectivity_for_card_26::check_event_effectivity_for_card_26;
 use players::domain::events::effectivity::check_event_effectivity_for_card_27::check_event_effectivity_for_card_27;
+use players::domain::events::effectivity::check_event_effectivity_for_card_3::check_event_effectivity_for_card_3;
 use players::domain::events::effectivity::check_event_effectivity_for_card_30::check_event_effectivity_for_card_30;
 use players::domain::events::effectivity::check_event_effectivity_for_card_36::check_event_effectivity_for_card_36;
 use players::domain::events::effectivity::check_event_effectivity_for_card_38::check_event_effectivity_for_card_38;
@@ -31,6 +33,7 @@ use players::domain::events::effectivity::check_event_effectivity_for_card_41::c
 use players::domain::events::effectivity::check_event_effectivity_for_card_46::check_event_effectivity_for_card_46;
 use players::domain::events::effectivity::check_event_effectivity_for_card_48::check_event_effectivity_for_card_48;
 use players::domain::events::effectivity::check_event_effectivity_for_card_51::check_event_effectivity_for_card_51;
+use players::domain::events::effectivity::check_event_effectivity_for_card_52::check_event_effectivity_for_card_52;
 use players::domain::events::effectivity::check_event_effectivity_for_card_53::check_event_effectivity_for_card_53;
 use players::domain::events::effectivity::check_event_effectivity_for_card_55::check_event_effectivity_for_card_55;
 use players::domain::events::effectivity::check_event_effectivity_for_card_59::check_event_effectivity_for_card_59;
@@ -57,8 +60,9 @@ pub fn is_current_non_capability_event_effective(
     preview_card: &Cards,
     player_types: HashMap<Factions, PlayerType>,
     faction: &Factions,
-    preferible_event_type: EventType,
+    preferible_event_type: EventTypes,
     board: &Board,
+    flags_controller: &FlagsController,
 ) -> Result<bool, String> {
     // Sanity check: we specify that the event should be non-capability. That means that the caller should have checked first whether it was.
     if active_card.has_any_faction_capability()? {
@@ -76,6 +80,14 @@ pub fn is_current_non_capability_event_effective(
             board,
         )?),
         2 => Ok(check_event_effectivity_for_card_2(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        3 => Ok(check_event_effectivity_for_card_3(
             active_card,
             preview_card,
             player_types,
@@ -210,6 +222,15 @@ pub fn is_current_non_capability_event_effective(
             faction,
             preferible_event_type,
             board,
+        )?),
+        52 => Ok(check_event_effectivity_for_card_52(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+            flags_controller,
         )?),
         53 => Ok(check_event_effectivity_for_card_53(
             active_card,
