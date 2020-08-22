@@ -6,6 +6,7 @@ use std::collections::HashMap;
 pub struct FlagsController {
     flags: HashMap<Flags, bool>,
     us_capabilities: HashMap<UsCapabilities, EventTypes>,
+    is_monsoon: bool,
 }
 
 impl Default for FlagsController {
@@ -19,7 +20,12 @@ impl FlagsController {
         FlagsController {
             flags: [(Flags::BlowtorchComer, false)].iter().cloned().collect(),
             us_capabilities: HashMap::new(),
+            is_monsoon: false,
         }
+    }
+
+    pub fn is_monsoon(&self) -> Result<bool, String> {
+        Ok(self.is_monsoon)
     }
 
     fn crash_if_the_flag_wasnt_initialized(&self, flag: Flags) -> Result<(), String> {

@@ -5,11 +5,14 @@ use flags::controllers::flags_controller::FlagsController;
 use game_definitions::event_types::EventTypes;
 use game_definitions::factions::Factions;
 use players::domain::events::effectivity::check_event_effectivity_for_card_1::check_event_effectivity_for_card_1;
+use players::domain::events::effectivity::check_event_effectivity_for_card_10::check_event_effectivity_for_card_10;
 use players::domain::events::effectivity::check_event_effectivity_for_card_100::check_event_effectivity_for_card_100;
+use players::domain::events::effectivity::check_event_effectivity_for_card_102::check_event_effectivity_for_card_102;
 use players::domain::events::effectivity::check_event_effectivity_for_card_103::check_event_effectivity_for_card_103;
 use players::domain::events::effectivity::check_event_effectivity_for_card_106::check_event_effectivity_for_card_106;
 use players::domain::events::effectivity::check_event_effectivity_for_card_107::check_event_effectivity_for_card_107;
 use players::domain::events::effectivity::check_event_effectivity_for_card_108::check_event_effectivity_for_card_108;
+use players::domain::events::effectivity::check_event_effectivity_for_card_110::check_event_effectivity_for_card_110;
 use players::domain::events::effectivity::check_event_effectivity_for_card_111::check_event_effectivity_for_card_111;
 use players::domain::events::effectivity::check_event_effectivity_for_card_112::check_event_effectivity_for_card_112;
 use players::domain::events::effectivity::check_event_effectivity_for_card_113::check_event_effectivity_for_card_113;
@@ -29,22 +32,28 @@ use players::domain::events::effectivity::check_event_effectivity_for_card_24::c
 use players::domain::events::effectivity::check_event_effectivity_for_card_25::check_event_effectivity_for_card_25;
 use players::domain::events::effectivity::check_event_effectivity_for_card_26::check_event_effectivity_for_card_26;
 use players::domain::events::effectivity::check_event_effectivity_for_card_27::check_event_effectivity_for_card_27;
+use players::domain::events::effectivity::check_event_effectivity_for_card_29::check_event_effectivity_for_card_29;
 use players::domain::events::effectivity::check_event_effectivity_for_card_3::check_event_effectivity_for_card_3;
 use players::domain::events::effectivity::check_event_effectivity_for_card_30::check_event_effectivity_for_card_30;
+use players::domain::events::effectivity::check_event_effectivity_for_card_35::check_event_effectivity_for_card_35;
 use players::domain::events::effectivity::check_event_effectivity_for_card_36::check_event_effectivity_for_card_36;
 use players::domain::events::effectivity::check_event_effectivity_for_card_38::check_event_effectivity_for_card_38;
 use players::domain::events::effectivity::check_event_effectivity_for_card_39::check_event_effectivity_for_card_39;
 use players::domain::events::effectivity::check_event_effectivity_for_card_40::check_event_effectivity_for_card_40;
 use players::domain::events::effectivity::check_event_effectivity_for_card_41::check_event_effectivity_for_card_41;
 use players::domain::events::effectivity::check_event_effectivity_for_card_42::check_event_effectivity_for_card_42;
+use players::domain::events::effectivity::check_event_effectivity_for_card_44::check_event_effectivity_for_card_44;
 use players::domain::events::effectivity::check_event_effectivity_for_card_46::check_event_effectivity_for_card_46;
 use players::domain::events::effectivity::check_event_effectivity_for_card_48::check_event_effectivity_for_card_48;
+use players::domain::events::effectivity::check_event_effectivity_for_card_49::check_event_effectivity_for_card_49;
 use players::domain::events::effectivity::check_event_effectivity_for_card_50::check_event_effectivity_for_card_50;
 use players::domain::events::effectivity::check_event_effectivity_for_card_51::check_event_effectivity_for_card_51;
 use players::domain::events::effectivity::check_event_effectivity_for_card_52::check_event_effectivity_for_card_52;
 use players::domain::events::effectivity::check_event_effectivity_for_card_53::check_event_effectivity_for_card_53;
 use players::domain::events::effectivity::check_event_effectivity_for_card_54::check_event_effectivity_for_card_54;
 use players::domain::events::effectivity::check_event_effectivity_for_card_55::check_event_effectivity_for_card_55;
+use players::domain::events::effectivity::check_event_effectivity_for_card_57::check_event_effectivity_for_card_57;
+use players::domain::events::effectivity::check_event_effectivity_for_card_58::check_event_effectivity_for_card_58;
 use players::domain::events::effectivity::check_event_effectivity_for_card_59::check_event_effectivity_for_card_59;
 use players::domain::events::effectivity::check_event_effectivity_for_card_6::check_event_effectivity_for_card_6;
 use players::domain::events::effectivity::check_event_effectivity_for_card_60::check_event_effectivity_for_card_60;
@@ -70,6 +79,7 @@ use players::domain::events::effectivity::check_event_effectivity_for_card_82::c
 use players::domain::events::effectivity::check_event_effectivity_for_card_84::check_event_effectivity_for_card_84;
 use players::domain::events::effectivity::check_event_effectivity_for_card_87::check_event_effectivity_for_card_87;
 use players::domain::events::effectivity::check_event_effectivity_for_card_88::check_event_effectivity_for_card_88;
+use players::domain::events::effectivity::check_event_effectivity_for_card_89::check_event_effectivity_for_card_89;
 use players::domain::events::effectivity::check_event_effectivity_for_card_90::check_event_effectivity_for_card_90;
 use players::domain::events::effectivity::check_event_effectivity_for_card_93::check_event_effectivity_for_card_93;
 use players::domain::events::effectivity::check_event_effectivity_for_card_95::check_event_effectivity_for_card_95;
@@ -132,6 +142,14 @@ pub fn is_current_non_capability_event_effective(
             board,
         )?),
         7 => Ok(check_event_effectivity_for_card_7(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        10 => Ok(check_event_effectivity_for_card_10(
             active_card,
             preview_card,
             player_types,
@@ -219,7 +237,23 @@ pub fn is_current_non_capability_event_effective(
             preferible_event_type,
             board,
         )?),
+        29 => Ok(check_event_effectivity_for_card_29(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
         30 => Ok(check_event_effectivity_for_card_30(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        35 => Ok(check_event_effectivity_for_card_35(
             active_card,
             preview_card,
             player_types,
@@ -275,6 +309,14 @@ pub fn is_current_non_capability_event_effective(
             preferible_event_type,
             board,
         )?),
+        44 => Ok(check_event_effectivity_for_card_44(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
         46 => Ok(check_event_effectivity_for_card_46(
             active_card,
             preview_card,
@@ -284,6 +326,14 @@ pub fn is_current_non_capability_event_effective(
             board,
         )?),
         48 => Ok(check_event_effectivity_for_card_48(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        49 => Ok(check_event_effectivity_for_card_49(
             active_card,
             preview_card,
             player_types,
@@ -341,6 +391,22 @@ pub fn is_current_non_capability_event_effective(
             preferible_event_type,
             board,
         )?),
+        57 => Ok(check_event_effectivity_for_card_57(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        58 => Ok(check_event_effectivity_for_card_58(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
         59 => Ok(check_event_effectivity_for_card_59(
             active_card,
             preview_card,
@@ -373,47 +439,15 @@ pub fn is_current_non_capability_event_effective(
             preferible_event_type,
             board,
         )?),
-        65 => Ok(check_event_effectivity_for_card_65(
-            active_card,
-            preview_card,
-            player_types,
-            faction,
-            preferible_event_type,
-            board,
-        )?),
-        68 => Ok(check_event_effectivity_for_card_68(
-            active_card,
-            preview_card,
-            player_types,
-            faction,
-            preferible_event_type,
-            board,
-        )?),
-        70 => Ok(check_event_effectivity_for_card_70(
-            active_card,
-            preview_card,
-            player_types,
-            faction,
-            preferible_event_type,
-            board,
-        )?),
-        75 => Ok(check_event_effectivity_for_card_75(
-            active_card,
-            preview_card,
-            player_types,
-            faction,
-            preferible_event_type,
-            board,
-        )?),
-        76 => Ok(check_event_effectivity_for_card_76(
-            active_card,
-            preview_card,
-            player_types,
-            faction,
-            preferible_event_type,
-            board,
-        )?),
         64 => Ok(check_event_effectivity_for_card_64(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        65 => Ok(check_event_effectivity_for_card_65(
             active_card,
             preview_card,
             player_types,
@@ -429,7 +463,23 @@ pub fn is_current_non_capability_event_effective(
             preferible_event_type,
             board,
         )?),
+        68 => Ok(check_event_effectivity_for_card_68(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
         69 => Ok(check_event_effectivity_for_card_69(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        70 => Ok(check_event_effectivity_for_card_70(
             active_card,
             preview_card,
             player_types,
@@ -446,6 +496,22 @@ pub fn is_current_non_capability_event_effective(
             board,
         )?),
         74 => Ok(check_event_effectivity_for_card_74(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        75 => Ok(check_event_effectivity_for_card_75(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        76 => Ok(check_event_effectivity_for_card_76(
             active_card,
             preview_card,
             player_types,
@@ -525,6 +591,14 @@ pub fn is_current_non_capability_event_effective(
             preferible_event_type,
             board,
         )?),
+        89 => Ok(check_event_effectivity_for_card_89(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
         90 => Ok(check_event_effectivity_for_card_90(
             active_card,
             preview_card,
@@ -581,6 +655,22 @@ pub fn is_current_non_capability_event_effective(
             preferible_event_type,
             board,
         )?),
+        100 => Ok(check_event_effectivity_for_card_100(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        102 => Ok(check_event_effectivity_for_card_102(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
         103 => Ok(check_event_effectivity_for_card_103(
             active_card,
             preview_card,
@@ -606,14 +696,6 @@ pub fn is_current_non_capability_event_effective(
             preferible_event_type,
             board,
         )?),
-        100 => Ok(check_event_effectivity_for_card_100(
-            active_card,
-            preview_card,
-            player_types,
-            faction,
-            preferible_event_type,
-            board,
-        )?),
         108 => Ok(check_event_effectivity_for_card_108(
             active_card,
             preview_card,
@@ -621,6 +703,15 @@ pub fn is_current_non_capability_event_effective(
             faction,
             preferible_event_type,
             board,
+        )?),
+        110 => Ok(check_event_effectivity_for_card_110(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+            flags_controller,
         )?),
         111 => Ok(check_event_effectivity_for_card_111(
             active_card,
