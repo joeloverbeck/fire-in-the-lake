@@ -10,6 +10,7 @@ use players::domain::player::Player;
 use players::domain::player::Players;
 use players::domain::player_type::PlayerType;
 use randomization::controllers::randomization_controller::RandomizationController;
+use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
 use std::collections::HashMap;
 use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
@@ -48,6 +49,7 @@ impl PlayersController {
         possible_actions: Vec<String>,
         board: &Board,
         flags_controller: &FlagsController,
+        sequence_of_play_controller: &SequenceOfPlayController,
         keyboard_input_controller: &KeyboardInputController,
         display_controller: &DisplayController,
     ) -> Result<Decision, String> {
@@ -72,6 +74,7 @@ impl PlayersController {
                 possible_actions,
                 board,
                 flags_controller,
+                sequence_of_play_controller,
                 &self.randomization_controller,
                 keyboard_input_controller,
                 display_controller,
@@ -87,6 +90,7 @@ impl PlayersController {
                 possible_actions,
                 board,
                 flags_controller,
+                sequence_of_play_controller,
                 &self.randomization_controller,
                 keyboard_input_controller,
                 display_controller,
@@ -102,6 +106,7 @@ impl PlayersController {
                 possible_actions,
                 board,
                 flags_controller,
+                sequence_of_play_controller,
                 &self.randomization_controller,
                 keyboard_input_controller,
                 display_controller,
@@ -117,6 +122,7 @@ impl PlayersController {
                 possible_actions,
                 board,
                 flags_controller,
+                sequence_of_play_controller,
                 &self.randomization_controller,
                 keyboard_input_controller,
                 display_controller,

@@ -8,6 +8,7 @@ use players::domain::dummy_player::DummyPlayer;
 use players::domain::human_us_player::HumanUsPlayer;
 use players::domain::player_type::PlayerType;
 use randomization::controllers::randomization_controller::RandomizationController;
+use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
 use std::collections::HashMap;
 use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
@@ -27,6 +28,7 @@ pub trait Player {
         possible_actions: Vec<String>,
         board: &Board,
         flags_controller: &FlagsController,
+        sequence_of_play_controller: &SequenceOfPlayController,
         randomization_controller: &RandomizationController,
         keyboard_input_controller: &KeyboardInputController,
         display_controller: &DisplayController,

@@ -216,6 +216,17 @@ impl<'a> QueriesController {
         )
     }
 
+    pub fn are_there_any_casualties(&self, board: &Board) -> Result<bool, String> {
+        // NOTE: this works under the assumption that only US forces go to Casualties.
+
+        Ok(
+            board.get_forces_in_casualties(Forces::UndergroundUsIrregular)? > 0
+                || board.get_forces_in_casualties(Forces::ActiveUsIrregular)? > 0
+                || board.get_forces_in_casualties(Forces::UsTroop)? > 0
+                || board.get_forces_in_casualties(Forces::UsBase)? > 0,
+        )
+    }
+
     pub fn does_space_identifier_have_support(
         &self,
         space_identifier: SpaceIdentifiers,

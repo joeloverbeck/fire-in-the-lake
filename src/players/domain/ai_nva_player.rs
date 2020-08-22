@@ -12,6 +12,7 @@ use players::domain::events::is_current_non_capability_event_effective::is_curre
 use players::domain::player::Player;
 use players::domain::player_type::PlayerType;
 use randomization::controllers::randomization_controller::RandomizationController;
+use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
 use std::collections::HashMap;
 use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
@@ -37,6 +38,7 @@ impl Player for AiNvaPlayer {
         _possible_actions: Vec<String>,
         board: &Board,
         flags_controller: &FlagsController,
+        sequence_of_play_controller: &SequenceOfPlayController,
         randomization_controller: &RandomizationController,
         _keyboard_input_controller: &KeyboardInputController,
         _display_controller: &DisplayController,
@@ -84,6 +86,7 @@ impl Player for AiNvaPlayer {
             EventTypes::Shaded,
             board,
             flags_controller,
+            sequence_of_play_controller,
         )? {
             panic!("Was going to play the card for the event.");
         }

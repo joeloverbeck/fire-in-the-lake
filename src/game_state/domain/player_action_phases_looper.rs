@@ -59,6 +59,7 @@ impl PlayerActionPhasesLooper {
                         .unwrap(),
                     board,
                     &self.flags_controller,
+                    sequence_of_play_controller,
                     &keyboard_input_controller,
                     &display_controller,
                 )?;

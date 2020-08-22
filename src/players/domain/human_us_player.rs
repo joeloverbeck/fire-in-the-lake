@@ -11,6 +11,7 @@ use players::domain::player::Player;
 use players::domain::player_type::PlayerType;
 use players::domain::sequence_of_play_mutation::SequenceOfPlayMutation;
 use randomization::controllers::randomization_controller::RandomizationController;
+use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 use sequence_of_play::domain::slot_occupancy::SlotOccupancy;
 use std::collections::HashMap;
@@ -36,6 +37,7 @@ impl Player for HumanUsPlayer {
         possible_actions: Vec<String>,
         board: &Board,
         _flags_controller: &FlagsController,
+        _sequence_of_play_controller: &SequenceOfPlayController,
         _randomization_controller: &RandomizationController,
         keyboard_input_controller: &KeyboardInputController,
         display_controller: &DisplayController,
