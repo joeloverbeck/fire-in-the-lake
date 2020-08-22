@@ -1,0 +1,1 @@
+pub mod randomization_controller_returns_number;

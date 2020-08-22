@@ -117,12 +117,15 @@ impl SequenceOfPlayController {
         Ok(self.first_faction_event.is_some())
     }
 
-    pub fn get_possible_actions_for_current_elegible(&self) -> Result<Vec<String>, String> {
+    pub fn get_possible_actions_for_current_elegible(
+        &self,
+    ) -> Result<Vec<SequenceOfPlaySlots>, String> {
         if self.first_eligible.is_some() {
-            let mut vec: Vec<String> = Vec::new();
-            vec.push("operation".to_string());
-            vec.push("pass".to_string());
-            vec.push("event".to_string());
+            let mut vec: Vec<SequenceOfPlaySlots> = Vec::new();
+            vec.push(SequenceOfPlaySlots::FirstFactionOperationOnly);
+            vec.push(SequenceOfPlaySlots::FirstFactionOperationPlusSpecialActivity);
+            vec.push(SequenceOfPlaySlots::FirstFactionEvent);
+            vec.push(SequenceOfPlaySlots::Pass);
 
             return Ok(vec);
         }
@@ -181,23 +184,6 @@ mod tests {
         if possible_current_elegible_faction.is_none() {
             panic!("The current elegible faction should have been the US, but it was none!");
         }
-
-        Ok(())
-    }
-
-    #[test]
-    fn test_when_asking_for_a_string_with_possible_actions_for_current_elegible_it_returns_expected_ones(
-    ) -> Result<(), String> {
-        let mut sut = SequenceOfPlayController::new();
-
-        sut.register_faction_order([Factions::US, Factions::ARVN, Factions::VC, Factions::NVA])?;
-
-        let possible_operations_for_current_elegible =
-            sut.get_possible_actions_for_current_elegible()?;
-
-        assert_eq!(possible_operations_for_current_elegible[0], "operation");
-        assert_eq!(possible_operations_for_current_elegible[1], "pass");
-        assert_eq!(possible_operations_for_current_elegible[2], "event");
 
         Ok(())
     }

@@ -7,8 +7,9 @@ use players::domain::decision::Decision;
 use players::domain::dummy_player::DummyPlayer;
 use players::domain::human_us_player::HumanUsPlayer;
 use players::domain::player_type::PlayerType;
-use randomization::controllers::randomization_controller::RandomizationController;
+use randomization::controllers::randomization_controller_trait::RandomizationControllers;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
+use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 use std::collections::HashMap;
 use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
@@ -25,11 +26,11 @@ pub trait Player {
         preview_card: &Cards,
         current_elegible_faction: Factions,
         player_types: HashMap<Factions, PlayerType>,
-        possible_actions: Vec<String>,
+        possible_actions: Vec<SequenceOfPlaySlots>,
         board: &Board,
         flags_controller: &FlagsController,
         sequence_of_play_controller: &SequenceOfPlayController,
-        randomization_controller: &RandomizationController,
+        randomization_controller: &RandomizationControllers,
         keyboard_input_controller: &KeyboardInputController,
         display_controller: &DisplayController,
     ) -> Result<Decision, String>;

@@ -10,7 +10,7 @@ use players::domain::mutation_types::MutationTypes;
 use players::domain::player::Player;
 use players::domain::player_type::PlayerType;
 use players::domain::sequence_of_play_mutation::SequenceOfPlayMutation;
-use randomization::controllers::randomization_controller::RandomizationController;
+use randomization::controllers::randomization_controller_trait::RandomizationControllers;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 use sequence_of_play::domain::slot_occupancy::SlotOccupancy;
@@ -34,18 +34,18 @@ impl Player for HumanUsPlayer {
         _preview_card: &Cards,
         _current_elegible_faction: Factions,
         _player_types: HashMap<Factions, PlayerType>,
-        possible_actions: Vec<String>,
+        possible_actions: Vec<SequenceOfPlaySlots>,
         board: &Board,
         _flags_controller: &FlagsController,
         _sequence_of_play_controller: &SequenceOfPlayController,
-        _randomization_controller: &RandomizationController,
+        _randomization_controller: &RandomizationControllers,
         keyboard_input_controller: &KeyboardInputController,
         display_controller: &DisplayController,
     ) -> Result<Decision, String> {
         let mut possible_actions_text = "[".to_string();
 
         for entry in possible_actions {
-            possible_actions_text += &entry;
+            possible_actions_text += &entry.to_string();
         }
 
         possible_actions_text += &"]".to_string();

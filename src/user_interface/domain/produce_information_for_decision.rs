@@ -16,13 +16,16 @@ pub fn produce_information_for_decision(
 
     let mut information: Vec<String> = Vec::new();
 
-    match sequence_of_play_mutation.get_sequence_of_play_slot() {
+    let sequence_of_play_slot = sequence_of_play_mutation.get_sequence_of_play_slot();
+
+    match sequence_of_play_slot {
         SequenceOfPlaySlots::FirstFactionEvent => {
             information.push(format!("{} chose to play the card for the event", faction));
         }
         SequenceOfPlaySlots::Pass => {
             information.push(format!("{} chose to pass", faction));
         }
+        _ => panic!("Not implemented for {:?}", sequence_of_play_slot),
     }
 
     Ok(information)

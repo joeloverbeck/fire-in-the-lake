@@ -10,7 +10,9 @@ use players::domain::player::Player;
 use players::domain::player::Players;
 use players::domain::player_type::PlayerType;
 use randomization::controllers::randomization_controller::RandomizationController;
+use randomization::controllers::randomization_controller_trait::RandomizationControllers;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
+use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 use std::collections::HashMap;
 use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
@@ -20,7 +22,7 @@ pub struct PlayersController {
     arvn_player: Players,
     nva_player: Players,
     vc_player: Players,
-    randomization_controller: RandomizationController,
+    randomization_controller: RandomizationControllers,
 }
 
 impl Default for PlayersController {
@@ -36,7 +38,7 @@ impl PlayersController {
             arvn_player: DummyPlayer::new().into(),
             nva_player: AiNvaPlayer::new().into(),
             vc_player: DummyPlayer::new().into(),
-            randomization_controller: RandomizationController::new(),
+            randomization_controller: RandomizationController::new().into(),
         }
     }
 
@@ -46,7 +48,7 @@ impl PlayersController {
         faction: &Factions,
         active_card: &Cards,
         preview_card: &Cards,
-        possible_actions: Vec<String>,
+        possible_actions: Vec<SequenceOfPlaySlots>,
         board: &Board,
         flags_controller: &FlagsController,
         sequence_of_play_controller: &SequenceOfPlayController,

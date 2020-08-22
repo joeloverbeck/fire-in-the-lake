@@ -1,5 +1,8 @@
 extern crate lib_dice;
 
+use randomization::controllers::randomization_controller_trait::RandomizationControllerTrait;
+
+#[derive(Debug)]
 pub struct RandomizationController {}
 
 impl Default for RandomizationController {
@@ -8,13 +11,15 @@ impl Default for RandomizationController {
     }
 }
 
+impl RandomizationControllerTrait for RandomizationController {
+    fn roll_six_sided_die(&self) -> Result<u8, String> {
+        Ok(lib_dice::roll(1, 6, 0) as u8)
+    }
+}
+
 impl RandomizationController {
     pub fn new() -> RandomizationController {
         RandomizationController {}
-    }
-
-    pub fn roll_six_sided_die(&self) -> Result<u8, String> {
-        Ok(lib_dice::roll(1, 6, 0) as u8)
     }
 }
 
