@@ -63,6 +63,7 @@ use players::domain::events::effectivity::check_event_effectivity_for_card_79::c
 use players::domain::events::effectivity::check_event_effectivity_for_card_80::check_event_effectivity_for_card_80;
 use players::domain::events::effectivity::check_event_effectivity_for_card_81::check_event_effectivity_for_card_81;
 use players::domain::events::effectivity::check_event_effectivity_for_card_82::check_event_effectivity_for_card_82;
+use players::domain::events::effectivity::check_event_effectivity_for_card_84::check_event_effectivity_for_card_84;
 use players::domain::events::effectivity::check_event_effectivity_for_card_87::check_event_effectivity_for_card_87;
 use players::domain::events::effectivity::check_event_effectivity_for_card_88::check_event_effectivity_for_card_88;
 use players::domain::events::effectivity::check_event_effectivity_for_card_93::check_event_effectivity_for_card_93;
@@ -463,6 +464,14 @@ pub fn is_current_non_capability_event_effective(
             board,
         )?),
         82 => Ok(check_event_effectivity_for_card_82(
+            active_card,
+            preview_card,
+            player_types,
+            faction,
+            preferible_event_type,
+            board,
+        )?),
+        84 => Ok(check_event_effectivity_for_card_84(
             active_card,
             preview_card,
             player_types,

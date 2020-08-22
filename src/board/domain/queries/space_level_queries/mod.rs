@@ -1,2 +1,3 @@
+pub mod calculate_number_of_faction_cubes_in_space;
 pub mod can_attack_remove_a_number_of_enemies_in_space;
 pub mod does_space_have_support;

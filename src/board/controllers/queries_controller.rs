@@ -1,3 +1,4 @@
+use board::domain::queries::space_level_queries::calculate_number_of_faction_cubes_in_space::calculate_number_of_faction_cubes_in_space;
 use board::domain::queries::calculate_number_of_forces_of_a_particular_faction_in_space::calculate_number_of_forces_of_a_particular_faction_in_space;
 use board::domain::queries::space_level_queries::can_attack_remove_a_number_of_enemies_in_space::can_attack_remove_a_number_of_enemies_in_space;
 use board::domain::queries::board_level_queries::would_marching_a_particular_force_into_a_space_turn_it_into_nva_control::would_marching_a_particular_force_into_a_space_turn_it_into_nva_control;
@@ -154,6 +155,21 @@ impl<'a> QueriesController {
                 occupable_space.get_geographic_area().unwrap() == geographic_area
                     && occupable_space.get_control_type().unwrap() == control_type
             }))
+    }
+
+    pub fn are_there_any_cubes_of_a_faction_anywhere(
+        &self,
+        faction: Factions,
+        board: &Board,
+    ) -> Result<bool, String> {
+        Ok(board
+            .get_occupable_spaces()?
+            .iter()
+            .map(|(_, occupable_space)| {
+                calculate_number_of_faction_cubes_in_space(faction, occupable_space).unwrap()
+            })
+            .sum::<u8>()
+            > 0)
     }
 
     pub fn are_there_any_forces_of_a_faction_anywhere(

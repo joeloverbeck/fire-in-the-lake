@@ -58,6 +58,7 @@ pub mod check_event_effectivity_for_card_79;
 pub mod check_event_effectivity_for_card_80;
 pub mod check_event_effectivity_for_card_81;
 pub mod check_event_effectivity_for_card_82;
+pub mod check_event_effectivity_for_card_84;
 pub mod check_event_effectivity_for_card_87;
 pub mod check_event_effectivity_for_card_88;
 pub mod check_event_effectivity_for_card_93;
