@@ -31,7 +31,7 @@ pub fn check_event_effectivity_for_card_102(
 
         if faction == &Factions::NVA {
             return Ok(queries_controller
-                .is_there_any_number_of_a_particular_force_in_a_geographic_area(
+                .is_there_any_number_of_a_specific_force_in_a_geographic_area(
                     Forces::NvaBase,
                     &GeographicAreas::SouthVietnam,
                     board,
@@ -40,7 +40,7 @@ pub fn check_event_effectivity_for_card_102(
 
         if faction == &Factions::VC {
             return Ok(queries_controller
-                .is_there_any_number_of_a_particular_force_in_a_geographic_area(
+                .is_there_any_number_of_a_specific_force_in_a_geographic_area(
                     Forces::VcBase,
                     &GeographicAreas::SouthVietnam,
                     board,

@@ -1,3 +1,4 @@
+use game_definitions::terrain_types::TerrainTypes;
 use board::domain::queries::space_level_queries::calculate_number_of_faction_cubes_in_space::calculate_number_of_faction_cubes_in_space;
 use board::domain::queries::calculate_number_of_forces_of_a_particular_faction_in_space::calculate_number_of_forces_of_a_particular_faction_in_space;
 use board::domain::queries::space_level_queries::can_attack_remove_a_number_of_enemies_in_space::can_attack_remove_a_number_of_enemies_in_space;
@@ -125,7 +126,52 @@ impl<'a> QueriesController {
             .any(|(_, occupable_space)| occupable_space.get_forces(force).unwrap() > 0))
     }
 
-    pub fn is_there_any_number_of_a_particular_force_in_a_geographic_area(
+    pub fn is_there_a_specific_force_in_a_terrain_type(
+        &self,
+        force: Forces,
+        terrain_type: TerrainTypes,
+        board: &Board,
+    ) -> Result<bool, String> {
+        Ok(board
+            .get_occupable_spaces()?
+            .iter()
+            .any(|(_, occupable_space)| {
+                occupable_space.get_terrain_type().unwrap() == &terrain_type
+                    && occupable_space.get_forces(force).unwrap() > 0
+            }))
+    }
+
+    pub fn is_there_a_specific_force_in_any_province(
+        &self,
+        force: Forces,
+        board: &Board,
+    ) -> Result<bool, String> {
+        // Provinces are either Highlands, Lowlands or Jungles.
+
+        Ok(self
+            .get_space_identifiers_with_a_particular_force_and_terrain_type(
+                force,
+                TerrainTypes::Lowland,
+                board,
+            )?
+            .is_empty()
+            || self
+                .get_space_identifiers_with_a_particular_force_and_terrain_type(
+                    force,
+                    TerrainTypes::Highland,
+                    board,
+                )?
+                .is_empty()
+            || self
+                .get_space_identifiers_with_a_particular_force_and_terrain_type(
+                    force,
+                    TerrainTypes::Jungle,
+                    board,
+                )?
+                .is_empty())
+    }
+
+    pub fn is_there_any_number_of_a_specific_force_in_a_geographic_area(
         &self,
         force: Forces,
         geographic_area: &GeographicAreas,
@@ -207,24 +253,43 @@ impl<'a> QueriesController {
             .collect::<Vec<&SpaceIdentifiers>>())
     }
 
+    pub fn get_space_identifiers_with_a_particular_force_and_terrain_type(
+        &self,
+        force: Forces,
+        terrain_type: TerrainTypes,
+        board: &'a Board,
+    ) -> Result<Vec<&'a SpaceIdentifiers>, String> {
+        Ok(board
+            .get_occupable_spaces()?
+            .iter()
+            .filter(|(_, occupable_space)| {
+                occupable_space.get_terrain_type().unwrap() == &terrain_type
+            })
+            .filter(|(_, occupable_space)| {
+                are_there_any_of_a_particular_force_in_space(force, &occupable_space).unwrap()
+            })
+            .map(|(space_identifier, _)| space_identifier)
+            .collect::<Vec<&SpaceIdentifiers>>())
+    }
+
     pub fn are_there_any_us_irregulars_on_laos_or_cambodia(
         &self,
         board: &Board,
     ) -> Result<bool, String> {
         Ok(
-            (self.is_there_any_number_of_a_particular_force_in_a_geographic_area(
+            (self.is_there_any_number_of_a_specific_force_in_a_geographic_area(
                 Forces::UndergroundUsIrregular,
                 &GeographicAreas::Laos,
                 board,
-            )? || self.is_there_any_number_of_a_particular_force_in_a_geographic_area(
+            )? || self.is_there_any_number_of_a_specific_force_in_a_geographic_area(
                 Forces::ActiveUsIrregular,
                 &GeographicAreas::Laos,
                 board,
-            )?) || (self.is_there_any_number_of_a_particular_force_in_a_geographic_area(
+            )?) || (self.is_there_any_number_of_a_specific_force_in_a_geographic_area(
                 Forces::UndergroundUsIrregular,
                 &GeographicAreas::Cambodia,
                 board,
-            )? || self.is_there_any_number_of_a_particular_force_in_a_geographic_area(
+            )? || self.is_there_any_number_of_a_specific_force_in_a_geographic_area(
                 Forces::ActiveUsIrregular,
                 &GeographicAreas::Cambodia,
                 board,
@@ -251,6 +316,20 @@ impl<'a> QueriesController {
         let corresponding_space = board.get_space(space_identifier)?;
 
         Ok(does_space_have_support(&corresponding_space)?)
+    }
+
+    pub fn are_there_any_forces_of_a_faction_available(
+        &self,
+        faction: Factions,
+        board: &Board,
+    ) -> Result<bool, String> {
+        match faction {
+            Factions::US => Ok(board.get_forces_available(Forces::UsTroop)? > 0
+                || board.get_forces_available(Forces::ActiveUsIrregular)? > 0
+                || board.get_forces_available(Forces::UndergroundUsIrregular)? > 0
+                || board.get_forces_available(Forces::UsBase)? > 0),
+            _ => panic!("Not implemented for {:?}", faction),
+        }
     }
 
     pub fn would_marching_a_particular_force_into_space_identifiers_turn_any_into_nva_control(
@@ -589,7 +668,7 @@ mod tests {
         let sut = QueriesController::new();
 
         assert!(
-            sut.is_there_any_number_of_a_particular_force_in_a_geographic_area(
+            sut.is_there_any_number_of_a_specific_force_in_a_geographic_area(
                 Forces::UndergroundUsIrregular,
                 &GeographicAreas::Laos,
                 &board
@@ -615,7 +694,7 @@ mod tests {
         let sut = QueriesController::new();
 
         assert_eq!(
-            sut.is_there_any_number_of_a_particular_force_in_a_geographic_area(
+            sut.is_there_any_number_of_a_specific_force_in_a_geographic_area(
                 Forces::UndergroundUsIrregular,
                 &GeographicAreas::NorthVietnam,
                 &board

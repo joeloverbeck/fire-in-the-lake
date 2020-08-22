@@ -29,16 +29,15 @@ pub fn check_event_effectivity_for_card_55(
 
     if faction == &Factions::VC
         || faction == &Factions::NVA && board.get_faction_stat(FactionStats::TheTrail)? > 0
-        || (queries_controller.is_there_any_number_of_a_particular_force_in_a_geographic_area(
+        || (queries_controller.is_there_any_number_of_a_specific_force_in_a_geographic_area(
             Forces::NvaBase,
             &GeographicAreas::Cambodia,
             &board,
-        )? || queries_controller
-            .is_there_any_number_of_a_particular_force_in_a_geographic_area(
-                Forces::NvaBase,
-                &GeographicAreas::Laos,
-                &board,
-            )?)
+        )? || queries_controller.is_there_any_number_of_a_specific_force_in_a_geographic_area(
+            Forces::NvaBase,
+            &GeographicAreas::Laos,
+            &board,
+        )?)
     {
         return Ok(true);
     }
