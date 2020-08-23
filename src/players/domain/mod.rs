@@ -1,5 +1,6 @@
 pub mod ai_nva_player;
 pub mod decision;
+pub mod decision_information;
 pub mod decision_making;
 pub mod decision_production;
 pub mod does_card_have_a_factions_capability;

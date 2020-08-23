@@ -1,6 +1,7 @@
 use board::domain::board::Board;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
+use players::domain::decision_information::DecisionInformation;
 use players::domain::faction_stats_mutation::FactionStatsMutation;
 use players::domain::mutations::Mutations;
 use players::domain::mutations_production::produce_faction_stats_mutations_for_passing::produce_faction_stats_mutations_for_passing;
@@ -27,5 +28,9 @@ pub fn produce_decision_to_pass(faction: Factions, board: &Board) -> Result<Deci
     mutations.set_sequence_of_play_mutations(sequence_of_play_mutations)?;
     mutations.set_faction_stats_mutations(faction_stats_mutations)?;
 
-    Ok(Decision::new(mutations))
+    Ok(Decision::new(
+        mutations,
+        Some(DecisionInformation::Pass),
+        None,
+    ))
 }

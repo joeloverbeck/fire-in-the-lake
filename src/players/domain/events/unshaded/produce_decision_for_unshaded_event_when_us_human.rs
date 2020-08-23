@@ -7,6 +7,7 @@ use game_definitions::flags::Flags;
 use game_definitions::forces::Forces;
 use game_definitions::space_identifiers::SpaceIdentifiers;
 use players::domain::decision::Decision;
+use players::domain::decision_information::DecisionInformation;
 use players::domain::events::request_forces_movement_from_human::request_forces_movement_from_human;
 use players::domain::faction_stats_mutation::FactionStatsMutation;
 use players::domain::flags_mutation::FlagsMutation;
@@ -53,7 +54,11 @@ pub fn produce_decision_for_unshaded_event_when_us_human(
         mutations.set_faction_stats_mutations(faction_stat_mutations)?;
         mutations.set_flags_mutations(flag_mutations)?;
 
-        Ok(Decision::new(mutations))
+        Ok(Decision::new(
+            mutations,
+            Some(DecisionInformation::Event),
+            None,
+        ))
     } else if active_card.get_number()? == 22 {
         // US places up to 6 Troops in Da Nang, up to 3 from out of play.
 

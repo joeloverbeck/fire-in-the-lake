@@ -3,6 +3,7 @@ use board::domain::translate_typed_input_to_space_identifier::translate_typed_in
 use game_definitions::forces::Forces;
 use game_definitions::space_identifiers::SpaceIdentifiers;
 use players::domain::decision::Decision;
+use players::domain::decision_information::DecisionInformation;
 use players::domain::forces_mutation::ForcesMutation;
 use players::domain::mutation_types::MutationTypes;
 use players::domain::mutations::Mutations;
@@ -104,7 +105,11 @@ pub fn request_forces_movement_from_human(
 
     mutations.set_forces_mutations(forces_mutations)?;
 
-    Ok(Decision::new(mutations))
+    Ok(Decision::new(
+        mutations,
+        Some(DecisionInformation::Event),
+        None,
+    ))
 }
 
 fn push_mutation_for_interpreted_case(

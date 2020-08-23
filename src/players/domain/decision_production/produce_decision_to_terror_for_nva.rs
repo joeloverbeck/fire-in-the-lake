@@ -5,6 +5,7 @@ use game_definitions::faction_stats::FactionStats;
 use game_definitions::factions::Factions;
 use game_definitions::forces::Forces;
 use players::domain::decision::Decision;
+use players::domain::decision_information::DecisionInformation;
 use players::domain::faction_stats_mutation::FactionStatsMutation;
 use players::domain::forces_mutation::ForcesMutation;
 use players::domain::mutation_types::MutationTypes;
@@ -84,7 +85,7 @@ pub fn produce_decision_to_terror_for_nva(
             FactionStats::NvaResources,
             MutationTypes::Reduce,
             board.get_faction_stat(FactionStats::NvaResources)?,
-            nva_resources,
+            board.get_faction_stat(FactionStats::NvaResources)? - nva_resources,
         ));
     }
 
@@ -104,5 +105,9 @@ pub fn produce_decision_to_terror_for_nva(
     mutations.set_faction_stats_mutations(faction_stats_mutations)?;
     mutations.set_sequence_of_play_mutations(sequence_of_play_mutations)?;
 
-    Ok(Decision::new(mutations))
+    Ok(Decision::new(
+        mutations,
+        Some(DecisionInformation::Terror),
+        None,
+    ))
 }

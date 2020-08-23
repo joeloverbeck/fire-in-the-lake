@@ -4,6 +4,7 @@ use flags::controllers::flags_controller::FlagsController;
 use game_definitions::faction_stats::FactionStats;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
+use players::domain::decision_information::DecisionInformation;
 use players::domain::events::unshaded::produce_decision_for_unshaded_event_when_us_human::produce_decision_for_unshaded_event_when_us_human;
 use players::domain::faction_stats_mutation::FactionStatsMutation;
 use players::domain::mutation_types::MutationTypes;
@@ -92,7 +93,11 @@ impl Player for HumanUsPlayer {
             mutations.set_sequence_of_play_mutations(sequence_of_play_mutations)?;
             mutations.set_faction_stats_mutations(faction_stats_mutations)?;
 
-            Ok(Decision::new(mutations))
+            Ok(Decision::new(
+                mutations,
+                Some(DecisionInformation::Pass),
+                None,
+            ))
         } else {
             todo!()
         }

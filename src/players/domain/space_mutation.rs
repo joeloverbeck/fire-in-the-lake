@@ -30,15 +30,15 @@ impl SpaceMutation {
         &self.space_identifier
     }
 
-    pub fn get_space_mutation_types(&self) -> &SpaceMutationTypes {
+    pub fn get_space_mutation_type(&self) -> &SpaceMutationTypes {
         &self.space_mutation_types
     }
 
-    pub fn get_mutation_types(&self) -> &MutationTypes {
+    pub fn get_mutation_type(&self) -> &MutationTypes {
         &self.mutation_types
     }
 
-    pub fn get_space_mutation_values(&self) -> &SpaceMutationValues {
+    pub fn get_space_mutation_value(&self) -> &SpaceMutationValues {
         &self.space_mutation_values.as_ref().unwrap()
     }
 }
