@@ -8,6 +8,8 @@ pub fn create_north_vietnam() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::NorthVietnam,
         Province::new(
+            SpaceIdentifiers::NorthVietnam,
+            0,
             GeographicAreas::NorthVietnam,
             TerrainTypes::Highland,
             vec![

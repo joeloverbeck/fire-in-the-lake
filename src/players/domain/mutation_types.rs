@@ -2,5 +2,10 @@
 pub enum MutationTypes {
     Increase,
     Reduce,
+    Flip,
     Move,
+    Set,
+    Unset,
+    ShiftUp,
+    ShiftDown,
 }

@@ -1,8 +1,11 @@
 use board::domain::board::Board;
 use flags::controllers::flags_controller::FlagsController;
 use game_definitions::factions::Factions;
+use persistence::domain::persist_faction_stats_mutations::persist_faction_stats_mutations;
+use persistence::domain::persist_flags_mutations::persist_flags_mutations;
+use persistence::domain::persist_forces_mutations::persist_forces_mutations;
+use persistence::domain::persist_sequence_of_play_mutations::persist_sequence_of_play_mutations;
 use players::domain::decision::Decision;
-use players::domain::mutation_types::MutationTypes;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
 
 pub struct MemoryPersistenceController {}
@@ -27,48 +30,31 @@ impl MemoryPersistenceController {
         flags_controller: &mut FlagsController,
     ) -> Result<(), String> {
         // Goes through every mutation and manipulates either the board or the flags as necessary.
-        for mutation in decision.get_sequence_of_play_mutations() {
-            sequence_of_play_controller.register_pick(
-                mutation.get_faction(),
+        if decision.get_mutations()?.has_sequence_of_play_mutations()? {
+            persist_sequence_of_play_mutations(
+                decision.get_mutations()?.get_sequence_of_play_mutations()?,
                 faction_order,
-                mutation.get_sequence_of_play_slot(),
+                sequence_of_play_controller,
             )?;
         }
 
-        for mutation in decision.get_faction_stats_mutations() {
-            if mutation.get_mutation_type() == &MutationTypes::Increase {
-                board.increase_faction_stat(mutation.get_faction_stat(), mutation.get_value())?;
-            } else if mutation.get_mutation_type() == &MutationTypes::Reduce {
-                board.reduce_faction_stat(mutation.get_faction_stat(), mutation.get_value())?;
-            } else {
-                panic!("Case not handled for faction stats mutation {:?}", mutation);
-            }
+        if decision.get_mutations()?.has_faction_stats_mutations()? {
+            persist_faction_stats_mutations(
+                decision.get_mutations()?.get_faction_stats_mutations()?,
+                board,
+            )?;
         }
 
         // Persist forces mutations
-        for mutation in decision.get_forces_mutations() {
-            if mutation.get_mutation_type() == &MutationTypes::Move {
-                board.reduce_forces_in_space(
-                    mutation.get_forces(),
-                    mutation.get_from().unwrap(),
-                    mutation.get_number(),
-                )?;
-                board.increase_forces_in_space(
-                    mutation.get_forces(),
-                    mutation.get_to().unwrap(),
-                    mutation.get_number(),
-                )?;
-            } else {
-                panic!(
-                    "Case not handled for persist forces mutations type {:?}. Mutation: {:?}",
-                    mutation.get_mutation_type(),
-                    mutation
-                );
-            }
+        if decision.get_mutations()?.has_forces_mutations()? {
+            persist_forces_mutations(decision.get_mutations()?.get_forces_mutations()?, board)?;
         }
 
-        for mutation in decision.get_flags_mutations() {
-            flags_controller.set_flag(*mutation.get_flag(), mutation.get_value())?;
+        if decision.get_mutations()?.has_flags_mutations()? {
+            persist_flags_mutations(
+                decision.get_mutations()?.get_flags_mutations()?,
+                flags_controller,
+            )?;
         }
 
         Ok(())
@@ -82,6 +68,8 @@ mod tests {
     use board::controllers::setup_controller::SetupController;
     use game_definitions::faction_stats::FactionStats;
     use players::domain::faction_stats_mutation::FactionStatsMutation;
+    use players::domain::mutation_types::MutationTypes;
+    use players::domain::mutations::Mutations;
 
     #[test]
     fn test_after_persisting_a_faction_stat_mutation_the_value_has_changed_to_the_expected_value(
@@ -101,7 +89,11 @@ mod tests {
             4,
         ));
 
-        let decision = Decision::new(Vec::new(), faction_stats_mutations, Vec::new(), Vec::new());
+        let mut mutations = Mutations::new();
+
+        mutations.set_faction_stats_mutations(faction_stats_mutations)?;
+
+        let decision = Decision::new(mutations);
 
         sut.persist_decision(
             &decision,

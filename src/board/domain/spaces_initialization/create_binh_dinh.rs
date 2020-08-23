@@ -8,6 +8,8 @@ pub fn create_binh_dinh() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::BinhDinh,
         Province::new(
+            SpaceIdentifiers::BinhDinh,
+            2,
             GeographicAreas::SouthVietnam,
             TerrainTypes::Highland,
             vec![

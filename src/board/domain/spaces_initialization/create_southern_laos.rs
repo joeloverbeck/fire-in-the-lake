@@ -8,6 +8,8 @@ pub fn create_southern_laos() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::SouthernLaos,
         Province::new(
+            SpaceIdentifiers::SouthernLaos,
+            0,
             GeographicAreas::Laos,
             TerrainTypes::Jungle,
             vec![

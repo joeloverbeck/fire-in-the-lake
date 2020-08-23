@@ -8,11 +8,16 @@ pub fn produce_information_for_decision(
 ) -> Result<Vec<String>, String> {
     // Depending on the slot it has chosen to occupy, we can determine what it
     // Intended to do.
-    if decision.get_sequence_of_play_mutations().len() > 1 {
+    if decision
+        .get_mutations()?
+        .get_sequence_of_play_mutations()?
+        .len()
+        > 1
+    {
         panic!("Was going to produce information for a decision, but couldn't handle the case that the sequence of play mutations would be more than one.");
     }
 
-    let sequence_of_play_mutation = &decision.get_sequence_of_play_mutations()[0];
+    let sequence_of_play_mutation = &decision.get_mutations()?.get_sequence_of_play_mutations()?[0];
 
     let mut information: Vec<String> = Vec::new();
 

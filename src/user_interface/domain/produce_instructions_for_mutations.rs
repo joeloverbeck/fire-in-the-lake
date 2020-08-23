@@ -12,7 +12,11 @@ pub fn produce_instructions_for_mutations(
     let mut instructions: Vec<String> = Vec::new();
 
     // First create the instructions for moving the pieces around in the Sequence of Play area.
-    for mutation in decision.get_sequence_of_play_mutations().iter() {
+    for mutation in decision
+        .get_mutations()?
+        .get_sequence_of_play_mutations()?
+        .iter()
+    {
         if mutation.get_sequence_of_play_slot() == &SequenceOfPlaySlots::FirstFactionEvent
             && mutation.get_slot_occupancy() == &SlotOccupancy::Occupied
         {
@@ -31,7 +35,11 @@ pub fn produce_instructions_for_mutations(
     }
 
     // Second handle the mutations to the faction stats
-    for mutation in decision.get_faction_stats_mutations().iter() {
+    for mutation in decision
+        .get_mutations()?
+        .get_faction_stats_mutations()?
+        .iter()
+    {
         if mutation.get_mutation_type() == &MutationTypes::Reduce {
             // Wants to reduce a faction stat.
             instructions.push(format!(
@@ -57,7 +65,7 @@ pub fn produce_instructions_for_mutations(
     }
 
     // Third handle the mutations to the forces.
-    for mutation in decision.get_forces_mutations().iter() {
+    for mutation in decision.get_mutations()?.get_forces_mutations()?.iter() {
         if mutation.get_mutation_type() == &MutationTypes::Move {
             // Sanity check
             if mutation.get_from().is_none() || mutation.get_to().is_none() {
@@ -80,8 +88,10 @@ pub fn produce_instructions_for_mutations(
     }
 
     // Fourth handle the flag mutations
-    for mutation in decision.get_flags_mutations().iter() {
-        if mutation.get_flag() == &Flags::BlowtorchComer && mutation.get_value() {
+    for mutation in decision.get_mutations()?.get_flags_mutations()?.iter() {
+        if mutation.get_flag() == &Flags::BlowtorchComer
+            && mutation.get_mutation_type() == &MutationTypes::Set
+        {
             // 'Blowtorch Komer' will be active throughout the next Coup Round.
             instructions.push("'Blowtorch Komer' is now active through the next Coup Round: 'This Support Phase, Pacify costs 1 Resource per step or Terror.'".to_string());
         } else {

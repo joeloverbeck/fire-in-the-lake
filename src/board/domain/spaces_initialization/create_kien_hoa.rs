@@ -8,6 +8,8 @@ pub fn create_kien_hoa() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::KienHoaVinhBinh,
         Province::new(
+            SpaceIdentifiers::KienHoaVinhBinh,
+            2,
             GeographicAreas::SouthVietnam,
             TerrainTypes::Lowland,
             vec![

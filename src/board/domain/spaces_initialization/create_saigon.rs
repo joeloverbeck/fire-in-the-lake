@@ -7,6 +7,8 @@ pub fn create_saigon() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::Saigon,
         City::new(
+            SpaceIdentifiers::Saigon,
+            6,
             GeographicAreas::SouthVietnam,
             vec![
                 SpaceIdentifiers::KienHoaVinhBinh,

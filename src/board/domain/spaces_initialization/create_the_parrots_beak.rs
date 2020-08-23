@@ -8,6 +8,8 @@ pub fn create_the_parrots_beak() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::TheParrotsBeak,
         Province::new(
+            SpaceIdentifiers::TheParrotsBeak,
+            0,
             GeographicAreas::Cambodia,
             TerrainTypes::Jungle,
             vec![

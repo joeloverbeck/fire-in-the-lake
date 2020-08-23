@@ -7,6 +7,8 @@ pub fn create_hue() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::Hue,
         City::new(
+            SpaceIdentifiers::Hue,
+            2,
             GeographicAreas::SouthVietnam,
             vec![
                 SpaceIdentifiers::Route1North,

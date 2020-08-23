@@ -8,6 +8,8 @@ pub fn create_pleiku() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::PleikuDarlac,
         Province::new(
+            SpaceIdentifiers::PleikuDarlac,
+            1,
             GeographicAreas::SouthVietnam,
             TerrainTypes::Highland,
             vec![

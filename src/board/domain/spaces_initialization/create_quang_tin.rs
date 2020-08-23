@@ -8,6 +8,8 @@ pub fn create_quang_tin() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::QuangTinQuangNgai,
         Province::new(
+            SpaceIdentifiers::QuangTinQuangNgai,
+            2,
             GeographicAreas::SouthVietnam,
             TerrainTypes::Lowland,
             vec![

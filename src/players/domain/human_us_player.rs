@@ -7,6 +7,7 @@ use players::domain::decision::Decision;
 use players::domain::events::unshaded::produce_decision_for_unshaded_event_when_us_human::produce_decision_for_unshaded_event_when_us_human;
 use players::domain::faction_stats_mutation::FactionStatsMutation;
 use players::domain::mutation_types::MutationTypes;
+use players::domain::mutations::Mutations;
 use players::domain::player::Player;
 use players::domain::player_type::PlayerType;
 use players::domain::sequence_of_play_mutation::SequenceOfPlayMutation;
@@ -86,12 +87,12 @@ impl Player for HumanUsPlayer {
                 3,
             ));
 
-            Ok(Decision::new(
-                sequence_of_play_mutations,
-                faction_stats_mutations,
-                Vec::new(),
-                Vec::new(),
-            ))
+            let mut mutations = Mutations::new();
+
+            mutations.set_sequence_of_play_mutations(sequence_of_play_mutations)?;
+            mutations.set_faction_stats_mutations(faction_stats_mutations)?;
+
+            Ok(Decision::new(mutations))
         } else {
             todo!()
         }

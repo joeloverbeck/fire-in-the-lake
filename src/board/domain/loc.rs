@@ -10,12 +10,18 @@ use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct LoC {
+    space_identifier: SpaceIdentifiers,
     forces: HashMap<Forces, u8>,
     geographic_area: GeographicAreas,
     adjacent_spaces: Vec<SpaceIdentifiers>,
+    sabotage: bool,
 }
 
 impl Space for LoC {
+    fn get_space_identifier(&self) -> Result<SpaceIdentifiers, String> {
+        Ok(self.space_identifier)
+    }
+
     fn set_forces(&mut self, forces: Forces, value: u8) -> Result<(), String> {
         *self.forces.get_mut(&forces).unwrap() = value;
 
@@ -27,7 +33,7 @@ impl Space for LoC {
     }
 
     fn get_support_level(&self) -> Result<&SupportLevels, String> {
-        panic!("Asked an LoC's support level. LoCs don't have support levels. Something is wrong with the calling code.");
+        panic!("Asked a LoC's support level. LoCs don't have support levels. Something is wrong with the calling code.");
     }
 
     fn set_support_level(&mut self, _support_level: SupportLevels) -> Result<(), String> {
@@ -44,6 +50,10 @@ impl Space for LoC {
         *self.forces.get_mut(&forces).unwrap() += number;
 
         Ok(())
+    }
+
+    fn get_total_support(&self) -> Result<u8, String> {
+        panic!("Asked the total support of a LoC. They don't have any support.");
     }
 
     fn set_control_type(&mut self, _control_type: ControlTypes) -> Result<(), String> {
@@ -73,16 +83,59 @@ impl Space for LoC {
 
     fn get_terrain_type(&self) -> Result<&TerrainTypes, String> {
         // A LoC has no terrain type, and shouldn't ask of it.
-        panic!("Asked the terrain type of an LoC. LoCs don't have any terrain type.");
+        panic!("Asked the terrain type of a LoC. LoCs don't have any terrain type.");
+    }
+
+    fn get_population(&self) -> Result<u8, String> {
+        // LoCs don't have a population, and it's wrong to ask.
+        panic!("Asked the population of a LoC. LoCs don't have population!");
+    }
+
+    fn is_habitable(&self) -> Result<bool, String> {
+        Ok(false)
+    }
+
+    fn has_terror(&self) -> Result<bool, String> {
+        Ok(false)
+    }
+
+    fn set_terror(&mut self) -> Result<(), String> {
+        panic!("Attempted to set terror on a LoC. They can only get sabotaged.");
+    }
+
+    fn unset_terror(&mut self) -> Result<(), String> {
+        panic!("Attempted to unset terror on a LoC. They can only get sabotaged.");
+    }
+
+    fn has_sabotage(&self) -> Result<bool, String> {
+        Ok(self.sabotage)
+    }
+
+    fn set_sabotage(&mut self) -> Result<(), String> {
+        self.sabotage = true;
+
+        Ok(())
+    }
+
+    fn unset_sabotage(&mut self) -> Result<(), String> {
+        self.sabotage = false;
+
+        Ok(())
     }
 }
 
 impl LoC {
-    pub fn new(geographic_area: GeographicAreas, adjacent_spaces: Vec<SpaceIdentifiers>) -> LoC {
+    pub fn new(
+        space_identifier: SpaceIdentifiers,
+        geographic_area: GeographicAreas,
+        adjacent_spaces: Vec<SpaceIdentifiers>,
+    ) -> LoC {
         LoC {
+            space_identifier,
             forces: initialize_hashmap_of_forces(),
             geographic_area,
             adjacent_spaces,
+            sabotage: false,
         }
     }
 }

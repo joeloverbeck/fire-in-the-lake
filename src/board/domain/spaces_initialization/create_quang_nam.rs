@@ -8,6 +8,8 @@ pub fn create_quang_nam() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::QuangNam,
         Province::new(
+            SpaceIdentifiers::QuangNam,
+            1,
             GeographicAreas::SouthVietnam,
             TerrainTypes::Highland,
             vec![

@@ -5,6 +5,7 @@ use game_definitions::space_identifiers::SpaceIdentifiers;
 use players::domain::decision::Decision;
 use players::domain::forces_mutation::ForcesMutation;
 use players::domain::mutation_types::MutationTypes;
+use players::domain::mutations::Mutations;
 use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 use user_interface::domain::input_violation_types::InputViolationTypes;
@@ -99,12 +100,11 @@ pub fn request_forces_movement_from_human(
         }
     }
 
-    Ok(Decision::new(
-        Vec::new(),
-        Vec::new(),
-        forces_mutations,
-        Vec::new(),
-    ))
+    let mut mutations = Mutations::new();
+
+    mutations.set_forces_mutations(forces_mutations)?;
+
+    Ok(Decision::new(mutations))
 }
 
 fn push_mutation_for_interpreted_case(

@@ -34,7 +34,8 @@ mod tests {
 
         if let Some(decision) = possible_decision {
             assert_eq!(
-                decision.get_sequence_of_play_mutations()[0].get_sequence_of_play_slot(),
+                decision.get_mutations()?.get_sequence_of_play_mutations()?[0]
+                    .get_sequence_of_play_slot(),
                 &SequenceOfPlaySlots::Pass
             );
         }

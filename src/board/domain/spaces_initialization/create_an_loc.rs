@@ -7,6 +7,8 @@ pub fn create_an_loc() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::AnLoc,
         City::new(
+            SpaceIdentifiers::AnLoc,
+            1,
             GeographicAreas::SouthVietnam,
             vec![
                 SpaceIdentifiers::TheFishhook,

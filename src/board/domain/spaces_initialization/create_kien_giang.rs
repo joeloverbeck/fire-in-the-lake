@@ -8,6 +8,8 @@ pub fn create_kien_giang() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::KienGiangAnXuyen,
         Province::new(
+            SpaceIdentifiers::KienGiangAnXuyen,
+            2,
             GeographicAreas::SouthVietnam,
             TerrainTypes::Lowland,
             vec![

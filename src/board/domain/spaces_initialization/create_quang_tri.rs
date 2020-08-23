@@ -8,6 +8,8 @@ pub fn create_quang_tri() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::QuangTriThuaThien,
         Province::new(
+            SpaceIdentifiers::QuangTriThuaThien,
+            2,
             GeographicAreas::SouthVietnam,
             TerrainTypes::Highland,
             vec![

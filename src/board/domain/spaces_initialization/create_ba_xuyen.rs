@@ -8,6 +8,8 @@ pub fn create_ba_xuyen() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::BaXuyen,
         Province::new(
+            SpaceIdentifiers::BaXuyen,
+            1,
             GeographicAreas::SouthVietnam,
             TerrainTypes::Lowland,
             vec![

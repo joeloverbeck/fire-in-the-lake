@@ -4,7 +4,7 @@ use game_definitions::us_capabilities::UsCapabilities;
 use std::collections::HashMap;
 
 pub struct FlagsController {
-    flags: HashMap<Flags, bool>,
+    flags: Vec<Flags>,
     us_capabilities: HashMap<UsCapabilities, EventTypes>,
     is_monsoon: bool,
 }
@@ -18,7 +18,7 @@ impl Default for FlagsController {
 impl FlagsController {
     pub fn new() -> FlagsController {
         FlagsController {
-            flags: [(Flags::BlowtorchComer, false)].iter().cloned().collect(),
+            flags: [Flags::BlowtorchComer].to_vec(),
             us_capabilities: HashMap::new(),
             is_monsoon: false,
         }
@@ -28,29 +28,28 @@ impl FlagsController {
         Ok(self.is_monsoon)
     }
 
-    fn crash_if_the_flag_wasnt_initialized(&self, flag: Flags) -> Result<(), String> {
-        if !self.flags.contains_key(&flag) {
-            return Err(format!(
-                "Couldn't find the flag {:?} in the collection! Contents: {:?}",
-                flag, self.flags
-            ));
+    pub fn set_flag(&mut self, flag: Flags) -> Result<(), String> {
+        // Sanity check
+        if self
+            .flags
+            .iter()
+            .any(|contained_flag| contained_flag == &flag)
+        {
+            // It was already there. Something is wrong with the calling code,
+            // but it wanted to set the flag, and it's already set.
+            return Ok(());
         }
 
-        Ok(())
-    }
-
-    pub fn set_flag(&mut self, flag: Flags, value: bool) -> Result<(), String> {
-        self.crash_if_the_flag_wasnt_initialized(flag)?;
-
-        *self.flags.get_mut(&flag).unwrap() = value;
+        self.flags.push(flag);
 
         Ok(())
     }
 
-    pub fn get_flag(&self, flag: Flags) -> Result<bool, String> {
-        self.crash_if_the_flag_wasnt_initialized(flag)?;
-
-        Ok(*self.flags.get(&flag).unwrap())
+    pub fn has_flag(&self, flag: Flags) -> Result<bool, String> {
+        Ok(self
+            .flags
+            .iter()
+            .any(|contained_flag| contained_flag == &flag))
     }
 
     pub fn has_unshaded_us_capabilities(&self) -> Result<bool, String> {

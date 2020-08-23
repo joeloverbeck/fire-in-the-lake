@@ -8,6 +8,8 @@ pub fn create_the_fishhook() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::TheFishhook,
         Province::new(
+            SpaceIdentifiers::TheFishhook,
+            0,
             GeographicAreas::Cambodia,
             TerrainTypes::Jungle,
             vec![

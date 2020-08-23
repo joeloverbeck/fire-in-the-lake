@@ -8,6 +8,8 @@ pub fn create_tay_ninh() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::TayNinh,
         Province::new(
+            SpaceIdentifiers::TayNinh,
+            2,
             GeographicAreas::SouthVietnam,
             TerrainTypes::Jungle,
             vec![

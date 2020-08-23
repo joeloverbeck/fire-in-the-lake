@@ -7,6 +7,8 @@ pub fn create_qui_nhon() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::QuiNhon,
         City::new(
+            SpaceIdentifiers::QuiNhon,
+            1,
             GeographicAreas::SouthVietnam,
             vec![
                 SpaceIdentifiers::Route19,

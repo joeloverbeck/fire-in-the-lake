@@ -1,3 +1,4 @@
+use board::domain::space::Spaces;
 use game_definitions::terrain_types::TerrainTypes;
 use board::domain::queries::space_level_queries::calculate_number_of_faction_cubes_in_space::calculate_number_of_faction_cubes_in_space;
 use board::domain::queries::calculate_number_of_forces_of_a_particular_faction_in_space::calculate_number_of_forces_of_a_particular_faction_in_space;
@@ -16,6 +17,7 @@ use game_definitions::factions::Factions;
 use game_definitions::forces::Forces;
 use game_definitions::geographic_areas::GeographicAreas;
 use game_definitions::space_identifiers::SpaceIdentifiers;
+use game_definitions::support_levels::SupportLevels;
 
 #[derive(Debug)]
 pub struct QueriesController {}
@@ -358,6 +360,33 @@ impl<'a> QueriesController {
         }
 
         Ok(would_marching_turn_space_into_nva_control)
+    }
+
+    pub fn get_spaces_nva_can_terror_and_have_minimum_population(
+        &self,
+        minimum_population: u8,
+        board: &'a Board,
+    ) -> Result<Vec<&'a Spaces>, String> {
+        Ok(board
+            .get_occupable_spaces()?
+            .iter()
+            .filter(|(_, occupable_space)| occupable_space.is_habitable().unwrap())
+            .filter(|(_, occupable_space)| {
+                occupable_space.get_support_level().unwrap() == &SupportLevels::PassiveSupport
+                    || occupable_space.get_support_level().unwrap() == &SupportLevels::ActiveSupport
+            })
+            .filter(|(_, occupable_space)| {
+                occupable_space
+                    .get_forces(Forces::UndergroundNvaGuerrilla)
+                    .unwrap()
+                    > 0
+                    || occupable_space.get_forces(Forces::NvaTroop).unwrap() > 0
+            })
+            .filter(|(_, occupable_space)| {
+                occupable_space.get_population().unwrap() >= minimum_population
+            })
+            .map(|(_, occupable_space)| occupable_space)
+            .collect::<Vec<&Spaces>>())
     }
 }
 

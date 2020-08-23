@@ -7,7 +7,9 @@ use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
 use players::domain::decision_making::whether_to_attack_or_ambush::whether_to_attack_or_ambush;
 use players::domain::decision_making::whether_to_exploit_faction_capabilities_for_nva::whether_to_exploit_faction_capabilities_for_nva;
+use players::domain::decision_making::whether_to_pass::whether_to_pass;
 use players::domain::decision_making::whether_to_play_regular_event::whether_to_play_regular_event;
+use players::domain::decision_making::whether_to_terror::whether_to_terror;
 use players::domain::player::Player;
 use players::domain::player_type::PlayerType;
 use randomization::controllers::randomization_controller_trait::RandomizationControllers;
@@ -35,7 +37,7 @@ impl Player for AiNvaPlayer {
         preview_card: &Cards,
         _current_elegible_faction: Factions,
         player_types: HashMap<Factions, PlayerType>,
-        _possible_actions: Vec<SequenceOfPlaySlots>,
+        possible_actions: Vec<SequenceOfPlaySlots>,
         board: &Board,
         flags_controller: &FlagsController,
         sequence_of_play_controller: &SequenceOfPlayController,
@@ -79,7 +81,24 @@ impl Player for AiNvaPlayer {
             return Ok(decision);
         }
 
-        todo!()
+        possible_decision = whether_to_pass(Factions::NVA, board)?;
+
+        if let Some(decision) = possible_decision {
+            return Ok(decision);
+        }
+
+        possible_decision = whether_to_terror(
+            Factions::NVA,
+            board,
+            &possible_actions,
+            randomization_controller,
+        )?;
+
+        if let Some(decision) = possible_decision {
+            return Ok(decision);
+        }
+
+        panic!("NVA AI hasn't found any decision!");
     }
 
     fn get_player_type(&self) -> Result<PlayerType, String> {

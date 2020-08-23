@@ -1,44 +1,16 @@
-use players::domain::faction_stats_mutation::FactionStatsMutation;
-use players::domain::flags_mutation::FlagsMutation;
-use players::domain::forces_mutation::ForcesMutation;
-use players::domain::sequence_of_play_mutation::SequenceOfPlayMutation;
+use players::domain::mutations::Mutations;
 
 #[derive(Debug)]
 pub struct Decision {
-    sequence_of_play_mutations: Vec<SequenceOfPlayMutation>,
-    faction_stats_mutations: Vec<FactionStatsMutation>,
-    forces_mutations: Vec<ForcesMutation>,
-    flags_mutations: Vec<FlagsMutation>,
+    mutations: Mutations,
 }
 
 impl Decision {
-    pub fn new(
-        sequence_of_play_mutations: Vec<SequenceOfPlayMutation>,
-        faction_stats_mutations: Vec<FactionStatsMutation>,
-        forces_mutations: Vec<ForcesMutation>,
-        flags_mutations: Vec<FlagsMutation>,
-    ) -> Decision {
-        Decision {
-            sequence_of_play_mutations,
-            faction_stats_mutations,
-            forces_mutations,
-            flags_mutations,
-        }
+    pub fn new(mutations: Mutations) -> Decision {
+        Decision { mutations }
     }
 
-    pub fn get_sequence_of_play_mutations(&self) -> &Vec<SequenceOfPlayMutation> {
-        &self.sequence_of_play_mutations
-    }
-
-    pub fn get_faction_stats_mutations(&self) -> &Vec<FactionStatsMutation> {
-        &self.faction_stats_mutations
-    }
-
-    pub fn get_forces_mutations(&self) -> &Vec<ForcesMutation> {
-        &self.forces_mutations
-    }
-
-    pub fn get_flags_mutations(&self) -> &Vec<FlagsMutation> {
-        &self.flags_mutations
+    pub fn get_mutations(&self) -> Result<&Mutations, String> {
+        Ok(&self.mutations)
     }
 }

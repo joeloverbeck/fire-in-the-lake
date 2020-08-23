@@ -8,6 +8,8 @@ pub fn create_phu_bon() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::PhuBonPhuYen,
         Province::new(
+            SpaceIdentifiers::PhuBonPhuYen,
+            1,
             GeographicAreas::SouthVietnam,
             TerrainTypes::Lowland,
             vec![

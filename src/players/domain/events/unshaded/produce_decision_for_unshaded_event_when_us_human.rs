@@ -11,6 +11,7 @@ use players::domain::events::request_forces_movement_from_human::request_forces_
 use players::domain::faction_stats_mutation::FactionStatsMutation;
 use players::domain::flags_mutation::FlagsMutation;
 use players::domain::mutation_types::MutationTypes;
+use players::domain::mutations::Mutations;
 use players::domain::sequence_of_play_mutation::SequenceOfPlayMutation;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 use sequence_of_play::domain::slot_occupancy::SlotOccupancy;
@@ -41,14 +42,18 @@ pub fn produce_decision_for_unshaded_event_when_us_human(
         ));
 
         let mut flag_mutations: Vec<FlagsMutation> = Vec::new();
-        flag_mutations.push(FlagsMutation::new(Flags::BlowtorchComer, true));
+        flag_mutations.push(FlagsMutation::new(
+            Flags::BlowtorchComer,
+            MutationTypes::Set,
+        ));
 
-        Ok(Decision::new(
-            sequence_of_play_mutations,
-            faction_stat_mutations,
-            Vec::new(),
-            flag_mutations,
-        ))
+        let mut mutations = Mutations::new();
+
+        mutations.set_sequence_of_play_mutations(sequence_of_play_mutations)?;
+        mutations.set_faction_stats_mutations(faction_stat_mutations)?;
+        mutations.set_flags_mutations(flag_mutations)?;
+
+        Ok(Decision::new(mutations))
     } else if active_card.get_number()? == 22 {
         // US places up to 6 Troops in Da Nang, up to 3 from out of play.
 

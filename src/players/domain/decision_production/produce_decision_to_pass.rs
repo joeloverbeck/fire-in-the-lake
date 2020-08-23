@@ -1,8 +1,9 @@
-use players::domain::faction_stats_mutations_production::produce_faction_stats_mutations_for_passing::produce_faction_stats_mutations_for_passing;
 use board::domain::board::Board;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
 use players::domain::faction_stats_mutation::FactionStatsMutation;
+use players::domain::mutations::Mutations;
+use players::domain::mutations_production::produce_faction_stats_mutations_for_passing::produce_faction_stats_mutations_for_passing;
 use players::domain::sequence_of_play_mutation::SequenceOfPlayMutation;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 use sequence_of_play::domain::slot_occupancy::SlotOccupancy;
@@ -21,10 +22,10 @@ pub fn produce_decision_to_pass(faction: Factions, board: &Board) -> Result<Deci
         &faction, &board,
     )?);
 
-    Ok(Decision::new(
-        sequence_of_play_mutations,
-        faction_stats_mutations,
-        Vec::new(),
-        Vec::new(),
-    ))
+    let mut mutations = Mutations::new();
+
+    mutations.set_sequence_of_play_mutations(sequence_of_play_mutations)?;
+    mutations.set_faction_stats_mutations(faction_stats_mutations)?;
+
+    Ok(Decision::new(mutations))
 }

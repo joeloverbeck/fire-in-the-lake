@@ -10,14 +10,21 @@ use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct City {
+    space_identifier: SpaceIdentifiers,
+    population: u8,
     forces: HashMap<Forces, u8>,
     control_type: ControlTypes,
     support_level: SupportLevels,
     geographic_area: GeographicAreas,
     adjacent_spaces: Vec<SpaceIdentifiers>,
+    terror: bool,
 }
 
 impl Space for City {
+    fn get_space_identifier(&self) -> Result<SpaceIdentifiers, String> {
+        Ok(self.space_identifier)
+    }
+
     fn set_forces(&mut self, forces: Forces, value: u8) -> Result<(), String> {
         *self.forces.get_mut(&forces).unwrap() = value;
 
@@ -36,6 +43,14 @@ impl Space for City {
         self.support_level = support_level;
 
         Ok(())
+    }
+
+    fn get_total_support(&self) -> Result<u8, String> {
+        match self.support_level {
+            SupportLevels::ActiveSupport => Ok(self.population * 2),
+            SupportLevels::PassiveSupport => Ok(self.population),
+            _ => Ok(0),
+        }
     }
 
     fn reduce_forces(&mut self, forces: &Forces, number: u8) -> Result<(), String> {
@@ -81,16 +96,60 @@ impl Space for City {
         // A city is always TerrainTypes::City
         Ok(&TerrainTypes::City)
     }
+
+    fn get_population(&self) -> Result<u8, String> {
+        Ok(self.population)
+    }
+
+    fn is_habitable(&self) -> Result<bool, String> {
+        Ok(true)
+    }
+
+    fn has_terror(&self) -> Result<bool, String> {
+        Ok(self.terror)
+    }
+
+    fn set_terror(&mut self) -> Result<(), String> {
+        self.terror = true;
+
+        Ok(())
+    }
+
+    fn unset_terror(&mut self) -> Result<(), String> {
+        self.terror = false;
+
+        Ok(())
+    }
+
+    fn has_sabotage(&self) -> Result<bool, String> {
+        Ok(false)
+    }
+
+    fn set_sabotage(&mut self) -> Result<(), String> {
+        panic!("Attempted to set sabotage on a city. Only LoCs can be sabotaged.");
+    }
+
+    fn unset_sabotage(&mut self) -> Result<(), String> {
+        panic!("Attempted to unset sabotage on a city. Only LoCs can be sabotaged.");
+    }
 }
 
 impl City {
-    pub fn new(geographic_area: GeographicAreas, adjacent_spaces: Vec<SpaceIdentifiers>) -> City {
+    pub fn new(
+        space_identifier: SpaceIdentifiers,
+        population: u8,
+        geographic_area: GeographicAreas,
+        adjacent_spaces: Vec<SpaceIdentifiers>,
+    ) -> City {
         City {
+            space_identifier,
+            population,
             forces: initialize_hashmap_of_forces(),
             control_type: ControlTypes::Uncontrolled,
             support_level: SupportLevels::Neutral,
             geographic_area,
             adjacent_spaces,
+            terror: false,
         }
     }
 }

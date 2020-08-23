@@ -8,6 +8,8 @@ pub fn create_sihanoukville() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::Sihanoukville,
         Province::new(
+            SpaceIdentifiers::Sihanoukville,
+            0,
             GeographicAreas::Cambodia,
             TerrainTypes::Jungle,
             vec![

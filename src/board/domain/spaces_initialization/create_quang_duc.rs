@@ -8,6 +8,8 @@ pub fn create_quang_duc() -> (SpaceIdentifiers, Spaces) {
     (
         SpaceIdentifiers::QuangDucLongKhanh,
         Province::new(
+            SpaceIdentifiers::QuangDucLongKhanh,
+            1,
             GeographicAreas::SouthVietnam,
             TerrainTypes::Jungle,
             vec![
