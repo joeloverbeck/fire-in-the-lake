@@ -44,13 +44,11 @@ impl Player for HumanUsPlayer {
         keyboard_input_controller: &KeyboardInputController,
         display_controller: &DisplayController,
     ) -> Result<Decision, String> {
-        let mut possible_actions_text = "[".to_string();
+        let mut possible_actions_text = "".to_string();
 
         for entry in possible_actions {
             possible_actions_text += &entry.to_string();
         }
-
-        possible_actions_text += &"]".to_string();
 
         let input = keyboard_input_controller.request_player_input(
             format!(

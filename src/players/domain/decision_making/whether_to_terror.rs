@@ -48,11 +48,15 @@ pub fn whether_to_terror(
             let mut terror_targets = queries_controller
                 .get_spaces_nva_can_terror_and_have_minimum_population(minimum_population, board)?;
 
-            Ok(Some(produce_decision_to_terror_for_nva(
-                &mut terror_targets,
-                board,
-                possible_actions,
-            )?))
+            if !terror_targets.is_empty() {
+                return Ok(Some(produce_decision_to_terror_for_nva(
+                    &mut terror_targets,
+                    board,
+                    possible_actions,
+                )?));
+            }
+
+            Ok(None)
         }
         _ => panic!(
             "Whether to terror not implemented for faction {:?}",

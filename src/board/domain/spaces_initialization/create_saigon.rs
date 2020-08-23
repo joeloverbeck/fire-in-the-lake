@@ -15,7 +15,6 @@ pub fn create_saigon() -> (SpaceIdentifiers, Spaces) {
                 SpaceIdentifiers::Route4MekongEast,
                 SpaceIdentifiers::KienPhong,
                 SpaceIdentifiers::TayNinh,
-                SpaceIdentifiers::Route13,
                 SpaceIdentifiers::Route14South,
                 SpaceIdentifiers::QuangDucLongKhanh,
                 SpaceIdentifiers::BinhTuyBinhThuan,

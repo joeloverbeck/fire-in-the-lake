@@ -1,6 +1,6 @@
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
-use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
+use players::domain::decision_information::DecisionInformation;
 
 pub fn produce_information_for_decision(
     decision: &Decision,
@@ -17,20 +17,19 @@ pub fn produce_information_for_decision(
         panic!("Was going to produce information for a decision, but couldn't handle the case that the sequence of play mutations would be more than one.");
     }
 
-    let sequence_of_play_mutation = &decision.get_mutations()?.get_sequence_of_play_mutations()?[0];
-
     let mut information: Vec<String> = Vec::new();
 
-    let sequence_of_play_slot = sequence_of_play_mutation.get_sequence_of_play_slot();
-
-    match sequence_of_play_slot {
-        SequenceOfPlaySlots::FirstFactionEvent => {
+    match decision.get_main_action()? {
+        DecisionInformation::Event => {
             information.push(format!("{} chose to play the card for the event", faction));
         }
-        SequenceOfPlaySlots::Pass => {
+        DecisionInformation::Pass => {
             information.push(format!("{} chose to pass", faction));
         }
-        _ => panic!("Not implemented for {:?}", sequence_of_play_slot),
+        DecisionInformation::Terror => {
+            information.push(format!("{} commits terror attacks!", faction));
+        }
+        _ => panic!("Not implemented for {:?}", decision.get_main_action()?),
     }
 
     Ok(information)

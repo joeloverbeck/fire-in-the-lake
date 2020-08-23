@@ -13,7 +13,7 @@ pub fn create_an_loc() -> (SpaceIdentifiers, Spaces) {
             vec![
                 SpaceIdentifiers::TheFishhook,
                 SpaceIdentifiers::PhuocLong,
-                SpaceIdentifiers::Route13,
+                SpaceIdentifiers::Route14South,
                 SpaceIdentifiers::TayNinh,
             ],
         )

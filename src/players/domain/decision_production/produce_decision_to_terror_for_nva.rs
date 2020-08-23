@@ -62,6 +62,11 @@ pub fn produce_decision_to_terror_for_nva(
         }
     }
 
+    // Sanity check. If we are here, there must be terror targets.
+    if best_terror_targets.is_empty() && secondary_terror_targets.is_empty() {
+        panic!("Was going to delegate producing mutations for a terror attack, but had failed to register any target, despite the code leading to this point having inspected the board and knowing there were some!");
+    }
+
     // Now it's just a matter of going through the deques as long as there's any
     // entry in them and the NVA has resources to pull off the terror attacks.
     let mut nva_resources = board.get_faction_stat(FactionStats::NvaResources)?;
@@ -104,6 +109,12 @@ pub fn produce_decision_to_terror_for_nva(
     mutations.set_space_mutations(space_mutations)?;
     mutations.set_faction_stats_mutations(faction_stats_mutations)?;
     mutations.set_sequence_of_play_mutations(sequence_of_play_mutations)?;
+
+    // Exit contract: if we are going to produce a decision to commit a terror attack,
+    // goddamn it, there better be some terror attack destruction there.
+    if !mutations.has_sequence_of_play_mutations()? {
+        panic!("Was going to return the decision to commit a terror attack for NVA, but there were no sequence of play mutations.");
+    }
 
     Ok(Decision::new(
         mutations,

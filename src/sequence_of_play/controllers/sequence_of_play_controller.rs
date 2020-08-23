@@ -6,6 +6,7 @@ use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 pub struct SequenceOfPlayController {
     first_eligible: Option<Factions>,
     second_eligible: Option<Factions>,
+    first_faction_operation_only: Option<Factions>,
     first_faction_event: Option<Factions>,
     passed: Vec<Factions>,
     ineligible: Vec<Factions>,
@@ -22,6 +23,7 @@ impl SequenceOfPlayController {
         SequenceOfPlayController {
             first_eligible: None,
             second_eligible: None,
+            first_faction_operation_only: None,
             first_faction_event: None,
             passed: Vec::new(),
             ineligible: Vec::new(),
@@ -57,7 +59,11 @@ impl SequenceOfPlayController {
             panic!("Asked which was the current elegible faction, but none were! The asking code should have asked whether there were eligible factions first.");
         }
 
-        &self.first_eligible
+        if self.first_eligible.is_some() {
+            &self.first_eligible
+        } else {
+            &self.second_eligible
+        }
     }
 
     pub fn register_pick(
@@ -77,6 +83,14 @@ impl SequenceOfPlayController {
                         self.first_eligible = Some(*movement.get_faction());
                     } else {
                         self.first_eligible = None;
+                    }
+                }
+                Movements::FirstFactionOperationOnly => {
+                    // Note that the "faction" present in the mutation might be None.
+                    if movement.does_it_contain_a_faction() {
+                        self.first_faction_operation_only = Some(*movement.get_faction());
+                    } else {
+                        self.first_faction_operation_only = None;
                     }
                 }
                 Movements::FirstFactionEvent => {
@@ -128,6 +142,28 @@ impl SequenceOfPlayController {
             vec.push(SequenceOfPlaySlots::Pass);
 
             return Ok(vec);
+        }
+
+        if self.second_eligible.is_some() {
+            // Obviously there's plenty to do here, depending on what the previous
+            // eligible has done.
+
+            if self.first_faction_operation_only.is_some() {
+                // The first eligible chose to play a single operation, without special activities.
+
+                // Sanity check
+                if self.first_faction_event.is_some() {
+                    panic!("While determining possible actions for current eligible, found that both first faction operation only and first faction event were filled!");
+                }
+
+                let mut vec: Vec<SequenceOfPlaySlots> = Vec::new();
+                vec.push(SequenceOfPlaySlots::SecondFactionLimitedOperation);
+                vec.push(SequenceOfPlaySlots::Pass);
+
+                return Ok(vec);
+            } else {
+                panic!("Failed to implemented all possibilities for second eligible.");
+            }
         }
 
         Err("Was asked to figure out the possible operations for the current eligible faction, but couldn't find any. Probably the asking code failed to ask first whether there was any faction elegible.".to_string())

@@ -16,13 +16,28 @@ use board::domain::spaces_initialization::create_kontum::create_kontum;
 use board::domain::spaces_initialization::create_mekong_north::create_mekong_north;
 use board::domain::spaces_initialization::create_mekong_south::create_mekong_south;
 use board::domain::spaces_initialization::create_north_vietnam::create_north_vietnam;
+use board::domain::spaces_initialization::create_northeast_cambodia::create_northeast_cambodia;
 use board::domain::spaces_initialization::create_phu_bon::create_phu_bon;
+use board::domain::spaces_initialization::create_phuoc_long::create_phuoc_long;
 use board::domain::spaces_initialization::create_pleiku::create_pleiku;
 use board::domain::spaces_initialization::create_quang_duc::create_quang_duc;
 use board::domain::spaces_initialization::create_quang_nam::create_quang_nam;
 use board::domain::spaces_initialization::create_quang_tin::create_quang_tin;
 use board::domain::spaces_initialization::create_quang_tri::create_quang_tri;
 use board::domain::spaces_initialization::create_qui_nhon::create_qui_nhon;
+use board::domain::spaces_initialization::create_route_11::create_route_11;
+use board::domain::spaces_initialization::create_route_14_central::create_route_14_central;
+use board::domain::spaces_initialization::create_route_14_central_north::create_route_14_central_north;
+use board::domain::spaces_initialization::create_route_14_north::create_route_14_north;
+use board::domain::spaces_initialization::create_route_14_south::create_route_14_south;
+use board::domain::spaces_initialization::create_route_19::create_route_19;
+use board::domain::spaces_initialization::create_route_1_east::create_route_1_east;
+use board::domain::spaces_initialization::create_route_1_north::create_route_1_north;
+use board::domain::spaces_initialization::create_route_1_north_east::create_route_1_north_east;
+use board::domain::spaces_initialization::create_route_1_south::create_route_1_south;
+use board::domain::spaces_initialization::create_route_1_south_east::create_route_1_south_east;
+use board::domain::spaces_initialization::create_route_20::create_route_20;
+use board::domain::spaces_initialization::create_route_21::create_route_21;
 use board::domain::spaces_initialization::create_route_4_mekong_east::create_route_4_mekong_east;
 use board::domain::spaces_initialization::create_route_4_west::create_route_4_west;
 use board::domain::spaces_initialization::create_saigon::create_saigon;
@@ -50,7 +65,9 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         create_sihanoukville(),
         create_the_parrots_beak(),
         create_the_fishhook(),
+        create_northeast_cambodia(),
         create_quang_tin(),
+        create_phuoc_long(),
         create_quang_duc(),
         create_binh_tuy(),
         create_pleiku(),
@@ -66,8 +83,21 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         create_cam_ranh(),
         create_mekong_north(),
         create_mekong_south(),
+        create_route_1_north(),
+        create_route_1_east(),
+        create_route_1_north_east(),
+        create_route_1_south_east(),
+        create_route_1_south(),
         create_route_4_west(),
         create_route_4_mekong_east(),
+        create_route_11(),
+        create_route_14_central(),
+        create_route_14_central_north(),
+        create_route_14_north(),
+        create_route_14_south(),
+        create_route_19(),
+        create_route_20(),
+        create_route_21(),
     ]
     .iter()
     .cloned()

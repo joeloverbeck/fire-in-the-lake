@@ -443,7 +443,6 @@ mod tests {
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route4MekongEast)?);
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienPhong)?);
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TayNinh)?);
-        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route13)?);
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14South)?);
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::QuangDucLongKhanh)?);
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::BinhTuyBinhThuan)?);
@@ -473,7 +472,7 @@ mod tests {
 
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TheFishhook)?);
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::PhuocLong)?);
-        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route13)?);
+        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route14South)?);
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TayNinh)?);
 
         Ok(())
@@ -768,7 +767,6 @@ mod tests {
 
         let sut = board.get_space(SpaceIdentifiers::TayNinh)?;
 
-        assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Route13)?);
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::Saigon)?);
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::KienPhong)?);
         assert!(sut.is_adjacent_to_space(SpaceIdentifiers::TheParrotsBeak)?);

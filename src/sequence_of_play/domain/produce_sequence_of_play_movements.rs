@@ -2,6 +2,7 @@ use game_definitions::factions::Factions;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
 use sequence_of_play::domain::movement_mutation::MovementMutation;
 use sequence_of_play::domain::movements::Movements;
+use sequence_of_play::domain::produce_sequence_of_play_movements_for_first_faction_operation_only::produce_sequence_of_play_movements_for_first_faction_operation_only;
 use sequence_of_play::domain::produce_sequence_of_play_movements_for_passing::produce_sequence_of_play_movements_for_passing;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 
@@ -35,6 +36,13 @@ pub fn produce_sequence_of_play_movements(
             faction_order,
             sequence_of_play_controller,
         )?);
+    } else if slot == &SequenceOfPlaySlots::FirstFactionOperationOnly {
+        movement_mutations.append(
+            &mut produce_sequence_of_play_movements_for_first_faction_operation_only(
+                faction,
+                sequence_of_play_controller,
+            )?,
+        );
     } else {
         panic!("Registering a pick in the sequence of play wasn't handled for the following: {:?} and {:?}", faction, slot);
     }

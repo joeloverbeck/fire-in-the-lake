@@ -3,5 +3,6 @@ pub enum Movements {
     FirstEligible,
     SecondEligible,
     FirstFactionEvent,
+    FirstFactionOperationOnly,
     Passed,
 }
