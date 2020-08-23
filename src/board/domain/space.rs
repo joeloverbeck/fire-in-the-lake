@@ -25,6 +25,7 @@ pub trait Space {
     fn get_control_type(&self) -> Result<&ControlTypes, String>;
     fn set_geographic_area(&mut self, geographic_area: GeographicAreas) -> Result<(), String>;
     fn get_geographic_area(&self) -> Result<&GeographicAreas, String>;
+    fn get_adjacent_space_identifiers(&self) -> Result<&Vec<SpaceIdentifiers>, String>;
     fn is_adjacent_to_space(&self, space_identifier: SpaceIdentifiers) -> Result<bool, String>;
     fn get_terrain_type(&self) -> Result<&TerrainTypes, String>;
     fn get_population(&self) -> Result<u8, String>;

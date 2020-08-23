@@ -6,6 +6,7 @@ use game_definitions::event_types::EventTypes;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
 use players::domain::decision_making::whether_to_attack_or_ambush::whether_to_attack_or_ambush;
+use players::domain::decision_making::whether_to_bombard::whether_to_bombard;
 use players::domain::decision_making::whether_to_exploit_faction_capabilities_for_nva::whether_to_exploit_faction_capabilities_for_nva;
 use players::domain::decision_making::whether_to_pass::whether_to_pass;
 use players::domain::decision_making::whether_to_play_regular_event::whether_to_play_regular_event;
@@ -95,6 +96,9 @@ impl Player for AiNvaPlayer {
         )?;
 
         if let Some(decision) = possible_decision {
+            // It has decided to terror. In this case NVA AI will also attempt to Bombard.
+            whether_to_bombard(Some(&decision), board, flags_controller)?;
+
             return Ok(decision);
         }
 

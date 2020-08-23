@@ -31,8 +31,6 @@ pub enum SpaceIdentifiers {
     Kontum,
     DaNang,
     CamRanh,
-    OutOfPlay,
-    Available,
     MekongNorth,
     MekongSouth,
     Route1North,
@@ -52,6 +50,9 @@ pub enum SpaceIdentifiers {
     Route20,
     Route21,
     Sihanoukville,
+    OutOfPlay,
+    Available,
+    Casualties,
 }
 
 impl fmt::Display for SpaceIdentifiers {
@@ -107,6 +108,7 @@ impl fmt::Display for SpaceIdentifiers {
             SpaceIdentifiers::Sihanoukville => write!(f, "[Sihanoukville]"),
             SpaceIdentifiers::OutOfPlay => write!(f, "Out of Play"),
             SpaceIdentifiers::Available => write!(f, "Available"),
+            SpaceIdentifiers::Casualties => write!(f, "Casualties"),
         }
     }
 }

@@ -14,6 +14,7 @@ use board::domain::spaces_initialization::create_kien_hoa::create_kien_hoa;
 use board::domain::spaces_initialization::create_kien_phong::create_kien_phong;
 use board::domain::spaces_initialization::create_kontum::create_kontum;
 use board::domain::spaces_initialization::create_mekong_north::create_mekong_north;
+use board::domain::spaces_initialization::create_mekong_south::create_mekong_south;
 use board::domain::spaces_initialization::create_north_vietnam::create_north_vietnam;
 use board::domain::spaces_initialization::create_phu_bon::create_phu_bon;
 use board::domain::spaces_initialization::create_pleiku::create_pleiku;
@@ -22,6 +23,7 @@ use board::domain::spaces_initialization::create_quang_nam::create_quang_nam;
 use board::domain::spaces_initialization::create_quang_tin::create_quang_tin;
 use board::domain::spaces_initialization::create_quang_tri::create_quang_tri;
 use board::domain::spaces_initialization::create_qui_nhon::create_qui_nhon;
+use board::domain::spaces_initialization::create_route_4_mekong_east::create_route_4_mekong_east;
 use board::domain::spaces_initialization::create_route_4_west::create_route_4_west;
 use board::domain::spaces_initialization::create_saigon::create_saigon;
 use board::domain::spaces_initialization::create_sihanoukville::create_sihanoukville;
@@ -63,7 +65,9 @@ pub fn initialize_hashmap_of_spaces() -> Result<HashMap<SpaceIdentifiers, Spaces
         create_da_nang(),
         create_cam_ranh(),
         create_mekong_north(),
+        create_mekong_south(),
         create_route_4_west(),
+        create_route_4_mekong_east(),
     ]
     .iter()
     .cloned()

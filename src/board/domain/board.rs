@@ -233,6 +233,11 @@ impl Board {
 
             return Ok(());
         }
+        if space == SpaceIdentifiers::Casualties {
+            *self.casualties.get_mut(&forces).unwrap() -= number;
+
+            return Ok(());
+        }
 
         let occupable_space = self.get_space_mut(space)?;
 
@@ -261,6 +266,11 @@ impl Board {
         }
         if space == SpaceIdentifiers::OutOfPlay {
             *self.out_of_play.get_mut(&forces).unwrap() += number;
+
+            return Ok(());
+        }
+        if space == SpaceIdentifiers::Casualties {
+            *self.casualties.get_mut(&forces).unwrap() += number;
 
             return Ok(());
         }

@@ -1,7 +1,7 @@
 use game_definitions::flags::Flags;
 use players::domain::mutation_types::MutationTypes;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct FlagsMutation {
     flag: Flags,
     mutation_type: MutationTypes,

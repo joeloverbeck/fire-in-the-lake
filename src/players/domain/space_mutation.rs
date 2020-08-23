@@ -3,7 +3,7 @@ use players::domain::mutation_types::MutationTypes;
 use players::domain::space_mutation_types::SpaceMutationTypes;
 use players::domain::space_mutation_values::SpaceMutationValues;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct SpaceMutation {
     space_identifier: SpaceIdentifiers,
     space_mutation_types: SpaceMutationTypes,

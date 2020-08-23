@@ -1,7 +1,7 @@
 use game_definitions::faction_stats::FactionStats;
 use players::domain::mutation_types::MutationTypes;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct FactionStatsMutation {
     faction_stat: FactionStats,
     mutation_type: MutationTypes,

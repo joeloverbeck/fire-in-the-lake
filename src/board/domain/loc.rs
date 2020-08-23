@@ -122,6 +122,10 @@ impl Space for LoC {
 
         Ok(())
     }
+
+    fn get_adjacent_space_identifiers(&self) -> Result<&Vec<SpaceIdentifiers>, String> {
+        Ok(&self.adjacent_spaces)
+    }
 }
 
 impl LoC {

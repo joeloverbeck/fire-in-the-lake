@@ -132,6 +132,10 @@ impl Space for Province {
     fn unset_sabotage(&mut self) -> Result<(), String> {
         panic!("Attempted to unset sabotage on a province. Only LoCs can be sabotaged.");
     }
+
+    fn get_adjacent_space_identifiers(&self) -> Result<&Vec<SpaceIdentifiers>, String> {
+        Ok(&self.adjacent_spaces)
+    }
 }
 
 impl Province {

@@ -2,7 +2,7 @@ use game_definitions::factions::Factions;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 use sequence_of_play::domain::slot_occupancy::SlotOccupancy;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct SequenceOfPlayMutation {
     sequence_of_play_slot: SequenceOfPlaySlots,
     slot_occupancy: SlotOccupancy,

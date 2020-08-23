@@ -215,4 +215,47 @@ mod tests {
 
         Ok(())
     }
+
+    #[test]
+    fn test_after_persisting_bombardment_the_proper_changes_to_board_have_been_made(
+    ) -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(Forces::UsTroop, 1, SpaceIdentifiers::PhuBonPhuYen)?;
+
+        let sut = MemoryPersistenceController::new();
+
+        let mut sequence_of_play_controller = SequenceOfPlayController::new();
+        let mut flags_controller = FlagsController::new();
+
+        let mut mutations = Mutations::new();
+
+        let forces_mutations = vec![ForcesMutation::new(
+            Forces::UsTroop,
+            MutationTypes::Move,
+            1,
+            Some(SpaceIdentifiers::PhuBonPhuYen),
+            Some(SpaceIdentifiers::Casualties),
+        )];
+
+        mutations.set_forces_mutations(forces_mutations)?;
+
+        let decision = Decision::new(mutations, None, Some(DecisionInformation::Bombard));
+
+        sut.persist_decision(
+            &decision,
+            &mut board,
+            [Factions::US, Factions::ARVN, Factions::VC, Factions::NVA],
+            &mut sequence_of_play_controller,
+            &mut flags_controller,
+        )?;
+
+        assert_eq!(
+            board.get_forces_in_space(Forces::UsTroop, SpaceIdentifiers::PhuBonPhuYen)?,
+            0
+        );
+        assert_eq!(board.get_forces_in_casualties(Forces::UsTroop)?, 1);
+
+        Ok(())
+    }
 }

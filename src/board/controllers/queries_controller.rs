@@ -1,3 +1,5 @@
+use board::domain::queries::board_level_queries::is_there_a_minimum_number_of_a_specific_force_in_any_adjacent_space::is_there_a_minimum_number_of_a_specific_force_in_any_adjacent_space;
+use board::domain::queries::space_level_queries::is_there_a_big_enough_concentration_of_coin_pieces_for_bombardment::is_there_a_big_enough_concentration_of_coin_pieces_for_bombardment;
 use board::domain::space::Spaces;
 use game_definitions::terrain_types::TerrainTypes;
 use board::domain::queries::space_level_queries::calculate_number_of_faction_cubes_in_space::calculate_number_of_faction_cubes_in_space;
@@ -332,6 +334,64 @@ impl<'a> QueriesController {
                 || board.get_forces_available(Forces::UsBase)? > 0),
             _ => panic!("Not implemented for {:?}", faction),
         }
+    }
+
+    pub fn get_spaces_with_enough_concentration_of_coin_troops_to_bombard_but_only_nva_troops_adjacent(
+        &self,
+        board: &'a Board,
+    ) -> Result<Vec<&'a Spaces>, String> {
+        let bombardment_targets_with_nva_troops_present: Vec<&Spaces> = self
+            .get_spaces_with_enough_concentration_of_coin_troops_to_bombard_and_nva_troops_present(
+                board,
+            )?;
+
+        Ok(board
+            .get_occupable_spaces()?
+            .iter()
+            .filter(|(_, occupable_space)| {
+                !bombardment_targets_with_nva_troops_present
+                    .iter()
+                    .any(|other_occupable_spaces| {
+                        other_occupable_spaces.get_space_identifier().unwrap()
+                            == occupable_space.get_space_identifier().unwrap()
+                    })
+            })
+            .filter(|(_, occupable_space)| {
+                is_there_a_big_enough_concentration_of_coin_pieces_for_bombardment(occupable_space)
+                    .unwrap()
+            })
+            .filter(|(_, occupable_space)| {
+                is_there_a_minimum_number_of_a_specific_force_in_any_adjacent_space(
+                    Forces::NvaTroop,
+                    3,
+                    occupable_space,
+                    board,
+                )
+                .unwrap()
+            })
+            .map(|(_, occupable_space)| occupable_space)
+            .collect::<Vec<&Spaces>>())
+    }
+
+    pub fn get_spaces_with_enough_concentration_of_coin_troops_to_bombard_and_nva_troops_present(
+        &self,
+        board: &'a Board,
+    ) -> Result<Vec<&'a Spaces>, String> {
+        // Rules: Bombard 2 spaces (in or adjacent to 1 or more spaces with at least 3 NVA Troops, and with either at least 3 COIN
+        // troops or a COIN Base and at least 1 COIN Troop).
+
+        Ok(board
+            .get_occupable_spaces()?
+            .iter()
+            .filter(|(_, occupable_space)| {
+                is_there_a_big_enough_concentration_of_coin_pieces_for_bombardment(occupable_space)
+                    .unwrap()
+            })
+            .filter(|(_, occupable_space)| {
+                occupable_space.get_forces(Forces::NvaTroop).unwrap() >= 3
+            })
+            .map(|(_, occupable_space)| occupable_space)
+            .collect::<Vec<&Spaces>>())
     }
 
     pub fn would_marching_a_particular_force_into_space_identifiers_turn_any_into_nva_control(

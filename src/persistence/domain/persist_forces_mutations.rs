@@ -9,6 +9,7 @@ pub fn persist_forces_mutations(
 ) -> Result<(), String> {
     for mutation in forces_mutations {
         match mutation.get_mutation_type() {
+            MutationTypes::Reduce | MutationTypes::Increase => panic!("Attempted to push through a mutation with either a reduce or increase forces. You should use Move, because they always get moved from a place to another (even if that other place is the casualties, etc.)"),
             MutationTypes::Move => {
                 board.reduce_forces_in_space(
                     mutation.get_forces(),

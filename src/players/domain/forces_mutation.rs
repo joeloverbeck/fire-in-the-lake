@@ -2,7 +2,7 @@ use game_definitions::forces::Forces;
 use game_definitions::space_identifiers::SpaceIdentifiers;
 use players::domain::mutation_types::MutationTypes;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct ForcesMutation {
     forces: Forces,
     mutation_type: MutationTypes,
