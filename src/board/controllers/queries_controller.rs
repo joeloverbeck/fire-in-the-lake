@@ -140,7 +140,8 @@ impl<'a> QueriesController {
             .get_occupable_spaces()?
             .iter()
             .any(|(_, occupable_space)| {
-                occupable_space.get_terrain_type().unwrap() == &terrain_type
+                occupable_space.is_habitable().unwrap()
+                    && occupable_space.get_terrain_type().unwrap() == &terrain_type
                     && occupable_space.get_forces(force).unwrap() > 0
             }))
     }
@@ -152,21 +153,21 @@ impl<'a> QueriesController {
     ) -> Result<bool, String> {
         // Provinces are either Highlands, Lowlands or Jungles.
 
-        Ok(self
+        Ok(!self
             .get_space_identifiers_with_a_particular_force_and_terrain_type(
                 force,
                 TerrainTypes::Lowland,
                 board,
             )?
             .is_empty()
-            || self
+            || !self
                 .get_space_identifiers_with_a_particular_force_and_terrain_type(
                     force,
                     TerrainTypes::Highland,
                     board,
                 )?
                 .is_empty()
-            || self
+            || !self
                 .get_space_identifiers_with_a_particular_force_and_terrain_type(
                     force,
                     TerrainTypes::Jungle,
@@ -266,6 +267,7 @@ impl<'a> QueriesController {
         Ok(board
             .get_occupable_spaces()?
             .iter()
+            .filter(|(_, occupable_space)| occupable_space.is_habitable().unwrap())
             .filter(|(_, occupable_space)| {
                 occupable_space.get_terrain_type().unwrap() == &terrain_type
             })
@@ -790,6 +792,271 @@ mod tests {
             )?,
             false
         );
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_if_asks_about_a_force_being_in_a_terrain_type_it_says_no_if_that_force_is_not_in_that_terrain_type(
+    ) -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(Forces::NvaTroop, 3, SpaceIdentifiers::TheFishhook)?;
+
+        let sut = QueriesController::new();
+
+        assert!(!sut.is_there_a_specific_force_in_a_terrain_type(
+            Forces::NvaTroop,
+            TerrainTypes::Highland,
+            &board
+        )?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_if_asks_about_a_force_being_in_a_terrain_type_it_says_there_is_if_that_force_is_in_such_a_terrain_type(
+    ) -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(Forces::NvaTroop, 3, SpaceIdentifiers::TheFishhook)?;
+
+        let sut = QueriesController::new();
+
+        assert!(sut.is_there_a_specific_force_in_a_terrain_type(
+            Forces::NvaTroop,
+            TerrainTypes::Jungle,
+            &board
+        )?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_can_find_if_there_is_a_specific_force_in_a_province() -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(Forces::NvaTroop, 3, SpaceIdentifiers::TheFishhook)?;
+
+        let sut = QueriesController::new();
+
+        assert!(sut.is_there_a_specific_force_in_any_province(Forces::NvaTroop, &board)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_wont_say_there_is_a_force_in_a_province_if_it_is_in_a_city() -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(Forces::NvaTroop, 3, SpaceIdentifiers::Saigon)?;
+
+        let sut = QueriesController::new();
+
+        assert!(!sut.is_there_a_specific_force_in_any_province(Forces::NvaTroop, &board)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_wont_say_there_are_cubes_of_a_specific_faction_if_the_forces_present_arent_cubes(
+    ) -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(
+            Forces::UndergroundUsIrregular,
+            1,
+            SpaceIdentifiers::PleikuDarlac,
+        )?;
+
+        let sut = QueriesController::new();
+
+        assert!(!sut.are_there_any_cubes_of_a_faction_anywhere(Factions::US, &board)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_will_say_there_are_cubes_of_a_faction_somewhere_if_there_are_indeed_any_cubes_of_that_faction(
+    ) -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(Forces::UsTroop, 1, SpaceIdentifiers::PleikuDarlac)?;
+
+        let sut = QueriesController::new();
+
+        assert!(sut.are_there_any_cubes_of_a_faction_anywhere(Factions::US, &board)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_when_asking_to_get_space_identifiers_with_a_specific_force_and_terrain_type_it_will_return_an_empty_vec_if_there_are_no_coincidences(
+    ) -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(Forces::UsTroop, 1, SpaceIdentifiers::TheParrotsBeak)?;
+
+        let sut = QueriesController::new();
+
+        let space_identifiers = sut
+            .get_space_identifiers_with_a_particular_force_and_terrain_type(
+                Forces::UsTroop,
+                TerrainTypes::Highland,
+                &board,
+            )?;
+
+        assert_eq!(space_identifiers.len(), 0);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_when_asking_to_get_space_identifiers_with_a_specific_force_and_terrain_type_it_will_return_expected_space_identifier_if_there_are_coincidences(
+    ) -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(Forces::UsTroop, 1, SpaceIdentifiers::TheParrotsBeak)?;
+
+        let sut = QueriesController::new();
+
+        let space_identifiers = sut
+            .get_space_identifiers_with_a_particular_force_and_terrain_type(
+                Forces::UsTroop,
+                TerrainTypes::Jungle,
+                &board,
+            )?;
+
+        assert_eq!(space_identifiers.len(), 1);
+        assert_eq!(space_identifiers[0], &SpaceIdentifiers::TheParrotsBeak);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_wont_say_there_are_us_irregulars_in_cambodia_if_there_arent_any() -> Result<(), String>
+    {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(Forces::ActiveUsIrregular, 1, SpaceIdentifiers::PleikuDarlac)?;
+
+        let sut = QueriesController::new();
+
+        assert!(!sut.are_there_any_us_irregulars_on_laos_or_cambodia(&board)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_will_say_there_are_us_irregulars_in_cambodia_if_there_are() -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(
+            Forces::ActiveUsIrregular,
+            1,
+            SpaceIdentifiers::TheParrotsBeak,
+        )?;
+
+        let sut = QueriesController::new();
+
+        assert!(sut.are_there_any_us_irregulars_on_laos_or_cambodia(&board)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_will_say_there_are_us_irregulars_in_laos_if_there_are() -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_forces_in_space(Forces::ActiveUsIrregular, 1, SpaceIdentifiers::CentralLaos)?;
+
+        let sut = QueriesController::new();
+
+        assert!(sut.are_there_any_us_irregulars_on_laos_or_cambodia(&board)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_wont_say_there_are_casualties_if_there_are_none() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = QueriesController::new();
+
+        assert!(!sut.are_there_any_casualties(&board)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_will_say_there_are_casualties_if_there_are() -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.increase_forces_in_space(&Forces::UsTroop, SpaceIdentifiers::Casualties, 1)?;
+
+        let sut = QueriesController::new();
+
+        assert!(sut.are_there_any_casualties(&board)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_wont_say_space_has_support_if_it_doesnt_have() -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_support_level_of_space(
+            SupportLevels::PassiveOpposition,
+            SpaceIdentifiers::PleikuDarlac,
+        )?;
+
+        let sut = QueriesController::new();
+
+        assert!(!sut.does_space_identifier_have_support(SpaceIdentifiers::PleikuDarlac, &board)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_will_say_space_has_support_if_it_does() -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.set_support_level_of_space(
+            SupportLevels::PassiveSupport,
+            SpaceIdentifiers::PleikuDarlac,
+        )?;
+
+        let sut = QueriesController::new();
+
+        assert!(sut.does_space_identifier_have_support(SpaceIdentifiers::PleikuDarlac, &board)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_wont_say_there_are_us_forces_available_if_there_are_none() -> Result<(), String> {
+        let board = Board::new();
+
+        let sut = QueriesController::new();
+
+        assert!(!sut.are_there_any_forces_of_a_faction_available(Factions::US, &board)?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_will_say_there_are_us_forces_available_if_there_are() -> Result<(), String> {
+        let mut board = Board::new();
+
+        board.increase_forces_in_space(
+            &Forces::UndergroundUsIrregular,
+            SpaceIdentifiers::Available,
+            1,
+        )?;
+
+        let sut = QueriesController::new();
+
+        assert!(sut.are_there_any_forces_of_a_faction_available(Factions::US, &board)?);
 
         Ok(())
     }
