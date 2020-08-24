@@ -166,7 +166,7 @@ impl SequenceOfPlayController {
             }
         }
 
-        Err("Was asked to figure out the possible operations for the current eligible faction, but couldn't find any. Probably the asking code failed to ask first whether there was any faction elegible.".to_string())
+        Err("Was asked to figure out the possible operations for the current eligible faction, but couldn't find any. Probably the asking code failed to ask first whether there was any faction eligible.".to_string())
     }
 
     pub fn is_there_a_first_eligible_faction(&self) -> Result<bool, String> {

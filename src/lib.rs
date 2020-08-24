@@ -2,6 +2,7 @@ extern crate enum_dispatch;
 
 pub mod board;
 pub mod cards;
+pub mod events;
 pub mod flags;
 pub mod game_definitions;
 pub mod game_state;

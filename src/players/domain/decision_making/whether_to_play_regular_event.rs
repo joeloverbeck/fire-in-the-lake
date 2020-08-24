@@ -1,10 +1,10 @@
 use board::domain::board::Board;
 use cards::domain::card::Cards;
+use events::controllers::events_controller::EventsController;
 use flags::controllers::flags_controller::FlagsController;
 use game_definitions::event_types::EventTypes;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
-use players::domain::events::is_current_non_capability_event_effective::is_current_non_capability_event_effective;
 use players::domain::player_type::PlayerType;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
 use std::collections::HashMap;
@@ -20,7 +20,9 @@ pub fn whether_to_play_regular_event(
     flags_controller: &FlagsController,
     sequence_of_play_controller: &SequenceOfPlayController,
 ) -> Result<Option<Decision>, String> {
-    if is_current_non_capability_event_effective(
+    let events_controller = EventsController::new();
+
+    if events_controller.is_current_non_capability_event_effective(
         &active_card,
         &preview_card,
         player_types,

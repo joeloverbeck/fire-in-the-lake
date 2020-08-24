@@ -1,11 +1,11 @@
 use board::domain::board::Board;
 use cards::domain::card::Cards;
+use events::controllers::events_controller::EventsController;
 use flags::controllers::flags_controller::FlagsController;
 use game_definitions::faction_stats::FactionStats;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
 use players::domain::decision_information::DecisionInformation;
-use players::domain::events::unshaded::produce_decision_for_unshaded_event_when_us_human::produce_decision_for_unshaded_event_when_us_human;
 use players::domain::faction_stats_mutation::FactionStatsMutation;
 use players::domain::mutation_types::MutationTypes;
 use players::domain::mutations::Mutations;
@@ -63,12 +63,16 @@ impl Player for HumanUsPlayer {
             // However, the cards controller cannot help us here, as it would be unreasonable
             // to codify any card event mechanics there. So there should be some general functions that deal with what
             // must be applied, or could even be chosen, regarding every event.
-            Ok(produce_decision_for_unshaded_event_when_us_human(
-                active_card,
-                board,
-                keyboard_input_controller,
-                display_controller,
-            )?)
+            let events_controller = EventsController::new();
+
+            Ok(
+                events_controller.produce_decision_for_unshaded_event_when_us_human(
+                    active_card,
+                    board,
+                    keyboard_input_controller,
+                    display_controller,
+                )?,
+            )
         } else if input == "pass" {
             // ARVN gains 3 resources.
             let mut sequence_of_play_mutations: Vec<SequenceOfPlayMutation> = Vec::new();

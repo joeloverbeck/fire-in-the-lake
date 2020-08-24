@@ -54,7 +54,7 @@ impl ScenarioBuildingController {
             display_controller.write_instruction(instruction.as_str())?;
         }
 
-        display_controller.write_section("Faction elegibility")?;
+        display_controller.write_section("Faction eligibility")?;
 
         display_controller.write_instruction(
             format!(
