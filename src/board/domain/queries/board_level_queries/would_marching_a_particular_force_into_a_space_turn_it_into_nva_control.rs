@@ -1,6 +1,6 @@
 use board::domain::board::Board;
-use board::domain::queries::are_there_any_of_a_particular_force_in_space::are_there_any_of_a_particular_force_in_space;
-use board::domain::queries::will_moving_in_number_of_nva_forces_turn_space_into_nva_control::will_moving_in_number_of_nva_forces_turn_space_into_nva_control;
+use board::domain::queries::space_level_queries::are_there_any_of_a_particular_force_in_space::are_there_any_of_a_particular_force_in_space;
+use board::domain::queries::space_level_queries::will_moving_in_number_of_nva_forces_turn_space_into_nva_control::will_moving_in_number_of_nva_forces_turn_space_into_nva_control;
 use board::domain::space::Space;
 use board::domain::space::Spaces;
 use game_definitions::control_types::ControlTypes;

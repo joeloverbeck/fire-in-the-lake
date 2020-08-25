@@ -42,10 +42,6 @@ pub fn produce_instructions_for_mutations(
     }
 
     // Second handle the mutations to the faction stats
-    println!(
-        "DEBUG: faction stats mutations: {:?}",
-        decision.get_mutations()?.get_faction_stats_mutations()?
-    );
     for mutation in decision
         .get_mutations()?
         .get_faction_stats_mutations()?
@@ -77,11 +73,6 @@ pub fn produce_instructions_for_mutations(
 
     // Handle the mutations to the forces.
     if decision.get_mutations()?.has_forces_mutations()? {
-        println!(
-            "DEBUG: forces mutations: {:?}",
-            decision.get_mutations()?.get_forces_mutations()?
-        );
-
         for mutation in decision.get_mutations()?.get_forces_mutations()?.iter() {
             if mutation.get_mutation_type() == &MutationTypes::Move {
                 // Sanity check
@@ -107,11 +98,6 @@ pub fn produce_instructions_for_mutations(
 
     // Handle space mutations
     if decision.get_mutations()?.has_space_mutations()? {
-        println!(
-            "DEBUG: flags mutations: {:?}",
-            decision.get_mutations()?.get_space_mutations()?
-        );
-
         for mutation in decision.get_mutations()?.get_space_mutations()?.iter() {
             panic!(
                 "Writing instructions not implemented for space mutation {:?}",
@@ -122,11 +108,6 @@ pub fn produce_instructions_for_mutations(
 
     // Handle the flag mutations
     if decision.get_mutations()?.has_flags_mutations()? {
-        println!(
-            "DEBUG: flags mutations: {:?}",
-            decision.get_mutations()?.get_flags_mutations()?
-        );
-
         for mutation in decision.get_mutations()?.get_flags_mutations()?.iter() {
             if mutation.get_flag() == &Flags::BlowtorchComer
                 && mutation.get_mutation_type() == &MutationTypes::Set

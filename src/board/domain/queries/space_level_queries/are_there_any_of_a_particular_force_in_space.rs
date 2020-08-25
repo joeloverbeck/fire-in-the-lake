@@ -1,4 +1,4 @@
-use board::domain::queries::calculate_number_of_a_particular_force_in_space::calculate_number_of_a_particular_force_in_space;
+use board::domain::queries::space_level_queries::calculate_number_of_a_particular_force_in_space::calculate_number_of_a_particular_force_in_space;
 use board::domain::space::Spaces;
 use game_definitions::forces::Forces;
 

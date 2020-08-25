@@ -26,6 +26,9 @@ pub fn produce_information_for_decision(
         DecisionInformation::Pass => {
             information.push(format!("{} chose to pass", faction));
         }
+        DecisionInformation::Rally => {
+            information.push(format!("{} rallies from the local population!", faction));
+        }
         DecisionInformation::Terror => {
             information.push(format!("{} commits terror attacks!", faction));
         }

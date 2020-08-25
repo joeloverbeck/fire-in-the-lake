@@ -1,5 +1,5 @@
-use board::controllers::queries_controller::QueriesController;
 use board::domain::board::Board;
+use board::domain::queries::board_level_queries::are_there_any_forces_of_a_faction_anywhere::are_there_any_forces_of_a_faction_anywhere;
 use cards::domain::card::Cards;
 use game_definitions::event_types::EventTypes;
 use game_definitions::factions::Factions;
@@ -19,15 +19,14 @@ pub fn check_event_effectivity_for_card_65(
         return Ok(false);
     }
 
-    let queries_controller = QueriesController::new();
-
     if faction == &Factions::NVA || faction == &Factions::VC {
         // Shaded: US must remove a die roll in pieces from the map from
         // the map to out of play.
         // So a the entire faction has to have any piece in the map.
-        return Ok(
-            queries_controller.are_there_any_forces_of_a_faction_anywhere(Factions::US, &board)?
-        );
+        return Ok(are_there_any_forces_of_a_faction_anywhere(
+            Factions::US,
+            &board,
+        )?);
     }
 
     panic!("Card 65 not implemented for US.");

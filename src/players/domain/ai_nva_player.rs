@@ -1,4 +1,3 @@
-use board::controllers::queries_controller::QueriesController;
 use board::domain::board::Board;
 use cards::domain::card::Cards;
 use flags::controllers::flags_controller::FlagsController;
@@ -10,6 +9,7 @@ use players::domain::decision_making::whether_to_bombard::whether_to_bombard;
 use players::domain::decision_making::whether_to_exploit_faction_capabilities_for_nva::whether_to_exploit_faction_capabilities_for_nva;
 use players::domain::decision_making::whether_to_pass::whether_to_pass;
 use players::domain::decision_making::whether_to_play_regular_event::whether_to_play_regular_event;
+use players::domain::decision_making::whether_to_rally::whether_to_rally;
 use players::domain::decision_making::whether_to_terror::whether_to_terror;
 use players::domain::player::Player;
 use players::domain::player_type::PlayerType;
@@ -21,9 +21,7 @@ use user_interface::controllers::display_controller::DisplayController;
 use user_interface::controllers::keyboard_input_controller::KeyboardInputController;
 
 #[derive(Debug)]
-pub struct AiNvaPlayer {
-    queries_controller: QueriesController,
-}
+pub struct AiNvaPlayer {}
 
 impl Default for AiNvaPlayer {
     fn default() -> Self {
@@ -97,7 +95,28 @@ impl Player for AiNvaPlayer {
 
         if let Some(decision) = possible_decision {
             // It has decided to terror. In this case NVA AI will also attempt to Bombard.
-            whether_to_bombard(Some(&decision), board, flags_controller)?;
+            let possible_decision_to_bombard =
+                whether_to_bombard(Some(&decision), board, flags_controller)?;
+
+            // If NVA bombarded, it must have added the main activity's mutations to it's decision, creating
+            // a merged one.
+            if let Some(decision_to_bombard) = possible_decision_to_bombard {
+                return Ok(decision_to_bombard);
+            }
+
+            return Ok(decision);
+        }
+
+        possible_decision = whether_to_rally(
+            Factions::NVA,
+            &possible_actions,
+            board,
+            flags_controller,
+            randomization_controller,
+        )?;
+
+        if let Some(decision) = possible_decision {
+            // It has decided to Rally.
 
             return Ok(decision);
         }
@@ -112,8 +131,6 @@ impl Player for AiNvaPlayer {
 
 impl AiNvaPlayer {
     pub fn new() -> AiNvaPlayer {
-        AiNvaPlayer {
-            queries_controller: QueriesController::new(),
-        }
+        AiNvaPlayer {}
     }
 }

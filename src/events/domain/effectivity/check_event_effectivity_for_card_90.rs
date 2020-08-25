@@ -1,5 +1,5 @@
-use board::controllers::queries_controller::QueriesController;
 use board::domain::board::Board;
+use board::domain::queries::board_level_queries::are_there_any_forces_of_a_faction_anywhere::are_there_any_forces_of_a_faction_anywhere;
 use cards::domain::card::Cards;
 use game_definitions::event_types::EventTypes;
 use game_definitions::factions::Factions;
@@ -22,10 +22,10 @@ pub fn check_event_effectivity_for_card_90(
     if faction == &Factions::NVA {
         // Shaded: Place any 1 Guerrilla in each Province with ARVN. ARVN Troops Redeploy as if no Bases.
         // This is virtually always effective, but check if there are ARVN forces anywhere.
-        let sequence_of_play_controller = QueriesController::new();
-
-        return Ok(sequence_of_play_controller
-            .are_there_any_forces_of_a_faction_anywhere(Factions::ARVN, board)?);
+        return Ok(are_there_any_forces_of_a_faction_anywhere(
+            Factions::ARVN,
+            board,
+        )?);
     }
 
     panic!("Only implemented for US AI and NVA.");

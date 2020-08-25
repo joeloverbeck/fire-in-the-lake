@@ -1,4 +1,4 @@
-use board::controllers::queries_controller::QueriesController;
+use board::domain::queries::board_level_queries::is_there_any_number_of_a_specific_force_in_a_geographic_area::is_there_any_number_of_a_specific_force_in_a_geographic_area;
 use board::domain::board::Board;
 use cards::domain::card::Cards;
 use game_definitions::event_types::EventTypes;
@@ -25,15 +25,13 @@ pub fn check_event_effectivity_for_card_55(
     // Shaded: Add twice Trail value to each NVA and VC resources. NVA moves its unTunneled Bases
     // anywhere within Laos/Cambodia.
     // Only doable if trail is > 0, and there are untunneled NVA bases in Laos or in Cambodia
-    let queries_controller = QueriesController::new();
-
     if faction == &Factions::VC
         || faction == &Factions::NVA && board.get_faction_stat(FactionStats::TheTrail)? > 0
-        || (queries_controller.is_there_any_number_of_a_specific_force_in_a_geographic_area(
+        || (is_there_any_number_of_a_specific_force_in_a_geographic_area(
             Forces::NvaBase,
             &GeographicAreas::Cambodia,
             &board,
-        )? || queries_controller.is_there_any_number_of_a_specific_force_in_a_geographic_area(
+        )? || is_there_any_number_of_a_specific_force_in_a_geographic_area(
             Forces::NvaBase,
             &GeographicAreas::Laos,
             &board,

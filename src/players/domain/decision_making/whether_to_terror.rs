@@ -1,4 +1,4 @@
-use board::controllers::queries_controller::QueriesController;
+use board::domain::queries::board_level_queries::get_spaces_nva_can_terror_and_have_minimum_population::get_spaces_nva_can_terror_and_have_minimum_population;
 use board::domain::board::Board;
 use game_definitions::faction_stats::FactionStats;
 use game_definitions::factions::Factions;
@@ -43,10 +43,8 @@ pub fn whether_to_terror(
             let minimum_population = randomization_controller.roll_six_sided_die()?;
 
             // Need to gather all spaces that NVA can terror and have that minimum population
-            let queries_controller = QueriesController::new();
-
-            let mut terror_targets = queries_controller
-                .get_spaces_nva_can_terror_and_have_minimum_population(minimum_population, board)?;
+            let mut terror_targets =
+                get_spaces_nva_can_terror_and_have_minimum_population(minimum_population, board)?;
 
             if !terror_targets.is_empty() {
                 return Ok(Some(produce_decision_to_terror_for_nva(

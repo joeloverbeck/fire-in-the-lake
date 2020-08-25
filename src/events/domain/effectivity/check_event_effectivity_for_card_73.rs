@@ -1,5 +1,5 @@
-use board::controllers::queries_controller::QueriesController;
 use board::domain::board::Board;
+use board::domain::queries::board_level_queries::are_there_any_forces_of_a_faction_available::are_there_any_forces_of_a_faction_available;
 use cards::domain::card::Cards;
 use game_definitions::event_types::EventTypes;
 use game_definitions::factions::Factions;
@@ -22,11 +22,11 @@ pub fn check_event_effectivity_for_card_73(
     if faction == &Factions::NVA {
         // Shaded: US moves 3 peices from available to out of play.
         // There must be some available.
-        let queries_controller = QueriesController::new();
 
-        return Ok(
-            queries_controller.are_there_any_forces_of_a_faction_available(Factions::US, board)?
-        );
+        return Ok(are_there_any_forces_of_a_faction_available(
+            Factions::US,
+            board,
+        )?);
     }
 
     panic!("Only implemented for ARVN and NVA.");

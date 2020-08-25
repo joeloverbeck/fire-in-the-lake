@@ -1,10 +1,12 @@
-use board::controllers::queries_controller::QueriesController;
+use board::domain::queries::board_level_queries::get_spaces_with_enough_concentration_of_coin_troops_to_bombard_but_nva_troops_only_adjacent::get_spaces_with_enough_concentration_of_coin_troops_to_bombard_but_nva_troops_only_adjacent;
+use board::domain::queries::board_level_queries::get_spaces_with_enough_concentration_of_coin_troops_to_bombard_and_nva_troops_present::get_spaces_with_enough_concentration_of_coin_troops_to_bombard_and_nva_troops_present;
 use board::domain::board::Board;
-use board::domain::queries::calculate_number_of_coin_bases::calculate_number_of_coin_bases;
+use board::domain::queries::space_level_queries::calculate_number_of_faction_group_bases_in_space::calculate_number_of_faction_group_bases_in_space;
 use board::domain::space::Space;
 use board::domain::space::Spaces;
 use flags::controllers::flags_controller::FlagsController;
 use game_definitions::event_types::EventTypes;
+use game_definitions::faction_groups::FactionGroups;
 use game_definitions::forces::Forces;
 use game_definitions::nva_capabilities::NvaCapabilities;
 use players::domain::decision::Decision;
@@ -30,14 +32,12 @@ pub fn whether_to_bombard(
     // with and Bombard to remove US Troops before ARVN ones.
 
     // First need to find if there's any applicable space.
-    let queries_controller = QueriesController::new();
-
-    let primary_bombard_targets: Vec<&Spaces> = queries_controller
-        .get_spaces_with_enough_concentration_of_coin_troops_to_bombard_and_nva_troops_present(
+    let primary_bombard_targets: Vec<&Spaces> =
+        get_spaces_with_enough_concentration_of_coin_troops_to_bombard_and_nva_troops_present(
             board,
         )?;
 
-    let secondary_bombard_targets: Vec<&Spaces> = queries_controller.get_spaces_with_enough_concentration_of_coin_troops_to_bombard_but_only_nva_troops_adjacent(board)?;
+    let secondary_bombard_targets: Vec<&Spaces> = get_spaces_with_enough_concentration_of_coin_troops_to_bombard_but_nva_troops_only_adjacent(board)?;
 
     // Obviously if there are no targets, no decision is to be made.
     if primary_bombard_targets.is_empty() && secondary_bombard_targets.is_empty() {
@@ -64,42 +64,50 @@ pub fn whether_to_bombard(
 
     // Main targets: have coin bases and Us Troops
     for target in primary_bombard_targets.iter() {
-        if calculate_number_of_coin_bases(target)? > 0 && target.get_forces(Forces::UsTroop)? > 0 {
+        if calculate_number_of_faction_group_bases_in_space(FactionGroups::Coin, target)? > 0
+            && target.get_forces(Forces::UsTroop)? > 0
+        {
             ordered_targets.push_back(target);
         }
     }
 
     // Main targets: have coin bases but no US Troops
     for target in primary_bombard_targets.iter() {
-        if calculate_number_of_coin_bases(target)? > 0 && target.get_forces(Forces::UsTroop)? == 0 {
+        if calculate_number_of_faction_group_bases_in_space(FactionGroups::Coin, target)? > 0
+            && target.get_forces(Forces::UsTroop)? == 0
+        {
             ordered_targets.push_back(target);
         }
     }
 
     // Main targets: don't have coin bases.
     for target in primary_bombard_targets.iter() {
-        if calculate_number_of_coin_bases(target)? == 0 {
+        if calculate_number_of_faction_group_bases_in_space(FactionGroups::Coin, target)? == 0 {
             ordered_targets.push_back(target);
         }
     }
 
     // Secondary targets: have coin bases and Us Troops
     for target in secondary_bombard_targets.iter() {
-        if calculate_number_of_coin_bases(target)? > 0 && target.get_forces(Forces::UsTroop)? > 0 {
+        if calculate_number_of_faction_group_bases_in_space(FactionGroups::Coin, target)? > 0
+            && target.get_forces(Forces::UsTroop)? > 0
+        {
             ordered_targets.push_back(target);
         }
     }
 
     // Secondary targets: have coin bases but no Us Troops
     for target in secondary_bombard_targets.iter() {
-        if calculate_number_of_coin_bases(target)? > 0 && target.get_forces(Forces::UsTroop)? == 0 {
+        if calculate_number_of_faction_group_bases_in_space(FactionGroups::Coin, target)? > 0
+            && target.get_forces(Forces::UsTroop)? == 0
+        {
             ordered_targets.push_back(target);
         }
     }
 
     // Secondary targets: don't have coin bases
     for target in secondary_bombard_targets.iter() {
-        if calculate_number_of_coin_bases(target)? == 0 {
+        if calculate_number_of_faction_group_bases_in_space(FactionGroups::Coin, target)? == 0 {
             ordered_targets.push_back(target);
         }
     }

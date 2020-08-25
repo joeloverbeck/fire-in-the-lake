@@ -1,4 +1,5 @@
-use board::controllers::queries_controller::QueriesController;
+use board::domain::queries::board_level_queries::is_there_a_specific_force_anywhere::is_there_a_specific_force_anywhere;
+
 use board::domain::board::Board;
 use cards::domain::card::Cards;
 use flags::controllers::flags_controller::FlagsController;
@@ -28,17 +29,19 @@ pub fn check_event_effectivity_for_card_110(
             return Ok(false);
         }
 
-        let queries_controller = QueriesController::new();
-
         if faction == &Factions::NVA {
             // There must be active nva guerrillas anywhere.
-            return Ok(queries_controller
-                .is_there_a_specific_force_anywhere(Forces::ActiveNvaGuerrilla, &board)?);
+            return Ok(is_there_a_specific_force_anywhere(
+                Forces::ActiveNvaGuerrilla,
+                &board,
+            )?);
         }
 
         if faction == &Factions::VC {
-            return Ok(queries_controller
-                .is_there_a_specific_force_anywhere(Forces::ActiveVcGuerrilla, &board)?);
+            return Ok(is_there_a_specific_force_anywhere(
+                Forces::ActiveVcGuerrilla,
+                &board,
+            )?);
         }
     }
 

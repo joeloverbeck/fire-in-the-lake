@@ -1,10 +1,11 @@
-use board::domain::queries::are_there_any_of_a_particular_force_in_space::are_there_any_of_a_particular_force_in_space;
-use board::domain::queries::are_there_coin_bases_in_space::are_there_coin_bases_in_space;
-use board::domain::queries::calculate_number_of_coin_pieces_minus_bases_in_space::calculate_number_of_coin_pieces_minus_bases_in_space;
-use board::domain::queries::can_nva_troops_obliterate_present_coin_forces_to_attack_bases::can_nva_troops_obliterate_present_coin_forces_to_attack_bases;
+use board::domain::queries::space_level_queries::are_there_any_of_a_particular_force_in_space::are_there_any_of_a_particular_force_in_space;
+use board::domain::queries::space_level_queries::are_there_faction_group_bases_in_space::are_there_faction_group_bases_in_space;
+use board::domain::queries::space_level_queries::calculate_number_of_coin_pieces_minus_bases_in_space::calculate_number_of_coin_pieces_minus_bases_in_space;
+use board::domain::queries::space_level_queries::can_nva_troops_obliterate_present_coin_forces_to_attack_bases::can_nva_troops_obliterate_present_coin_forces_to_attack_bases;
 use board::domain::space::Spaces;
 use game_definitions::factions::Factions;
 use game_definitions::forces::Forces;
+use game_definitions::faction_groups::FactionGroups;
 
 pub fn can_attack_remove_base_in_space(
     occupable_space: &Spaces,
@@ -12,7 +13,7 @@ pub fn can_attack_remove_base_in_space(
 ) -> Result<bool, String> {
     let mut can_attack_remove_base = false;
 
-    if !are_there_coin_bases_in_space(&occupable_space)? {
+    if !are_there_faction_group_bases_in_space(FactionGroups::Coin, &occupable_space)? {
         return Ok(can_attack_remove_base);
     }
 

@@ -1,6 +1,9 @@
 pub mod produce_as_many_terror_mutations_for_nva_as_possible;
 pub mod produce_faction_stats_mutations_for_passing;
 pub mod produce_mutations_for_bombardment;
+pub mod produce_mutations_for_placing_nva_base_through_rally;
+pub mod produce_mutations_for_placing_nva_guerrillas_through_rally;
 pub mod produce_mutations_for_terror_at_space;
 pub mod produce_sequence_of_play_mutation_for_operation;
+pub mod produce_unit_placement_rally_mutations_for_nva;
 pub mod request_forces_movement_from_human;

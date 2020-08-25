@@ -1,5 +1,5 @@
-use board::controllers::queries_controller::QueriesController;
 use board::domain::board::Board;
+use board::domain::queries::board_level_queries::are_there_any_casualties::are_there_any_casualties;
 use cards::domain::card::Cards;
 use game_definitions::event_types::EventTypes;
 use game_definitions::factions::Factions;
@@ -19,9 +19,7 @@ pub fn check_event_effectivity_for_card_120(
     if faction == &Factions::NVA || faction == &Factions::VC {
         // Shaded: US Troop Casualties up to cards in RVN Leader box plus all US Base Casualties go out of play.
         // Effective if any forces in casualties.
-        let queries_controller = QueriesController::new();
-
-        return Ok(queries_controller.are_there_any_casualties(board)?);
+        return Ok(are_there_any_casualties(board)?);
     }
 
     panic!("Implemented for NVA and VC.");

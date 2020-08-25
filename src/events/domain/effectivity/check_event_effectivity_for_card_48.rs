@@ -1,4 +1,4 @@
-use board::controllers::queries_controller::QueriesController;
+use board::domain::queries::board_level_queries::is_there_a_faction_group_base_in_a_province_with_less_or_equal_cubes_of_that_group::is_there_a_faction_group_base_in_a_province_with_less_or_equal_cubes_of_that_group;
 use board::domain::board::Board;
 use cards::domain::card::Cards;
 use game_definitions::event_types::EventTypes;
@@ -24,14 +24,13 @@ pub fn check_event_effectivity_for_card_48(
 
     // It's only effective in its unshaded part if there's a COIN base in a province with less or equal COIN "cubes" specifically (US to Casualties).
     if faction == &Factions::NVA || faction == &Factions::VC {
-        let queries_controller = QueriesController::new();
-
-        return Ok(queries_controller
-            .is_there_a_faction_group_base_in_a_province_with_less_or_equal_cubes_of_that_group(
+        return Ok(
+            is_there_a_faction_group_base_in_a_province_with_less_or_equal_cubes_of_that_group(
                 &FactionGroups::Coin,
                 2,
                 board,
-            )?);
+            )?,
+        );
     }
 
     panic!("Not implemented effectivity testing for card 48 if faction group is Coin.");

@@ -142,9 +142,17 @@ impl Board {
         value: u8,
         space: SpaceIdentifiers,
     ) -> Result<(), String> {
-        let occupable_space = self.get_space_mut(space)?;
+        // Exceptions: The user might have sent the SpaceIdentifiers for Available, OutOfPlay or Casualties.
+        match space {
+            SpaceIdentifiers::Available => *self.available.get_mut(&forces).unwrap() = value,
+            SpaceIdentifiers::OutOfPlay => *self.out_of_play.get_mut(&forces).unwrap() = value,
+            SpaceIdentifiers::Casualties => *self.casualties.get_mut(&forces).unwrap() = value,
+            _ => {
+                let occupable_space = self.get_space_mut(space)?;
 
-        occupable_space.set_forces(forces, value)?;
+                occupable_space.set_forces(forces, value)?;
+            }
+        }
 
         Ok(())
     }

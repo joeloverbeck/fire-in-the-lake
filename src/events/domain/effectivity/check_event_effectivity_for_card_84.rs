@@ -1,5 +1,5 @@
-use board::controllers::queries_controller::QueriesController;
 use board::domain::board::Board;
+use board::domain::queries::board_level_queries::are_there_any_cubes_of_a_faction_anywhere::are_there_any_cubes_of_a_faction_anywhere;
 use cards::domain::card::Cards;
 use game_definitions::event_types::EventTypes;
 use game_definitions::factions::Factions;
@@ -27,10 +27,10 @@ pub fn check_event_effectivity_for_card_84(
 
         // At this point this is only effective if there are ARVN cubes anywhere.
         if faction == &Factions::NVA && player_types.get(&faction).unwrap() == &PlayerType::Ai {
-            let queries_controller = QueriesController::new();
-
-            return Ok(queries_controller
-                .are_there_any_cubes_of_a_faction_anywhere(Factions::ARVN, board)?);
+            return Ok(are_there_any_cubes_of_a_faction_anywhere(
+                Factions::ARVN,
+                board,
+            )?);
         }
     }
 

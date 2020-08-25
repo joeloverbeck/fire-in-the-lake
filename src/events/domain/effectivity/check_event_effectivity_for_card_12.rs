@@ -1,5 +1,6 @@
-use board::controllers::queries_controller::QueriesController;
+use board::domain::queries::board_level_queries::is_any_space_at_a_specific_control_type_in_a_geographic_area::is_any_space_at_a_specific_control_type_in_a_geographic_area;
 use board::domain::board::Board;
+use board::domain::queries::board_level_queries::is_there_a_specific_force_anywhere::is_there_a_specific_force_anywhere;
 use cards::domain::card::Cards;
 use game_definitions::control_types::ControlTypes;
 use game_definitions::event_types::EventTypes;
@@ -22,25 +23,22 @@ pub fn check_event_effectivity_for_card_12(
         return Ok(false);
     }
 
-    let queries_controller = QueriesController::new();
-
     if faction == &Factions::NVA {
         // NVA has no special instructions for AI.
         // Unshaded: Place 1 NVA Base at NVA Control outside the South and flip any 3 NVA Guerrillas Underground.
-        if (queries_controller.is_any_space_at_a_specific_control_type_in_a_geographic_area(
+        if (is_any_space_at_a_specific_control_type_in_a_geographic_area(
             &ControlTypes::Nva,
             &GeographicAreas::NorthVietnam,
             &board,
-        )? || queries_controller.is_any_space_at_a_specific_control_type_in_a_geographic_area(
+        )? || is_any_space_at_a_specific_control_type_in_a_geographic_area(
             &ControlTypes::Nva,
             &GeographicAreas::Cambodia,
             &board,
-        )? || queries_controller.is_any_space_at_a_specific_control_type_in_a_geographic_area(
+        )? || is_any_space_at_a_specific_control_type_in_a_geographic_area(
             &ControlTypes::Nva,
             &GeographicAreas::Laos,
             &board,
-        )?) || queries_controller
-            .is_there_a_specific_force_anywhere(Forces::ActiveNvaGuerrilla, &board)?
+        )?) || is_there_a_specific_force_anywhere(Forces::ActiveNvaGuerrilla, &board)?
         {
             return Ok(true);
         }

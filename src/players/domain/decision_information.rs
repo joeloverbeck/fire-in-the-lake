@@ -3,6 +3,7 @@ pub enum DecisionInformation {
     Event,
     Pass,
     Attack,
+    Rally,
     Ambush,
     Terror,
     Bombard,

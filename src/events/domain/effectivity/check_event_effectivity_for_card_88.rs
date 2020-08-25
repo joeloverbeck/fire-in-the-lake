@@ -1,5 +1,5 @@
-use board::controllers::queries_controller::QueriesController;
 use board::domain::board::Board;
+use board::domain::queries::board_level_queries::does_space_identifier_have_support::does_space_identifier_have_support;
 use cards::domain::card::Cards;
 use game_definitions::event_types::EventTypes;
 use game_definitions::faction_stats::FactionStats;
@@ -21,11 +21,9 @@ pub fn check_event_effectivity_for_card_88(
     // Shaded: Shift Saigon 1 level toward Neutral. Patronage -5. ARVN Ineligible through next card.
     if faction == &Factions::NVA {
         // Only if Saigon has Support or Patronage > 0.
-        let queries_controller = QueriesController::new();
 
         return Ok(board.get_faction_stat(FactionStats::Patronage)? > 0
-            || queries_controller
-                .does_space_identifier_have_support(SpaceIdentifiers::Saigon, board)?);
+            || does_space_identifier_have_support(SpaceIdentifiers::Saigon, board)?);
     }
 
     panic!("Only implemented for NVA");

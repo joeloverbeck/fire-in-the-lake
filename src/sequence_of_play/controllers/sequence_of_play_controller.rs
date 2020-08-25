@@ -31,8 +31,28 @@ impl SequenceOfPlayController {
     }
 
     pub fn register_faction_order(&mut self, faction_order: [Factions; 4]) -> Result<(), String> {
-        self.first_eligible = Some(faction_order[0]);
-        self.second_eligible = Some(faction_order[1]);
+        // Here is where we have in mind the factions that are ineligible.
+        for faction in faction_order.iter() {
+            if !self
+                .ineligible
+                .iter()
+                .any(|ineligible_faction| faction == ineligible_faction)
+                && self.first_eligible.is_none()
+            {
+                self.first_eligible = Some(*faction);
+            } else if !self
+                .ineligible
+                .iter()
+                .any(|ineligible_faction| faction == ineligible_faction)
+                && self.second_eligible.is_none()
+            {
+                self.second_eligible = Some(*faction)
+            }
+
+            if self.first_eligible.is_some() && self.second_eligible.is_some() {
+                break;
+            }
+        }
 
         Ok(())
     }
@@ -181,7 +201,29 @@ impl SequenceOfPlayController {
         Ok(self.first_eligible.is_some() || self.second_eligible.is_some())
     }
 
-    pub fn perform_end_of_turn(&self) -> Result<(), String> {
+    pub fn perform_end_of_turn(&mut self) -> Result<(), String> {
+        // Sanity check: by the end of the turn, there should be no first nor second eligible factions.
+        if self.first_eligible.is_some() || self.second_eligible.is_some() {
+            panic!("While performing end of turn sequence, found out that either the first eligible or the second were some!");
+        }
+
+        // First, all factions in ineligible should "leave" that vec, so they are considered eligible for
+        // next turn.
+        self.ineligible.clear();
+
+        // Those factions that have chosen anything different than passing should go to ineligible.
+        if self.first_faction_event.is_some() {
+            self.ineligible
+                .push(self.first_faction_event.take().unwrap());
+        }
+        if self.first_faction_operation_only.is_some() {
+            self.ineligible
+                .push(self.first_faction_operation_only.take().unwrap());
+        }
+
+        // Also clear the passed vec.
+        self.passed.clear();
+
         Ok(())
     }
 }
@@ -277,6 +319,39 @@ mod tests {
 
         assert_eq!(sut.get_first_eligible()?, Factions::VC);
         assert_eq!(sut.get_second_eligible()?, Factions::US);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_after_performing_end_of_turn_when_a_faction_has_chosen_first_faction_operation_only_it_shouldnt_be_eligible_next_turn(
+    ) -> Result<(), String> {
+        let mut sut = SequenceOfPlayController::new();
+
+        let faction_order = [Factions::ARVN, Factions::VC, Factions::NVA, Factions::US];
+
+        sut.register_faction_order(faction_order)?;
+
+        sut.register_pick(&Factions::ARVN, faction_order, &SequenceOfPlaySlots::Pass)?;
+        sut.register_pick(
+            &Factions::VC,
+            faction_order,
+            &SequenceOfPlaySlots::FirstFactionOperationOnly,
+        )?;
+        sut.register_pick(&Factions::NVA, faction_order, &SequenceOfPlaySlots::Pass)?;
+        sut.register_pick(&Factions::US, faction_order, &SequenceOfPlaySlots::Pass)?;
+
+        sut.perform_end_of_turn()?;
+
+        let new_faction_order = [Factions::VC, Factions::US, Factions::ARVN, Factions::NVA];
+
+        sut.register_faction_order(new_faction_order)?;
+
+        assert!(sut.is_there_a_first_eligible_faction()?);
+        assert!(sut.is_there_a_second_eligible_faction()?);
+
+        assert_eq!(sut.get_first_eligible()?, Factions::US);
+        assert_eq!(sut.get_second_eligible()?, Factions::ARVN);
 
         Ok(())
     }

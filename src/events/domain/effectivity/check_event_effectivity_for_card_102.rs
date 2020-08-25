@@ -1,4 +1,4 @@
-use board::controllers::queries_controller::QueriesController;
+use board::domain::queries::board_level_queries::is_there_any_number_of_a_specific_force_in_a_geographic_area::is_there_any_number_of_a_specific_force_in_a_geographic_area;
 use board::domain::board::Board;
 use cards::domain::card::Cards;
 use game_definitions::event_types::EventTypes;
@@ -27,24 +27,25 @@ pub fn check_event_effectivity_for_card_102(
         && player_types.get(&faction).unwrap() == &PlayerType::Ai
     {
         // Only effective if there are bases of own faction in South Vietnam
-        let queries_controller = QueriesController::new();
 
         if faction == &Factions::NVA {
-            return Ok(queries_controller
-                .is_there_any_number_of_a_specific_force_in_a_geographic_area(
+            return Ok(
+                is_there_any_number_of_a_specific_force_in_a_geographic_area(
                     Forces::NvaBase,
                     &GeographicAreas::SouthVietnam,
                     board,
-                )?);
+                )?,
+            );
         }
 
         if faction == &Factions::VC {
-            return Ok(queries_controller
-                .is_there_any_number_of_a_specific_force_in_a_geographic_area(
+            return Ok(
+                is_there_any_number_of_a_specific_force_in_a_geographic_area(
                     Forces::VcBase,
                     &GeographicAreas::SouthVietnam,
                     board,
-                )?);
+                )?,
+            );
         }
     }
 
