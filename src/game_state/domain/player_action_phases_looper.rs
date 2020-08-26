@@ -85,6 +85,8 @@ impl PlayerActionPhasesLooper {
 
         sequence_of_play_controller.perform_end_of_turn()?;
 
+        self.flags_controller.perform_end_of_turn()?;
+
         cards_controller.move_preview_card_to_active()?;
 
         cards_controller.set_preview_card(reveal_and_get_preview_card(

@@ -2,4 +2,5 @@
 pub enum Flags {
     BlowtorchComer,
     NvaAttemptedToMarchButWereUnable,
+    NvaAttemptedToRallyButWereUnable,
 }

@@ -90,4 +90,63 @@ impl FlagsController {
 
         Ok(self.nva_capabilities.get(&nva_capability).as_ref().unwrap())
     }
+
+    fn remove_from_flags(&mut self, flag_to_remove: Flags) -> Result<(), String> {
+        for i in (0..self.flags.len()).rev() {
+            if self.flags[i] == flag_to_remove {
+                self.flags.swap_remove(i);
+            }
+        }
+
+        Ok(())
+    }
+
+    pub fn perform_end_of_turn(&mut self) -> Result<(), String> {
+        // Wipe some of the flags that should be present for a single turn
+        if self
+            .flags
+            .iter()
+            .any(|flag| flag == &Flags::NvaAttemptedToMarchButWereUnable)
+        {
+            self.remove_from_flags(Flags::NvaAttemptedToMarchButWereUnable)?;
+        }
+        if self
+            .flags
+            .iter()
+            .any(|flag| flag == &Flags::NvaAttemptedToRallyButWereUnable)
+        {
+            self.remove_from_flags(Flags::NvaAttemptedToRallyButWereUnable)?;
+        }
+
+        Ok(())
+    }
+}
+
+#[cfg(test)]
+
+mod tests {
+
+    use super::*;
+
+    #[test]
+    fn test_after_performing_end_of_turn_those_flags_that_are_single_turn_only_should_have_been_wiped(
+    ) -> Result<(), String> {
+        let mut sut = FlagsController::new();
+
+        sut.set_flag(Flags::NvaAttemptedToMarchButWereUnable)?;
+        sut.set_flag(Flags::NvaAttemptedToRallyButWereUnable)?;
+
+        sut.perform_end_of_turn()?;
+
+        assert_eq!(
+            sut.has_flag(Flags::NvaAttemptedToMarchButWereUnable)?,
+            false
+        );
+        assert_eq!(
+            sut.has_flag(Flags::NvaAttemptedToRallyButWereUnable)?,
+            false
+        );
+
+        Ok(())
+    }
 }
