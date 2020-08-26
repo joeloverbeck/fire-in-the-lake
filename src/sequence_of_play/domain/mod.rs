@@ -1,3 +1,4 @@
+pub mod can_ai_faction_play_special_activity;
 pub mod movement_mutation;
 pub mod movements;
 pub mod produce_mutation_for_moving_next_in_faction_order_to_second_eligible;

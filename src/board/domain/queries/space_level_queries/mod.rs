@@ -1,6 +1,9 @@
 pub mod are_there_any_of_a_particular_force_in_space;
+pub mod are_there_faction_bases_in_space;
 pub mod are_there_faction_group_bases_in_space;
+pub mod calculate_number_of_a_factions_bases_in_space;
 pub mod calculate_number_of_a_factions_pieces_minus_bases_in_space;
+pub mod calculate_number_of_a_factions_special_rangers_in_space;
 pub mod calculate_number_of_a_particular_force_in_space;
 pub mod calculate_number_of_coin_cubes_in_space;
 pub mod calculate_number_of_coin_pieces_minus_bases_in_space;
@@ -12,5 +15,6 @@ pub mod can_attack_remove_a_number_of_enemies_in_space;
 pub mod can_attack_remove_base_in_space;
 pub mod can_nva_troops_obliterate_present_coin_forces_to_attack_bases;
 pub mod does_space_have_support;
+pub mod get_spaces_where_nva_can_infiltrate_a_vc_base;
 pub mod is_there_a_big_enough_concentration_of_coin_pieces_for_bombardment;
 pub mod will_moving_in_number_of_nva_forces_turn_space_into_nva_control;

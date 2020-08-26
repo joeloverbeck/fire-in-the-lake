@@ -7,6 +7,7 @@ use players::domain::decision::Decision;
 use players::domain::decision_making::whether_to_attack_or_ambush::whether_to_attack_or_ambush;
 use players::domain::decision_making::whether_to_bombard::whether_to_bombard;
 use players::domain::decision_making::whether_to_exploit_faction_capabilities_for_nva::whether_to_exploit_faction_capabilities_for_nva;
+use players::domain::decision_making::whether_to_infiltrate::whether_to_infiltrate;
 use players::domain::decision_making::whether_to_pass::whether_to_pass;
 use players::domain::decision_making::whether_to_play_regular_event::whether_to_play_regular_event;
 use players::domain::decision_making::whether_to_rally::whether_to_rally;
@@ -15,6 +16,7 @@ use players::domain::player::Player;
 use players::domain::player_type::PlayerType;
 use randomization::controllers::randomization_controller_trait::RandomizationControllers;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
+use sequence_of_play::domain::can_ai_faction_play_special_activity::can_ai_faction_play_special_activity;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 use std::collections::HashMap;
 use user_interface::controllers::display_controller::DisplayController;
@@ -95,13 +97,15 @@ impl Player for AiNvaPlayer {
 
         if let Some(decision) = possible_decision {
             // It has decided to terror. In this case NVA AI will also attempt to Bombard.
-            let possible_decision_to_bombard =
-                whether_to_bombard(Some(&decision), board, flags_controller)?;
+            if can_ai_faction_play_special_activity(&possible_actions)? {
+                let possible_decision_to_bombard =
+                    whether_to_bombard(Some(&decision), board, flags_controller)?;
 
-            // If NVA bombarded, it must have added the main activity's mutations to it's decision, creating
-            // a merged one.
-            if let Some(decision_to_bombard) = possible_decision_to_bombard {
-                return Ok(decision_to_bombard);
+                // If NVA bombarded, it must have added the main activity's mutations to it's decision, creating
+                // a merged one.
+                if let Some(decision_to_bombard) = possible_decision_to_bombard {
+                    return Ok(decision_to_bombard);
+                }
             }
 
             return Ok(decision);
@@ -117,6 +121,16 @@ impl Player for AiNvaPlayer {
 
         if let Some(decision) = possible_decision {
             // It has decided to Rally.
+
+            // Additionally it will attempt to play the special activity *if it can*.
+            if can_ai_faction_play_special_activity(&possible_actions)? {
+                let possible_infiltrate_decision =
+                    whether_to_infiltrate(Some(&decision), board, flags_controller)?;
+
+                if let Some(infiltrate_decision) = possible_infiltrate_decision {
+                    return Ok(infiltrate_decision);
+                }
+            }
 
             return Ok(decision);
         }
