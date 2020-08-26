@@ -1,4 +1,5 @@
 use board::domain::board::Board;
+use game_definitions::constants::NVA_RESOURCES_AT_WHICH_NVA_WILL_PASS;
 use game_definitions::faction_stats::FactionStats;
 use game_definitions::factions::Factions;
 use players::domain::decision::Decision;
@@ -9,7 +10,9 @@ pub fn whether_to_pass(faction: Factions, board: &Board) -> Result<Option<Decisi
 
     match faction {
         Factions::NVA => {
-            if board.get_faction_stat(FactionStats::NvaResources)? == 0 {
+            if board.get_faction_stat(FactionStats::NvaResources)?
+                == NVA_RESOURCES_AT_WHICH_NVA_WILL_PASS
+            {
                 return Ok(Some(produce_decision_to_pass(faction, board)?));
             }
         }

@@ -30,6 +30,8 @@ pub fn produce_unit_placement_rally_mutations_for_nva(
 
     let mut mutable_number_of_spaces_to_rally_in = number_of_spaces_to_rally_in;
 
+    println!("Will attempt to place units through rally: Mutable number of spaces to rally in : {:?}, nva_resources: {:?}. Available guerrillaS: {:?}. Available_nva_bases: {:?}", mutable_number_of_spaces_to_rally_in, nva_resources, available_guerrillas, available_nva_bases);
+
     // 1 Nva Resource per space.
     while mutable_number_of_spaces_to_rally_in > 0 && nva_resources > 0 {
         // Go through each vec deque in order and attempt to do what each vecdeque is made to do (first one create a base, second one

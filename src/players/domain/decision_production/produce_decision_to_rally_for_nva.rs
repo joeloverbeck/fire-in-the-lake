@@ -1,3 +1,5 @@
+use players::domain::decision_making::whether_to_march::whether_to_march;
+use players::domain::decision_production::produce_decision_to_pass::produce_decision_to_pass;
 use board::domain::queries::board_level_queries::would_the_trail_get_improved_through_rally::would_the_trail_get_improved_through_rally;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 use players::domain::mutations_production::produce_sequence_of_play_mutation_for_operation::produce_sequence_of_play_mutation_for_operation;
@@ -23,6 +25,7 @@ use game_definitions::faction_stats::FactionStats;
 use std::iter::FromIterator;
 use players::domain::mutation_types::MutationTypes;
 use players::domain::decision_information::DecisionInformation;
+use game_definitions::flags::Flags;
 
 pub fn produce_decision_to_rally_for_nva(
     possible_actions: &[SequenceOfPlaySlots],
@@ -83,6 +86,28 @@ pub fn produce_decision_to_rally_for_nva(
         randomization_controller,
     )?;
 
+    // NOTE: if it produced no forces_mutations (they rallied no troops), the flowchart says that it must try
+    // if it can march, so it would move to that box. If it already attempted to March and we are here,
+    // NVA just passes.
+    if forces_mutations.is_empty()
+        && flags_controller.has_flag(Flags::NvaAttemptedToMarchButWereUnable)?
+    {
+        // Just delegate producing the decision to pass.
+        return Ok(produce_decision_to_pass(Factions::NVA, board)?);
+    } else if forces_mutations.is_empty()
+        && !flags_controller.has_flag(Flags::NvaAttemptedToMarchButWereUnable)?
+    {
+        // First mark that NVA attempted to rally but was unable.
+        let possible_decision_to_march = whether_to_march()?;
+
+        if possible_decision_to_march.is_none() {
+            // Just pass.
+            return Ok(produce_decision_to_pass(Factions::NVA, board)?);
+        } else if let Some(decision_to_march) = possible_decision_to_march {
+            return Ok(decision_to_march);
+        }
+    }
+
     // Improve trail if it can
     // May spend another 2 Resources to improve the trail by 1 box (even if the Rally was a Limited Operation, or selected 0 spaces).
     // Rally to improve the trail costs 2 even if the Rally was free.
@@ -100,7 +125,6 @@ pub fn produce_decision_to_rally_for_nva(
     }
 
     // Finally must reduce NVA resources by the amount of resources spent.
-
     faction_stats_mutations.push(FactionStatsMutation::new(
         FactionStats::NvaResources,
         MutationTypes::Reduce,

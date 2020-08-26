@@ -1,3 +1,5 @@
+use game_definitions::constants::MAXIMUM_NUMBER_OF_NVA_UNITS_ANY_BASE_MUST_BE_PROTECTED_BY_UNDER_WHICH_NVA_WILL_ATTEMPT_TO_RALLY;
+use game_definitions::constants::MAXIMUM_TRAIL_NUMBER_UNDER_WHICH_NVA_WILL_ATTEMPT_TO_RALLY;
 use board::domain::queries::board_level_queries::can_nva_place_base_through_rally::can_nva_place_base_through_rally;
 use board::domain::queries::board_level_queries::is_there_any_space_in_which_a_factions_base_is_protected_with_fewer_than_units::is_there_any_space_in_which_a_factions_base_is_protected_with_fewer_than_units;
 use board::domain::board::Board;
@@ -43,11 +45,11 @@ pub fn whether_to_rally(
                 return Ok(None);
             }
 
-            if board.get_faction_stat(FactionStats::TheTrail)? <= 1
+            if board.get_faction_stat(FactionStats::TheTrail)? < MAXIMUM_TRAIL_NUMBER_UNDER_WHICH_NVA_WILL_ATTEMPT_TO_RALLY
                 || is_there_any_space_in_which_a_factions_base_is_protected_with_fewer_than_units(
                     Factions::NVA,
                     board,
-                    2,
+                    MAXIMUM_NUMBER_OF_NVA_UNITS_ANY_BASE_MUST_BE_PROTECTED_BY_UNDER_WHICH_NVA_WILL_ATTEMPT_TO_RALLY,
                 )?
                 || does_roll_of_two_six_sided_dice_exceed_number_of_nva_guerrillas_available(
                     board,
@@ -111,6 +113,14 @@ mod tests {
         board.set_faction_stat(FactionStats::TheTrail, 1)?;
         board.set_faction_stat(FactionStats::NvaResources, 5)?;
 
+        // Need guerrillas and bases in available.
+        board.set_forces_in_space(Forces::NvaBase, 6, SpaceIdentifiers::Available)?;
+        board.set_forces_in_space(
+            Forces::UndergroundNvaGuerrilla,
+            10,
+            SpaceIdentifiers::Available,
+        )?;
+
         let possible_decision = whether_to_rally(
             Factions::NVA,
             &[SequenceOfPlaySlots::FirstFactionOperationOnly],
@@ -133,6 +143,14 @@ mod tests {
         // Need to up the trail or else it always passes.
         board.set_faction_stat(FactionStats::TheTrail, 3)?;
         board.set_faction_stat(FactionStats::NvaResources, 5)?;
+
+        // Need guerrillas and bases in available.
+        board.set_forces_in_space(Forces::NvaBase, 6, SpaceIdentifiers::Available)?;
+        board.set_forces_in_space(
+            Forces::UndergroundNvaGuerrilla,
+            10,
+            SpaceIdentifiers::Available,
+        )?;
 
         board.set_forces_in_space(Forces::NvaBase, 2, SpaceIdentifiers::KienHoaVinhBinh)?;
         board.set_forces_in_space(
@@ -165,6 +183,14 @@ mod tests {
         board.set_faction_stat(FactionStats::TheTrail, 3)?;
         board.set_faction_stat(FactionStats::NvaResources, 5)?;
 
+        // Need guerrillas and bases in available.
+        board.set_forces_in_space(Forces::NvaBase, 6, SpaceIdentifiers::Available)?;
+        board.set_forces_in_space(
+            Forces::UndergroundNvaGuerrilla,
+            10,
+            SpaceIdentifiers::Available,
+        )?;
+
         board.set_forces_in_space(
             Forces::UndergroundNvaGuerrilla,
             5,
@@ -194,6 +220,14 @@ mod tests {
         // Need to up the trail or else it always passes.
         board.set_faction_stat(FactionStats::TheTrail, 3)?;
         board.set_faction_stat(FactionStats::NvaResources, 5)?;
+
+        // Need guerrillas and bases in available.
+        board.set_forces_in_space(Forces::NvaBase, 6, SpaceIdentifiers::Available)?;
+        board.set_forces_in_space(
+            Forces::UndergroundNvaGuerrilla,
+            10,
+            SpaceIdentifiers::Available,
+        )?;
 
         // For that there must be at least 4 NVA or VC Guerrillas or Troops (including 2 NVA Guerrillas and room for the Base)
 
@@ -229,6 +263,14 @@ mod tests {
         // Need to up the trail or else it always passes.
         board.set_faction_stat(FactionStats::TheTrail, 3)?;
         board.set_faction_stat(FactionStats::NvaResources, 5)?;
+
+        // Need guerrillas and bases in available.
+        board.set_forces_in_space(Forces::NvaBase, 6, SpaceIdentifiers::Available)?;
+        board.set_forces_in_space(
+            Forces::UndergroundNvaGuerrilla,
+            10,
+            SpaceIdentifiers::Available,
+        )?;
 
         // For that there must be at least 4 NVA or VC Guerrillas or Troops (including 2 NVA Guerrillas and room for the Base)
 

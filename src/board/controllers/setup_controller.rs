@@ -221,6 +221,36 @@ impl SetupController {
             SpaceIdentifiers::TheParrotsBeak,
         )?;
 
+        // Finally, add available forces.
+        board.set_forces_in_space(Forces::VcBase, 2, SpaceIdentifiers::Available)?;
+        board.set_forces_in_space(
+            Forces::UndergroundVcGuerrilla,
+            14,
+            SpaceIdentifiers::Available,
+        )?;
+        board.set_forces_in_space(Forces::NvaBase, 5, SpaceIdentifiers::Available)?;
+        board.set_forces_in_space(Forces::NvaTroop, 38, SpaceIdentifiers::Available)?;
+        board.set_forces_in_space(
+            Forces::UndergroundNvaGuerrilla,
+            11,
+            SpaceIdentifiers::Available,
+        )?;
+        board.set_forces_in_space(Forces::ArvnTroop, 7, SpaceIdentifiers::Available)?;
+        board.set_forces_in_space(Forces::ArvnPolice, 11, SpaceIdentifiers::Available)?;
+        board.set_forces_in_space(
+            Forces::UndergroundArvnRanger,
+            2,
+            SpaceIdentifiers::Available,
+        )?;
+        board.set_forces_in_space(Forces::ArvnBase, 1, SpaceIdentifiers::Available)?;
+        board.set_forces_in_space(Forces::UsTroop, 21, SpaceIdentifiers::Available)?;
+        board.set_forces_in_space(
+            Forces::UndergroundUsIrregular,
+            3,
+            SpaceIdentifiers::Available,
+        )?;
+        board.set_forces_in_space(Forces::UsBase, 2, SpaceIdentifiers::Available)?;
+
         // Push all the damn instructions about placing forces to the player
         let mut forces_in_spaces_instructions: Vec<String> = Vec::new();
 
@@ -809,5 +839,74 @@ impl SetupController {
         collection_of_instructions.push(support_levels_in_spaces_instructions);
 
         Ok((board, collection_of_instructions))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+
+    #[test]
+    fn test_after_setup_of_full_scenario_there_are_the_expected_number_of_available_units_for_all_factions(
+    ) -> Result<(), String> {
+        let (board, _) = SetupController::new().setup_full()?;
+
+        assert_eq!(
+            board.get_forces_in_space(Forces::VcBase, SpaceIdentifiers::Available)?,
+            2
+        );
+        assert_eq!(
+            board
+                .get_forces_in_space(Forces::UndergroundVcGuerrilla, SpaceIdentifiers::Available)?,
+            14
+        );
+        assert_eq!(
+            board.get_forces_in_space(Forces::NvaBase, SpaceIdentifiers::Available)?,
+            5
+        );
+        assert_eq!(
+            board.get_forces_in_space(Forces::NvaTroop, SpaceIdentifiers::Available)?,
+            38
+        );
+        assert_eq!(
+            board.get_forces_in_space(
+                Forces::UndergroundNvaGuerrilla,
+                SpaceIdentifiers::Available
+            )?,
+            11
+        );
+        assert_eq!(
+            board.get_forces_in_space(Forces::ArvnTroop, SpaceIdentifiers::Available)?,
+            7
+        );
+        assert_eq!(
+            board.get_forces_in_space(Forces::ArvnPolice, SpaceIdentifiers::Available)?,
+            11
+        );
+        assert_eq!(
+            board
+                .get_forces_in_space(Forces::UndergroundArvnRanger, SpaceIdentifiers::Available)?,
+            2
+        );
+        assert_eq!(
+            board.get_forces_in_space(Forces::ArvnBase, SpaceIdentifiers::Available)?,
+            1
+        );
+        assert_eq!(
+            board.get_forces_in_space(Forces::UsTroop, SpaceIdentifiers::Available)?,
+            21
+        );
+        assert_eq!(
+            board
+                .get_forces_in_space(Forces::UndergroundUsIrregular, SpaceIdentifiers::Available)?,
+            3
+        );
+        assert_eq!(
+            board.get_forces_in_space(Forces::UsBase, SpaceIdentifiers::Available)?,
+            2
+        );
+
+        Ok(())
     }
 }
