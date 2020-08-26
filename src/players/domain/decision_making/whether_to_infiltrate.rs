@@ -1,3 +1,4 @@
+use players::domain::decision_making::whether_to_bombard::whether_to_bombard;
 use board::domain::queries::board_level_queries::can_nva_infiltrate_any_vc_base_anywhere::can_nva_infiltrate_any_vc_base_anywhere;
 use board::domain::queries::board_level_queries::would_placing_nva_troops_anywhere_through_infiltrate_place_enough::would_placing_nva_troops_anywhere_through_infiltrate_place_enough;
 use flags::controllers::flags_controller::FlagsController;
@@ -6,7 +7,7 @@ use players::domain::decision::Decision;
 use game_definitions::flags::Flags;
 
 pub fn whether_to_infiltrate(
-    _possible_previous_decision: Option<&Decision>,
+    possible_previous_decision: Option<&Decision>,
     board: &Board,
     flags_controller: &FlagsController,
 ) -> Result<Option<Decision>, String> {
@@ -42,6 +43,10 @@ pub fn whether_to_infiltrate(
     {
         panic!("Infiltrating not implemented");
     } else {
-        panic!("Infiltrate couldn't happen. Should bombard.");
+        Ok(whether_to_bombard(
+            possible_previous_decision,
+            board,
+            flags_controller,
+        )?)
     }
 }
