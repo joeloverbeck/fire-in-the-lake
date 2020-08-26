@@ -67,6 +67,13 @@ mod tests {
         fn write_alert(&self, _text: &str) -> Result<(), String> {
             Ok(())
         }
+        fn write_everything_necessary_for_decision(
+            &self,
+            _decision: &Decision,
+            _faction: &Factions,
+        ) -> Result<(), String> {
+            Ok(())
+        }
     }
 
     #[test]

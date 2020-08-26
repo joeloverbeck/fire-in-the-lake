@@ -78,6 +78,17 @@ impl DisplayControllerTrait for DisplayController {
         Ok(())
     }
 
+    fn write_everything_necessary_for_decision(
+        &self,
+        decision: &Decision,
+        faction: &Factions,
+    ) -> Result<(), String> {
+        self.write_information_for_decision(&decision, faction)?;
+        self.write_instructions_for_decision(&decision, faction)?;
+
+        Ok(())
+    }
+
     fn write_information(&self, text: &str) -> Result<(), String> {
         let buffer = &mut self.buffer_writer.buffer();
 

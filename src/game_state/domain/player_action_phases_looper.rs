@@ -65,8 +65,7 @@ impl PlayerActionPhasesLooper {
                 )?;
 
                 // The decision should have contained all the decisions.
-                display_controller.write_information_for_decision(&decision, faction)?;
-                display_controller.write_instructions_for_decision(&decision, faction)?;
+                display_controller.write_everything_necessary_for_decision(&decision, &faction)?;
 
                 // Delegate persisting the changes.
                 self.memory_persistence_controller.persist_decision(
