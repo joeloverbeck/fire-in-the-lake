@@ -7,6 +7,7 @@ pub struct SequenceOfPlayController {
     first_eligible: Option<Factions>,
     second_eligible: Option<Factions>,
     first_faction_operation_only: Option<Factions>,
+    first_faction_operation_plus_special_activity: Option<Factions>,
     first_faction_event: Option<Factions>,
     passed: Vec<Factions>,
     ineligible: Vec<Factions>,
@@ -24,6 +25,7 @@ impl SequenceOfPlayController {
             first_eligible: None,
             second_eligible: None,
             first_faction_operation_only: None,
+            first_faction_operation_plus_special_activity: None,
             first_faction_event: None,
             passed: Vec::new(),
             ineligible: Vec::new(),
@@ -113,6 +115,14 @@ impl SequenceOfPlayController {
                         self.first_faction_operation_only = None;
                     }
                 }
+                Movements::FirstFactionOperationPlusSpecialActivity => {
+                    if movement.does_it_contain_a_faction() {
+                        self.first_faction_operation_plus_special_activity =
+                            Some(*movement.get_faction());
+                    } else {
+                        self.first_faction_operation_plus_special_activity = None;
+                    }
+                }
                 Movements::FirstFactionEvent => {
                     // Note that the "faction" present in the mutation might be None.
                     if movement.does_it_contain_a_faction() {
@@ -154,6 +164,11 @@ impl SequenceOfPlayController {
     pub fn get_possible_actions_for_current_elegible(
         &self,
     ) -> Result<Vec<SequenceOfPlaySlots>, String> {
+        // Sanity check: this shouldn't be asked if there are no eligibles.
+        if self.first_eligible.is_none() && self.second_eligible.is_none() {
+            panic!("Attempted to get the possible actions for current eligible, when there were no eligible factions!");
+        }
+
         if self.first_eligible.is_some() {
             let mut vec: Vec<SequenceOfPlaySlots> = Vec::new();
             vec.push(SequenceOfPlaySlots::FirstFactionOperationOnly);
@@ -181,8 +196,16 @@ impl SequenceOfPlayController {
                 vec.push(SequenceOfPlaySlots::Pass);
 
                 return Ok(vec);
+            } else if self.first_faction_operation_plus_special_activity.is_some() {
+                // The first eligible chose to play an operation along with special activities.
+
+                let mut vec: Vec<SequenceOfPlaySlots> = Vec::new();
+                vec.push(SequenceOfPlaySlots::SecondFactionLimitedOperationOrEvent);
+                vec.push(SequenceOfPlaySlots::Pass);
+
+                return Ok(vec);
             } else {
-                panic!("Failed to implemented all possibilities for second eligible.");
+                panic!("Failed to implement all possibilities for second eligible.");
             }
         }
 
@@ -352,6 +375,97 @@ mod tests {
 
         assert_eq!(sut.get_first_eligible()?, Factions::US);
         assert_eq!(sut.get_second_eligible()?, Factions::ARVN);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_the_first_eligible_should_get_the_usual_unimpeded_set_of_possible_actions(
+    ) -> Result<(), String> {
+        let mut sut = SequenceOfPlayController::new();
+
+        let faction_order = [Factions::ARVN, Factions::VC, Factions::NVA, Factions::US];
+
+        sut.register_faction_order(faction_order)?;
+
+        let possible_actions_for_first_eligible =
+            sut.get_possible_actions_for_current_elegible()?;
+
+        assert!(possible_actions_for_first_eligible
+            .iter()
+            .any(|possible_action| possible_action == &SequenceOfPlaySlots::Pass));
+        assert!(possible_actions_for_first_eligible
+            .iter()
+            .any(|possible_action| possible_action
+                == &SequenceOfPlaySlots::FirstFactionOperationOnly));
+        assert!(possible_actions_for_first_eligible
+            .iter()
+            .any(|possible_action| possible_action
+                == &SequenceOfPlaySlots::FirstFactionOperationPlusSpecialActivity));
+        assert!(possible_actions_for_first_eligible
+            .iter()
+            .any(|possible_action| possible_action == &SequenceOfPlaySlots::FirstFactionEvent));
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_the_second_eligible_should_get_second_faction_limited_operation_if_the_first_one_picked_operation_only(
+    ) -> Result<(), String> {
+        let mut sut = SequenceOfPlayController::new();
+
+        let faction_order = [Factions::ARVN, Factions::VC, Factions::NVA, Factions::US];
+
+        sut.register_faction_order(faction_order)?;
+
+        sut.register_pick(
+            &Factions::ARVN,
+            faction_order,
+            &SequenceOfPlaySlots::FirstFactionOperationOnly,
+        )?;
+
+        let possible_actions_for_second_eligible =
+            sut.get_possible_actions_for_current_elegible()?;
+
+        assert!(
+            possible_actions_for_second_eligible
+                .iter()
+                .any(|possible_action| possible_action
+                    == &SequenceOfPlaySlots::SecondFactionLimitedOperation),
+            "Any of the possible actions should have been SecondFactionLimitedOperation"
+        );
+        assert!(possible_actions_for_second_eligible
+            .iter()
+            .any(|possible_action| possible_action == &SequenceOfPlaySlots::Pass));
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_the_second_eligible_should_get_second_faction_limited_operation_or_event_if_the_first_one_picked_operation_plus_special_activity(
+    ) -> Result<(), String> {
+        let mut sut = SequenceOfPlayController::new();
+
+        let faction_order = [Factions::ARVN, Factions::VC, Factions::NVA, Factions::US];
+
+        sut.register_faction_order(faction_order)?;
+
+        sut.register_pick(
+            &Factions::ARVN,
+            faction_order,
+            &SequenceOfPlaySlots::FirstFactionOperationPlusSpecialActivity,
+        )?;
+
+        let possible_actions_for_second_eligible =
+            sut.get_possible_actions_for_current_elegible()?;
+
+        assert!(possible_actions_for_second_eligible
+            .iter()
+            .any(|possible_action| possible_action
+                == &SequenceOfPlaySlots::SecondFactionLimitedOperationOrEvent));
+        assert!(possible_actions_for_second_eligible
+            .iter()
+            .any(|possible_action| possible_action == &SequenceOfPlaySlots::Pass));
 
         Ok(())
     }

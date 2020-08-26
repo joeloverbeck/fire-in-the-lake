@@ -1,8 +1,8 @@
+use sequence_of_play::domain::produce_sequence_of_play_movements_for_one_of_the_main_first_faction_actions::produce_sequence_of_play_movements_for_one_of_the_main_first_faction_actions;
 use game_definitions::factions::Factions;
 use sequence_of_play::controllers::sequence_of_play_controller::SequenceOfPlayController;
 use sequence_of_play::domain::movement_mutation::MovementMutation;
 use sequence_of_play::domain::movements::Movements;
-use sequence_of_play::domain::produce_sequence_of_play_movements_for_first_faction_operation_only::produce_sequence_of_play_movements_for_first_faction_operation_only;
 use sequence_of_play::domain::produce_sequence_of_play_movements_for_passing::produce_sequence_of_play_movements_for_passing;
 use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
 
@@ -14,8 +14,9 @@ pub fn produce_sequence_of_play_movements(
 ) -> Result<Vec<MovementMutation>, String> {
     let mut movement_mutations: Vec<MovementMutation> = Vec::new();
 
-    if slot == &SequenceOfPlaySlots::FirstFactionEvent {
-        // The faction was the first elegible, and played for the event.
+    match *slot {
+        SequenceOfPlaySlots::FirstFactionEvent => {
+            // The faction was the first elegible, and played for the event.
         if !(sequence_of_play_controller.get_first_eligible()? == *faction) {
             panic!("Had attempted to register {:?} as having chosen to play the event being the first elegible faction, but that faction wasn't the first eligible! First eligibile: {:?}", faction, sequence_of_play_controller.get_first_eligible()?);
         }
@@ -30,21 +31,33 @@ pub fn produce_sequence_of_play_movements(
 
         // We also need to nullify the position of the first eligible.
         movement_mutations.push(MovementMutation::new(None, Movements::FirstEligible));
-    } else if slot == &SequenceOfPlaySlots::Pass {
-        movement_mutations.append(&mut produce_sequence_of_play_movements_for_passing(
-            faction,
-            faction_order,
-            sequence_of_play_controller,
-        )?);
-    } else if slot == &SequenceOfPlaySlots::FirstFactionOperationOnly {
-        movement_mutations.append(
-            &mut produce_sequence_of_play_movements_for_first_faction_operation_only(
+        },
+        SequenceOfPlaySlots::Pass => {
+            movement_mutations.append(&mut produce_sequence_of_play_movements_for_passing(
                 faction,
+                faction_order,
                 sequence_of_play_controller,
-            )?,
-        );
-    } else {
-        panic!("Registering a pick in the sequence of play wasn't handled for the following: {:?} and {:?}", faction, slot);
+            )?);
+        },
+        SequenceOfPlaySlots::FirstFactionOperationOnly => {
+            movement_mutations.append(
+                &mut produce_sequence_of_play_movements_for_one_of_the_main_first_faction_actions(
+                    faction,
+                    &slot,
+                    sequence_of_play_controller,
+                )?,
+            );
+        },
+        SequenceOfPlaySlots::FirstFactionOperationPlusSpecialActivity => {
+            movement_mutations.append(
+                &mut produce_sequence_of_play_movements_for_one_of_the_main_first_faction_actions(
+                    faction,
+                    &slot,
+                    sequence_of_play_controller,
+                )?,
+            );
+        }
+        _ => panic!("Registering a pick in the sequence of play wasn't handled for the following: {:?} and {:?}", faction, slot)
     }
 
     Ok(movement_mutations)
