@@ -6,5 +6,6 @@ pub enum DecisionInformation {
     Rally,
     Ambush,
     Terror,
+    Infiltrate,
     Bombard,
 }

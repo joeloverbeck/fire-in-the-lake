@@ -121,11 +121,16 @@ impl Player for AiNvaPlayer {
 
         if let Some(decision) = possible_decision {
             // It has decided to Rally.
+            println!("rally decision: {:?}", decision);
 
             // Additionally it will attempt to play the special activity *if it can*.
             if can_ai_faction_play_special_activity(&possible_actions)? {
-                let possible_infiltrate_decision =
-                    whether_to_infiltrate(Some(&decision), board, flags_controller)?;
+                let possible_infiltrate_decision = whether_to_infiltrate(
+                    Some(&decision),
+                    &possible_actions,
+                    board,
+                    flags_controller,
+                )?;
 
                 if let Some(infiltrate_decision) = possible_infiltrate_decision {
                     return Ok(infiltrate_decision);

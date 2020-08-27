@@ -36,38 +36,47 @@ pub fn produce_instructions_for_mutations(
                 "Move {} cylinder from Elegible to First Faction Operation Only.",
                 faction
             ));
+        } else if mutation.get_sequence_of_play_slot()
+            == &SequenceOfPlaySlots::FirstFactionOperationPlusSpecialActivity
+        {
+            instructions.push(format!(
+                "Move {} cylinder from Elegible to First Faction Operation Plus Special Activity.",
+                faction
+            ));
         } else {
             panic!("The instruction for moving pieces in sequence of play area not implemented for {:?}", mutation.get_sequence_of_play_slot());
         }
     }
 
     // Second handle the mutations to the faction stats
-    for mutation in decision
-        .get_mutations()?
-        .get_faction_stats_mutations()?
-        .iter()
-    {
-        if mutation.get_mutation_type() == &MutationTypes::Reduce {
-            // Wants to reduce a faction stat.
-            instructions.push(format!(
-                "Reduce {} from {} to {}",
-                mutation.get_faction_stat(),
-                mutation.get_previous_value(),
-                mutation.get_previous_value() - mutation.get_value()
-            ));
-        } else if mutation.get_mutation_type() == &MutationTypes::Increase {
-            // Wants to increase a faction stat.
-            instructions.push(format!(
-                "Increase {} from {} to {}",
-                mutation.get_faction_stat(),
-                mutation.get_previous_value(),
-                mutation.get_previous_value() + mutation.get_value()
-            ));
-        } else {
-            panic!(
-                "Case not handled for faction stats mutation type {:?}",
-                mutation.get_mutation_type()
-            );
+    if decision.get_mutations()?.has_faction_stats_mutations()? {
+        for mutation in decision
+            .get_mutations()?
+            .get_faction_stats_mutations()?
+            .iter()
+        {
+            if mutation.get_mutation_type() == &MutationTypes::Reduce {
+                // Wants to reduce a faction stat.
+                instructions.push(format!(
+                    "Reduce {} from {} to {}",
+                    mutation.get_faction_stat(),
+                    mutation.get_previous_value(),
+                    mutation.get_previous_value() - mutation.get_value()
+                ));
+            } else if mutation.get_mutation_type() == &MutationTypes::Increase {
+                // Wants to increase a faction stat.
+                instructions.push(format!(
+                    "Increase {} from {} to {}",
+                    mutation.get_faction_stat(),
+                    mutation.get_previous_value(),
+                    mutation.get_previous_value() + mutation.get_value()
+                ));
+            } else {
+                panic!(
+                    "Case not handled for faction stats mutation type {:?}",
+                    mutation.get_mutation_type()
+                );
+            }
         }
     }
 

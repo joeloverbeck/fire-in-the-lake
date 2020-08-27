@@ -1,3 +1,5 @@
+use sequence_of_play::domain::sequence_of_play_slots::SequenceOfPlaySlots;
+use players::domain::decision_production::produce_decision_to_infiltrate::produce_decision_to_infiltrate;
 use players::domain::decision_making::whether_to_bombard::whether_to_bombard;
 use board::domain::queries::board_level_queries::can_nva_infiltrate_any_vc_base_anywhere::can_nva_infiltrate_any_vc_base_anywhere;
 use board::domain::queries::board_level_queries::would_placing_nva_troops_anywhere_through_infiltrate_place_enough::would_placing_nva_troops_anywhere_through_infiltrate_place_enough;
@@ -8,6 +10,7 @@ use game_definitions::flags::Flags;
 
 pub fn whether_to_infiltrate(
     possible_previous_decision: Option<&Decision>,
+    possible_actions: &[SequenceOfPlaySlots],
     board: &Board,
     flags_controller: &FlagsController,
 ) -> Result<Option<Decision>, String> {
@@ -41,7 +44,12 @@ pub fn whether_to_infiltrate(
             board,
         )?
     {
-        panic!("Infiltrating not implemented");
+        Ok(Some(produce_decision_to_infiltrate(
+            possible_previous_decision,
+            possible_actions,
+            times_it_can_infiltrate,
+            board,
+        )?))
     } else {
         Ok(whether_to_bombard(
             possible_previous_decision,
