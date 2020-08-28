@@ -134,6 +134,9 @@ pub fn produce_decision_to_infiltrate(
 
     mutations.set_sequence_of_play_mutations(sequence_of_play_mutations)?;
 
+    // TODO: I think this "merging" is already, or partly, implemented
+    // in "produce_decision_for_special_activity".
+
     // Might be that there was a previous decision, probably consisting of
     // data about the main operation.
     let previous_decision_operation_information = {
